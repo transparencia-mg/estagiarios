@@ -41,7 +41,7 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
 
 datapackage = {
     "profile": "data-package",
-    "name": "estagiarios",
+    "name": "estagiarios-mg",
     "title": "Estagiários do Governo de Minas Gerais",
     "owner_org": "controladoria-geral-do-estado-cge",
     "resources": resources
@@ -54,3 +54,5 @@ OUTPUT.write_text(
 )
 
 print(f"✔ datapackage.json gerado com {len(resources)} recursos")
+
+
