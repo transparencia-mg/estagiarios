@@ -1854,40 +1854,49 @@
             });
         }
 
-        // ==================== DETERMINAR MÊS MAIS RECENTE ====================
-        async function determineLatestMonth() {
-            if (!estagiariosData || estagiariosData.length === 0) {
-                console.warn('Dados ainda não carregados.');
-                filteredData = [];
-                return;
-            }
+// ==================== DETERMINAR MÊS MAIS RECENTE ====================
+async function determineLatestMonth() {
+    if (!estagiariosData || estagiariosData.length === 0) {
+        console.warn('Dados ainda não carregados.');
+        filteredData = [];
+        return;
+    }
 
-            // Encontrar meses únicos
-            const mesesUnicos = [...new Set(
-                estagiariosData
-                    .map(e => e.ano_mesreferencia)
-                    .filter(Boolean)
-            )].sort().reverse();
+    // Normaliza o campo ano_mesreferencia para AAAA-MM
+    const normalizar = v =>
+        v.replace('/', '-').substring(0, 7);
 
-            if (mesesUnicos.length === 0) {
-                console.warn('Nenhum mês encontrado.');
-                filteredData = estagiariosData;
-                return;
-            }
+    const mesesUnicos = [...new Set(
+        estagiariosData
+            .map(e => e.ano_mesreferencia)
+            .filter(Boolean)
+            .map(normalizar)
+    )].sort((a, b) => {
+        return new Date(b + '-01') - new Date(a + '-01');
+    });
 
-            const ultimoMes = mesesUnicos[0];
-            const [ano, mes] = ultimoMes.split('-');
+    if (mesesUnicos.length === 0) {
+        console.warn('Nenhum mês encontrado.');
+        filteredData = estagiariosData;
+        return;
+    }
 
-            currentYear = ano;
-            currentMonth = mes;
+    const ultimoMes = mesesUnicos[0];
+    const [ano, mes] = ultimoMes.split('-');
 
-            // Filtrar dados do mês mais recente
-            filteredData = estagiariosData.filter(
-                e => e.ano_mesreferencia === ultimoMes
-            );
+    currentYear = ano;
+    currentMonth = mes;
 
-            console.log(`Mês mais recente encontrado: ${mes}/${ano} - ${filteredData.length} registros`);
-        }
+    // Filtrar dados do mês mais recente (comparação normalizada)
+    filteredData = estagiariosData.filter(
+        e => normalizar(e.ano_mesreferencia) === ultimoMes
+    );
+
+    console.log(
+        `Mês mais recente encontrado: ${mes}/${ano} - ${filteredData.length} registros`
+    );
+}
+
 
         // ==================== CONFIGURAR EVENT LISTENERS ====================
         function setupEventListeners() {
