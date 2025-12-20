@@ -1637,6 +1637,90 @@
             '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro'
         };
 
+        // MAPEAMENTO COMPLETO DE SIGLAS PARA NOMES DE ÓRGÃOS
+        const orgaosExtenso = {
+            'AGE': 'Assembleia Geral do Estado',
+            'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
+            'CGE': 'Controladoria-Geral do Estado',
+            'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
+            'DEER': 'Departamento de Edificações e Estradas de Rodagem',
+            'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
+            'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
+            'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
+            'FJP': 'Fundação João Pinheiro',
+            'GMG': 'Gabinete Militar do Governador',
+            'IEF': 'Instituto Estadual de Florestas',
+            'IMA': 'Instituto Mineiro de Agropecuária',
+            'IPSEMG': 'Instituto de Previdência dos Servidores',
+            'PCMG': 'Polícia Civil',
+            'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
+            'SCC': 'Secretaria de Estado da Casa Civil',
+            'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
+            'SEC': 'Secretaria de Estado de Cultura',
+            'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
+            'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
+            'SEE': 'Secretaria de Estado de Educação',
+            'SEF': 'Secretaria de Estado de Fazenda',
+            'SEGOV': 'Secretaria de Estado de Governo',
+            'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
+            'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
+            'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
+            'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
+            'SES': 'Secretaria de Estado de Saúde',
+            'UEMG': 'Universidade do Estado de Minas Gerais',
+            'PM': 'Polícia Militar',
+            'CBMMG': 'Corpo de Bombeiros Militar',
+            'TCE': 'Tribunal de Contas do Estado',
+            'MPMG': 'Ministério Público do Estado de Minas Gerais',
+            'TJMG': 'Tribunal de Justiça do Estado de Minas Gerais',
+            'CBM': 'Corpo de Bombeiros',
+            'EP': 'Escola do Poder Legislativo',
+            'MGI': 'Minas Gerais Industrial',
+            'AGE': 'Assembleia Geral do Estado',
+            'CBM': 'Corpo de Bombeiros Militar',
+            'DETRAN': 'Departamento de Trânsito',
+            'EMATER': 'Empresa de Assistência Técnica e Extensão Rural',
+            'FUNDEP': 'Fundação de Desenvolvimento da Pesquisa',
+            'IGAM': 'Instituto Mineiro de Gestão das Águas',
+            'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico',
+            'MDC': 'Museu de Ciências',
+            'PMMG': 'Polícia Militar de Minas Gerais',
+            'SAAE': 'Serviço Autônomo de Água e Esgoto',
+            'SEBRAE': 'Serviço Brasileiro de Apoio às Micro e Pequenas Empresas',
+            'SEMEIA': 'Secretaria de Estado de Meio Ambiente',
+            'SINE': 'Sistema Nacional de Emprego',
+            'SSP': 'Secretaria de Segurança Pública',
+            'UFMG': 'Universidade Federal de Minas Gerais',
+            'UFSJ': 'Universidade Federal de São João del-Rei',
+            'UFV': 'Universidade Federal de Viçosa',
+            'UFU': 'Universidade Federal de Uberlândia',
+            'UNIMONTES': 'Universidade Estadual de Montes Claros'
+        };
+
+        // ==================== FUNÇÃO PARA OBTER NOME COMPLETO DO ÓRGÃO ====================
+        function getOrgaoExtenso(siglaOuNome) {
+            if (!siglaOuNome || typeof siglaOuNome !== 'string') {
+                return siglaOuNome || '';
+            }
+            
+            const siglaUpper = siglaOuNome.toUpperCase().trim();
+            
+            // Primeiro, verificar se a sigla está diretamente no mapeamento
+            if (orgaosExtenso[siglaUpper]) {
+                return orgaosExtenso[siglaUpper];
+            }
+            
+            // Verificar se o nome contém alguma sigla conhecida
+            for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
+                if (siglaUpper.includes(sigla) || siglaUpper === sigla) {
+                    return nomeExtenso;
+                }
+            }
+            
+            // Se não encontrar, retornar o próprio valor (pode ser que já seja o nome completo)
+            return siglaOuNome;
+        }
+
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('=== INICIANDO DASHBOARD ESTAGIÁRIOS ===');
@@ -1715,6 +1799,13 @@
 
                                 const [ano, mes] = ano_mesreferencia.split('-');
 
+                                // Obter sigla e nome do órgão
+                                const sigla_orgao = row.sigla_orgao || row['SIGLA_ORGAO'] || '';
+                                const orgao_nome = row.orgao || row['ORGAO'] || '';
+                                
+                                // Se o nome do órgão parece ser uma sigla, obter o nome completo
+                                const orgao_completo = getOrgaoExtenso(orgao_nome || sigla_orgao);
+
                                 // Converter valor_remuneracao para número
                                 let valorRemuneracao = 0;
                                 const valorRaw = row.valor_remuneracao || row['VALOR_REMUNERACAO'] || '0';
@@ -1737,8 +1828,9 @@
                                     data_inicio: row.data_inicio || row['DATA_INICIO'] || '',
                                     data_fim: row.data_fim || row['DATA_FIM'] || '',
                                     codigo_orgao: row.codigo_orgao || row['CODIGO_ORGAO'] || '',
-                                    orgao: row.orgao || row['ORGAO'] || '',
-                                    sigla_orgao: row.sigla_orgao || row['SIGLA_ORGAO'] || '',
+                                    orgao: orgao_completo, // Nome completo do órgão
+                                    orgao_sigla: sigla_orgao || orgao_nome, // Sigla ou nome curto
+                                    sigla_orgao: sigla_orgao || orgao_nome, // Para compatibilidade
                                     valor_remuneracao: valorRemuneracao,
                                     ANO: ano || '',
                                     MES: mes || ''
@@ -1750,6 +1842,7 @@
                         estagiariosData = data;
 
                         console.log(`Dados de ${year} carregados: ${data.length} registros`);
+                        console.log(`Órgãos processados: ${[...new Set(data.map(d => d.orgao))].length} nomes completos`);
                         resolve();
                     },
                     error: function (err) {
@@ -2430,7 +2523,7 @@
             const grupos = {};
             filteredData.forEach(estagiario => {
                 const orgao = estagiario.orgao;
-                const sigla = estagiario.sigla_orgao || orgao;
+                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao;
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
@@ -2619,7 +2712,7 @@
             // Agrupar por órgão e pegar top 8
             const grupos = {};
             filteredData.forEach(estagiario => {
-                const orgao = estagiario.sigla_orgao || estagiario.orgao;
+                const orgao = estagiario.orgao_sigla || estagiario.sigla_orgao || estagiario.orgao;
                 if (!grupos[orgao]) {
                     grupos[orgao] = 0;
                 }
@@ -2893,7 +2986,7 @@
                 <tr>
                     <td><strong>${estagiario.nome_estagiario}</strong></td>
                     <td>${estagiario.masp}</td>
-                    <td>${estagiario.sigla_orgao || estagiario.orgao}</td>
+                    <td>${estagiario.sigla_orgao || estagiario.orgao_sigla || estagiario.orgao}</td>
                     <td>${formatDate(estagiario.data_inicio)}</td>
                     <td>${formatDate(estagiario.data_fim)}</td>
                     <td><strong>R$ ${estagiario.valor_remuneracao.toFixed(2)}</strong></td>
@@ -3274,7 +3367,7 @@
             const grupos = {};
             filteredData.forEach(estagiario => {
                 const orgao = estagiario.orgao;
-                const sigla = estagiario.sigla_orgao || orgao;
+                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao;
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
