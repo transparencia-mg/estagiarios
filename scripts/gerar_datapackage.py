@@ -41,7 +41,7 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
 
 datapackage = {
     "profile": "data-package",
-    "name": "estagiarios-mg",
+    "name": "estagiarios",
     "title": "Estagiários do Governo de Minas Gerais",
     "owner_org": "controladoria-geral-do-estado-cge",
     "resources": resources
