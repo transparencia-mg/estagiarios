@@ -1,4 +1,4 @@
-/* Estilos customizados para o Dashboard de Terceirizados */
+/* Estilos customizados para o Dashboard de Estagiários */
 
 /* Animações */
 @keyframes fadeIn {
