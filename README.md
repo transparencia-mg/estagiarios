@@ -48,7 +48,7 @@ A atualização dos dados ocorre de forma **regular**, conforme a disponibiliza�
 
 Os dados deste conjunto podem ser visualizados de forma interativa por meio do dashboard público disponível em:
 
-👉 https://transparencia-mg.github.io/estagiarios_mg/
+👉 https://transparencia-mg.github.io/estagiarios/
 
 ---
 
