@@ -1698,28 +1698,59 @@
         };
 
         // ==================== FUNÇÃO PARA OBTER NOME COMPLETO DO ÓRGÃO ====================
-        function getOrgaoExtenso(siglaOuNome) {
-            if (!siglaOuNome || typeof siglaOuNome !== 'string') {
-                return siglaOuNome || '';
-            }
-            
-            const siglaUpper = siglaOuNome.toUpperCase().trim();
-            
-            // Primeiro, verificar se a sigla está diretamente no mapeamento
-            if (orgaosExtenso[siglaUpper]) {
-                return orgaosExtenso[siglaUpper];
-            }
-            
-            // Verificar se o nome contém alguma sigla conhecida
-            for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
-                if (siglaUpper.includes(sigla) || siglaUpper === sigla) {
-                    return nomeExtenso;
-                }
-            }
-            
-            // Se não encontrar, retornar o próprio valor (pode ser que já seja o nome completo)
-            return siglaOuNome;
+        function normalizarTexto(txt) {
+    return txt
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // remove acentos
+        .replace(/[^A-Z0-9 ]/g, " ")     // remove pontuação
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function getOrgaoExtenso(siglaOuNome) {
+    if (!siglaOuNome || typeof siglaOuNome !== "string") {
+        return siglaOuNome || "";
+    }
+
+    if (typeof orgaosExtenso !== "object") {
+        console.warn("Mapa orgaosExtenso não encontrado");
+        return siglaOuNome;
+    }
+
+    const valorOriginal = siglaOuNome.trim();
+    const valorNormalizado = normalizarTexto(valorOriginal);
+
+    // 1️⃣ Se já for nome completo, retorna como está
+    for (const nomeExtenso of Object.values(orgaosExtenso)) {
+        if (normalizarTexto(nomeExtenso) === valorNormalizado) {
+            return nomeExtenso;
         }
+    }
+
+    // 2️⃣ Se for exatamente a sigla
+    if (orgaosExtenso[valorNormalizado]) {
+        return orgaosExtenso[valorNormalizado];
+    }
+
+    // 3️⃣ Se a sigla estiver dentro do texto (ex: "(SES)")
+    for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
+        const siglaNorm = normalizarTexto(sigla);
+
+        if (
+            valorNormalizado === siglaNorm ||
+            valorNormalizado.includes(` ${siglaNorm} `) ||
+            valorNormalizado.endsWith(` ${siglaNorm}`) ||
+            valorNormalizado.startsWith(`${siglaNorm} `)
+        ) {
+            return nomeExtenso;
+        }
+    }
+
+    // 4️⃣ Não encontrou → retorna original
+    return valorOriginal;
+}
+
 
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', async function() {
