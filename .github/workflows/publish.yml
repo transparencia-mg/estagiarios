@@ -4,7 +4,12 @@ on:
   push:
     branches:
       - main
-
+    paths:
+      - "data/**"
+      - "datapackage/**"
+      - "scripts/publicar_ckan.py"
+  workflow_dispatch:
+  
 jobs:
   publish_update:
     runs-on: ubuntu-22.04
