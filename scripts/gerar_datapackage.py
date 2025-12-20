@@ -1,9 +1,25 @@
-# scripts/gerar_datapackage.py
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import json
+import hashlib
 from pathlib import Path
 
+# =========================
+# CONFIGURAÇÕES
+# =========================
 DATA_DIR = Path("data")
 OUTPUT = Path("datapackage/datapackage.json")
+
+# =========================
+# FUNÇÃO HASH (força update)
+# =========================
+def file_hash(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 # =========================
 # Schema padrão dos CSVs
@@ -71,13 +87,19 @@ SCHEMA_FIELDS = [
     }
 ]
 
-resources = []
-
 # =========================
 # Recursos (1 CSV por ano)
 # =========================
-for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
+resources = []
+
+csv_files = sorted(DATA_DIR.glob("estagiarios_*.csv"))
+
+if not csv_files:
+    raise RuntimeError("Nenhum arquivo estagiarios_*.csv encontrado na pasta data/")
+
+for csv in csv_files:
     ano = csv.stem.split("_")[-1]
+    checksum = file_hash(csv)
 
     resources.append({
         "name": f"estagiarios-{ano}",
@@ -87,6 +109,7 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
         "mediatype": "text/csv",
         "encoding": "utf-8",
         "description": f"Dados de estagiários do Governo de Minas Gerais referentes ao ano de {ano}",
+        "hash": checksum,  # <<< força atualização no CKAN
         "schema": {
             "fields": SCHEMA_FIELDS,
             "primaryKey": ["masp", "ano_mesreferencia"]
@@ -101,12 +124,11 @@ datapackage = {
     "name": "estagiarios-governo-minas-gerais",
     "title": "Estagiários do Governo do Estado de Minas Gerais",
     "description": (
-        "Base de dados contendo informações cadastrais, "
-        "funcionais e de remuneração dos estagiários "
-        "do Governo do Estado de Minas Gerais."
+        "Base de dados contendo informações cadastrais, funcionais "
+        "e de remuneração dos estagiários do Governo do Estado de Minas Gerais."
     ),
 
-    # Obrigatório para dpckan / CKAN
+    # Obrigatório para CKAN / dpckan
     "owner_org": "controladoria-geral-do-estado-cge",
 
     # Compatibilidade CKAN
@@ -128,10 +150,11 @@ datapackage = {
 # =========================
 # Escrita do arquivo
 # =========================
-OUTPUT.parent.mkdir(exist_ok=True)
+OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 OUTPUT.write_text(
     json.dumps(datapackage, indent=2, ensure_ascii=False),
     encoding="utf-8"
 )
 
-print("datapackage.json gerado com sucesso (schema de estagiários).")
+print("✅ datapackage/datapackage.json gerado e atualizado com sucesso.")
+
