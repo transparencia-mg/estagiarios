@@ -1159,10 +1159,10 @@
                         <table class="table table-hover" id="visaoGeralTable">
                             <thead>
                                 <tr>
-                                    <th data-sort="orgao_nome" data-order="asc" onclick="sortTable('visaoGeral', 'orgao_nome')">
+                                    <th data-sort="orgao" data-order="asc" onclick="sortTable('visaoGeral', 'orgao')">
                                         Órgão <span class="sort-icon">▼</span>
                                     </th>
-                                    <th data-sort="orgao_sigla" data-order="asc" onclick="sortTable('visaoGeral', 'orgao_sigla')">
+                                    <th data-sort="sigla" data-order="asc" onclick="sortTable('visaoGeral', 'sigla')">
                                         Sigla <span class="sort-icon">▼</span>
                                     </th>
                                     <th data-sort="total_estagiarios" data-order="desc" onclick="sortTable('visaoGeral', 'total_estagiarios')">
@@ -1170,9 +1170,6 @@
                                     </th>
                                     <th data-sort="ativos" data-order="desc" onclick="sortTable('visaoGeral', 'ativos')">
                                         Ativos <span class="sort-icon">▼</span>
-                                    </th>
-                                    <th data-sort="valor_medio" data-order="desc" onclick="sortTable('visaoGeral', 'valor_medio')">
-                                        Valor Médio (R$) <span class="sort-icon">▼</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -1318,9 +1315,9 @@
                                 <tr>
                                     <th data-sort="nome_estagiario" data-order="asc" onclick="sortTable('estagiarios', 'nome_estagiario')">Nome <span class="sort-icon">▼</span></th>
                                     <th data-sort="masp" data-order="asc" onclick="sortTable('estagiarios', 'masp')">MASP <span class="sort-icon">▼</span></th>
-                                    <th data-sort="orgao" data-order="asc" onclick="sortTable('estagiarios', 'orgao')">Órgão <span class="sort-icon">▼</span></th>
-                                    <th data-sort="situacao_funcional" data-order="asc" onclick="sortTable('estagiarios', 'situacao_funcional')">Situação <span class="sort-icon">▼</span></th>
+                                    <th data-sort="sigla_orgao" data-order="asc" onclick="sortTable('estagiarios', 'sigla_orgao')">Sigla <span class="sort-icon">▼</span></th>
                                     <th data-sort="data_inicio" data-order="desc" onclick="sortTable('estagiarios', 'data_inicio')">Data Início <span class="sort-icon">▼</span></th>
+                                    <th data-sort="data_fim" data-order="desc" onclick="sortTable('estagiarios', 'data_fim')">Data Fim <span class="sort-icon">▼</span></th>
                                     <th data-sort="valor_remuneracao" data-order="desc" onclick="sortTable('estagiarios', 'valor_remuneracao')">Valor (R$) <span class="sort-icon">▼</span></th>
                                     <th class="actions-column">Ações</th>
                                 </tr>
@@ -1360,7 +1357,6 @@
                                 <label for="anoDownload" class="form-label filter-label">Selecione o Ano para Download</label>
                                 <select class="form-select" id="anoDownload">
                                     <option value="">Selecione um ano...</option>
-                                    <option value="2021">2021</option>
                                     <option value="2022">2022</option>
                                     <option value="2023">2023</option>
                                     <option value="2024">2024</option>
@@ -1603,7 +1599,7 @@
         let charts = {};
         let currentYear = '';
         let currentMonth = '';
-        let currentSortDashboard1 = { column: 'orgao_nome', order: 'asc' };
+        let currentSortDashboard1 = { column: 'orgao', order: 'asc' };
         let currentSortDashboard2 = { column: 'nome_estagiario', order: 'asc' };
         let currentSearchTerm = '';
         let lastGitHubCheck = null;
@@ -1626,7 +1622,7 @@
         const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/transparencia-mg/estagiarios/main/data/';
         const GITHUB_API_URL = 'https://api.github.com/repos/transparencia-mg/estagiarios/commits?path=data&per_page=1';
 
-        // LISTA CSV - AGORA CARREGADOS SOB DEMANDA
+        // LISTA CSV - CORRIGIDA: REMOVIDO 2021
         const CSV_FILES_BY_YEAR = {
             '2022': 'estagiarios_2022.csv',
             '2023': 'estagiarios_2023.csv',
@@ -1641,83 +1637,30 @@
             '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro'
         };
 
-        // Mapeamento de siglas para nomes completos de órgãos (exemplo)
-        const orgaosExtenso = {
-            'AGE': 'Assembleia Geral do Estado',
-            'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
-            'CGE': 'Controladoria-Geral do Estado',
-            'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
-            'DEER': 'Departamento de Edificações e Estradas de Rodagem',
-            'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
-            'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
-            'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
-            'FJP': 'Fundação João Pinheiro',
-            'GMG': 'Gabinete Militar do Governador',
-            'IEF': 'Instituto Estadual de Florestas',
-            'IMA': 'Instituto Mineiro de Agropecuária',
-            'IPSEMG': 'Instituto de Previdência dos Servidores',
-            'PCMG': 'Polícia Civil',
-            'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
-            'SCC': 'Secretaria de Estado da Casa Civil',
-            'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
-            'SEC': 'Secretaria de Estado de Cultura',
-            'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
-            'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
-            'SEE': 'Secretaria de Estado de Educação',
-            'SEF': 'Secretaria de Estado de Fazenda',
-            'SEGOV': 'Secretaria de Estado de Governo',
-            'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
-            'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
-            'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
-            'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
-            'SES': 'Secretaria de Estado de Saúde',
-            'UEMG': 'Universidade do Estado de Minas Gerais'
-        };
-
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('=== INICIANDO DASHBOARD ESTAGIÁRIOS ===');
-            console.log('Verificando atualizações no GitHub...');
+            console.log('Carregando dados...');
 
             showLoading(true);
             
             try {
-                // Verificar se há atualizações no GitHub
-                const hasUpdates = await checkGitHubUpdates();
+                // Carregar dados do ano mais recente (2025)
+                await loadYearData('2025');
                 
-                if (hasUpdates || !lastDataHash) {
-                    console.log('Carregando dados mais recentes...');
-                    await loadYearData('2025');
-                    
-                    // Determinar o mês mais recente de 2025
-                    await determineLatestMonth();
-                    
-                    // Salvar hash dos dados
-                    lastDataHash = await calculateDataHash(allData['2025']);
-                    
-                    // Atualizar interface
-                    updateDataAtualizacao();
-                    updateFilterOptions();
-                    updateDashboard1();
-                    initializeDashboard2();
-                    updateDashboard3();
-                    setupEventListeners();
-                    
-                    console.log('Dashboard atualizado com sucesso!');
-                } else {
-                    console.log('Usando dados em cache - sem atualizações no GitHub');
-                    
-                    // Usar dados já carregados
-                    estagiariosData = allData['2025'] || [];
-                    await determineLatestMonth();
-                    
-                    updateDataAtualizacao();
-                    updateFilterOptions();
-                    updateDashboard1();
-                    initializeDashboard2();
-                    updateDashboard3();
-                    setupEventListeners();
-                }
+                // Determinar o mês mais recente
+                await determineLatestMonth();
+                
+                // Atualizar interface
+                updateDataAtualizacao();
+                updateFilterOptions();
+                updateDashboard1();
+                initializeDashboard2();
+                updateDashboard3();
+                setupEventListeners();
+                
+                console.log('Dashboard inicializado com sucesso!');
+                console.log(`Dados carregados: ${filteredData.length} registros do mês ${currentMonth}/${currentYear}`);
                 
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
@@ -1727,165 +1670,142 @@
             }
         });
 
-        // ==================== VERIFICAR ATUALIZAÇÕES NO GITHUB ====================
-        async function checkGitHubUpdates() {
-            try {
-                const response = await fetch(GITHUB_API_URL);
-                if (!response.ok) throw new Error('Erro ao verificar GitHub');
-                
-                const commits = await response.json();
-                if (commits && commits.length > 0) {
-                    const latestCommit = commits[0];
-                    const commitDate = new Date(latestCommit.commit.author.date);
-                    
-                    // Verificar se é a primeira vez ou se houve atualização
-                    if (!lastGitHubCheck || commitDate > lastGitHubCheck) {
-                        lastGitHubCheck = commitDate;
-                        return true; // Há atualizações
-                    }
-                }
-                return false; // Sem atualizações
-            } catch (error) {
-                console.error('Erro ao verificar atualizações:', error);
-                return true; // Em caso de erro, carregar dados
-            }
-        }
-
-        // ==================== CALCULAR HASH DOS DADOS ====================
-        async function calculateDataHash(data) {
-            if (!data || data.length === 0) return null;
-
-            const dataString = data.slice(0, 100).map(item =>
-                `${item.masp}|${item.nome_estagiario}|${item.orgao}|${item.situacao_funcional}`
-            ).join('|');
-
-            // 🔑 Conversão UTF-8 → Latin1 antes do btoa
-            return btoa(unescape(encodeURIComponent(
-                dataString.length + dataString.substring(0, 50)
-            )));
-        }
-
         // ==================== CARREGAR DADOS DO GITHUB ====================
         async function loadYearData(year) {
-    if (allData[year]) {
-        console.log(`Dados de ${year} já carregados.`);
-        estagiariosData = allData[year];
-        return;
-    }
-
-    const filename = CSV_FILES_BY_YEAR[year];
-    if (!filename) {
-        console.error(`Arquivo para o ano ${year} não encontrado.`);
-        return;
-    }
-
-    const url = `${GITHUB_BASE_URL}${filename}`;
-    console.log(`Carregando dados de ${year}: ${url}`);
-
-    const normalizarMes = v => {
-        if (!v || typeof v !== 'string') return '';
-        if (v.includes('/')) return v.replace('/', '-').substring(0, 7);
-        if (v.includes('-')) return v.substring(0, 7);
-        if (v.length === 6) return `${v.substring(0,4)}-${v.substring(4,6)}`;
-        return v;
-    };
-
-    return new Promise((resolve, reject) => {
-        Papa.parse(url, {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            encoding: 'UTF-8',
-            complete: function (results) {
-                const data = results.data
-                    .map(row => {
-                        const ano_mesreferencia_raw =
-                            row.ano_mesreferencia ||
-                            row['ANO_MESREFERENCIA'] ||
-                            '';
-
-                        const ano_mesreferencia = normalizarMes(ano_mesreferencia_raw);
-
-                        if (!ano_mesreferencia) return null;
-
-                        const [ano, mes] = ano_mesreferencia.split('-');
-
-                        return {
-                            ano_mesreferencia,
-                            nome_estagiario: row.nome_estagiario || row['NOME_ESTAGIARIO'] || row['NOME'] || '',
-                            masp: row.masp || row['MASP'] || '',
-                            codigo_situacao_funcional: row.codigo_situacao_funcional || row['CODIGO_SITUACAO_FUNCIONAL'] || '',
-                            situacao_funcional: row.situacao_funcional || row['SITUACAO_FUNCIONAL'] || '',
-                            data_inicio: row.data_inicio || row['DATA_INICIO'] || '',
-                            data_fim: row.data_fim || row['DATA_FIM'] || '',
-                            codigo_orgao: row.codigo_orgao || row['CODIGO_ORGAO'] || '',
-                            orgao: row.orgao || row['ORGAO'] || '',
-                            sigla_orgao: row.sigla_orgao || row['SIGLA_ORGAO'] || '',
-                            valor_remuneracao: row.valor_remuneracao || row['VALOR_REMUNERACAO'] || '',
-                            ANO: ano || '',
-                            MES: mes || ''
-                        };
-                    })
-                    .filter(Boolean);
-
-                allData[year] = data;
-                estagiariosData = data;
-
-                console.log(`Dados de ${year} carregados: ${data.length} registros`);
-                resolve();
-            },
-            error: function (err) {
-                console.error(`Erro ao carregar dados de ${year}:`, err);
-                reject(err);
+            if (allData[year]) {
+                console.log(`Dados de ${year} já carregados.`);
+                estagiariosData = allData[year];
+                return;
             }
-        });
-    });
-}
 
+            const filename = CSV_FILES_BY_YEAR[year];
+            if (!filename) {
+                console.error(`Arquivo para o ano ${year} não encontrado.`);
+                return;
+            }
 
-// ==================== DETERMINAR MÊS MAIS RECENTE ====================
-async function determineLatestMonth() {
-    if (!estagiariosData || estagiariosData.length === 0) {
-        console.warn('Dados ainda não carregados.');
-        filteredData = [];
-        return;
-    }
+            const url = `${GITHUB_BASE_URL}${filename}`;
+            console.log(`Carregando dados de ${year}: ${url}`);
 
-    // Normaliza o campo ano_mesreferencia para AAAA-MM
-    const normalizar = v =>
-        v.replace('/', '-').substring(0, 7);
+            const normalizarMes = v => {
+                if (!v || typeof v !== 'string') return '';
+                if (v.includes('/')) return v.replace('/', '-').substring(0, 7);
+                if (v.includes('-')) return v.substring(0, 7);
+                if (v.length === 6) return `${v.substring(0,4)}-${v.substring(4,6)}`;
+                return v;
+            };
 
-    const mesesUnicos = [...new Set(
-        estagiariosData
-            .map(e => e.ano_mesreferencia)
-            .filter(Boolean)
-            .map(normalizar)
-    )].sort((a, b) => {
-        return new Date(b + '-01') - new Date(a + '-01');
-    });
+            return new Promise((resolve, reject) => {
+                Papa.parse(url, {
+                    download: true,
+                    header: true,
+                    skipEmptyLines: true,
+                    encoding: 'UTF-8',
+                    complete: function (results) {
+                        const data = results.data
+                            .map(row => {
+                                const ano_mesreferencia_raw =
+                                    row.ano_mesreferencia ||
+                                    row['ANO_MESREFERENCIA'] ||
+                                    '';
 
-    if (mesesUnicos.length === 0) {
-        console.warn('Nenhum mês encontrado.');
-        filteredData = estagiariosData;
-        return;
-    }
+                                const ano_mesreferencia = normalizarMes(ano_mesreferencia_raw);
 
-    const ultimoMes = mesesUnicos[0];
-    const [ano, mes] = ultimoMes.split('-');
+                                if (!ano_mesreferencia) return null;
 
-    currentYear = ano;
-    currentMonth = mes;
+                                const [ano, mes] = ano_mesreferencia.split('-');
 
-    // Filtrar dados do mês mais recente (comparação normalizada)
-    filteredData = estagiariosData.filter(
-        e => normalizar(e.ano_mesreferencia) === ultimoMes
-    );
+                                // Converter valor_remuneracao para número
+                                let valorRemuneracao = 0;
+                                const valorRaw = row.valor_remuneracao || row['VALOR_REMUNERACAO'] || '0';
+                                if (valorRaw) {
+                                    // Remover R$, pontos e substituir vírgula por ponto
+                                    const valorStr = valorRaw.toString()
+                                        .replace('R$', '')
+                                        .replace(/\./g, '')
+                                        .replace(',', '.')
+                                        .trim();
+                                    valorRemuneracao = parseFloat(valorStr) || 0;
+                                }
 
-    console.log(
-        `Mês mais recente encontrado: ${mes}/${ano} - ${filteredData.length} registros`
-    );
-}
+                                return {
+                                    ano_mesreferencia,
+                                    nome_estagiario: row.nome_estagiario || row['NOME_ESTAGIARIO'] || row['NOME'] || '',
+                                    masp: (row.masp || row['MASP'] || '').toString(),
+                                    codigo_situacao_funcional: row.codigo_situacao_funcional || row['CODIGO_SITUACAO_FUNCIONAL'] || '',
+                                    situacao_funcional: row.situacao_funcional || row['SITUACAO_FUNCIONAL'] || '',
+                                    data_inicio: row.data_inicio || row['DATA_INICIO'] || '',
+                                    data_fim: row.data_fim || row['DATA_FIM'] || '',
+                                    codigo_orgao: row.codigo_orgao || row['CODIGO_ORGAO'] || '',
+                                    orgao: row.orgao || row['ORGAO'] || '',
+                                    sigla_orgao: row.sigla_orgao || row['SIGLA_ORGAO'] || '',
+                                    valor_remuneracao: valorRemuneracao,
+                                    ANO: ano || '',
+                                    MES: mes || ''
+                                };
+                            })
+                            .filter(Boolean);
 
+                        allData[year] = data;
+                        estagiariosData = data;
+
+                        console.log(`Dados de ${year} carregados: ${data.length} registros`);
+                        resolve();
+                    },
+                    error: function (err) {
+                        console.error(`Erro ao carregar dados de ${year}:`, err);
+                        reject(err);
+                    }
+                });
+            });
+        }
+
+        // ==================== DETERMINAR MÊS MAIS RECENTE ====================
+        async function determineLatestMonth() {
+            if (!estagiariosData || estagiariosData.length === 0) {
+                console.warn('Dados ainda não carregados.');
+                filteredData = [];
+                return;
+            }
+
+            // Obter todos os meses disponíveis
+            const mesesComData = [];
+            estagiariosData.forEach(e => {
+                if (e.ano_mesreferencia) {
+                    const [ano, mes] = e.ano_mesreferencia.split('-');
+                    if (ano && mes) {
+                        mesesComData.push({ ano, mes });
+                    }
+                }
+            });
+
+            if (mesesComData.length === 0) {
+                console.warn('Nenhum mês encontrado.');
+                filteredData = estagiariosData;
+                return;
+            }
+
+            // Encontrar o mês mais recente
+            let ultimoMes = mesesComData[0];
+            mesesComData.forEach(mesData => {
+                if (mesData.ano > ultimoMes.ano || 
+                    (mesData.ano === ultimoMes.ano && mesData.mes > ultimoMes.mes)) {
+                    ultimoMes = mesData;
+                }
+            });
+
+            currentYear = ultimoMes.ano;
+            currentMonth = ultimoMes.mes;
+
+            // Filtrar dados do mês mais recente
+            filteredData = estagiariosData.filter(
+                e => e.ANO === currentYear && e.MES === currentMonth
+            );
+
+            console.log(
+                `Mês mais recente encontrado: ${currentMonth}/${currentYear} - ${filteredData.length} registros`
+            );
+        }
 
         // ==================== CONFIGURAR EVENT LISTENERS ====================
         function setupEventListeners() {
@@ -1945,16 +1865,12 @@ async function determineLatestMonth() {
             // Mudança de ano nos selects
             document.getElementById('anoDashboard1').addEventListener('change', async function() {
                 const selectedYear = this.value;
-                if (selectedYear !== currentYear) {
-                    await switchYearData(selectedYear);
-                }
+                await switchYearData(selectedYear);
             });
             
             document.getElementById('anoDashboard2').addEventListener('change', async function() {
                 const selectedYear = this.value;
-                if (selectedYear !== currentYear) {
-                    await switchYearData(selectedYear);
-                }
+                await switchYearData(selectedYear);
             });
         }
 
@@ -1983,21 +1899,6 @@ async function determineLatestMonth() {
             document.getElementById('footer-atualizacao').textContent = dataFormatada;
         }
 
-        // Função para converter sigla em nome completo do órgão
-        function getOrgaoExtenso(orgaoSigla) {
-            if (!orgaoSigla) return '';
-            
-            // Verificar se é uma sigla conhecida
-            for (const [sigla, nome] of Object.entries(orgaosExtenso)) {
-                if (orgaoSigla.toUpperCase().includes(sigla)) {
-                    return nome;
-                }
-            }
-            
-            // Se não encontrar, retorna o próprio nome
-            return orgaoSigla;
-        }
-
         // Função para formatar valor monetário
         function formatCurrency(value) {
             return new Intl.NumberFormat('pt-BR', {
@@ -2013,19 +1914,6 @@ async function determineLatestMonth() {
             const date = new Date(dateString);
             if (isNaN(date.getTime())) return dateString;
             return date.toLocaleDateString('pt-BR');
-        }
-
-        // Função para determinar classe CSS baseada na situação
-        function getSituacaoClass(situacao) {
-            const situacaoLower = situacao.toLowerCase();
-            if (situacaoLower.includes('ativo') || situacaoLower.includes('ativa')) {
-                return 'badge-situacao badge-ativo';
-            } else if (situacaoLower.includes('inativo') || situacaoLower.includes('inativa')) {
-                return 'badge-situacao badge-inativo';
-            } else if (situacaoLower.includes('concluído') || situacaoLower.includes('concluido')) {
-                return 'badge-situacao badge-concluido';
-            }
-            return 'badge-situacao';
         }
 
         // ==================== FUNÇÕES DE ANO E MES ====================
@@ -2064,14 +1952,23 @@ async function determineLatestMonth() {
             // Dashboard 1 - Mês
             const mesSelect1 = document.getElementById('mesDashboard1');
             if (mesSelect1 && currentYear) {
-                const mesesDoAno = [...new Set(
-                    (allData[currentYear] || [])
-                        .map(e => e.MES)
-                        .filter(Boolean)
-                )].sort((a, b) => parseInt(b) - parseInt(a));
+                // Obter meses disponíveis para o ano atual
+                const mesesDisponiveis = [];
+                if (allData[currentYear]) {
+                    allData[currentYear].forEach(e => {
+                        if (e.ano_mesreferencia && e.ANO === currentYear) {
+                            if (!mesesDisponiveis.includes(e.MES)) {
+                                mesesDisponiveis.push(e.MES);
+                            }
+                        }
+                    });
+                }
+                
+                // Ordenar meses do mais recente para o mais antigo
+                mesesDisponiveis.sort((a, b) => parseInt(b) - parseInt(a));
                 
                 mesSelect1.innerHTML = '';
-                mesesDoAno.forEach(mesNum => {
+                mesesDisponiveis.forEach(mesNum => {
                     const option = document.createElement('option');
                     option.value = mesNum;
                     option.textContent = monthNames[mesNum] || mesNum;
@@ -2096,14 +1993,23 @@ async function determineLatestMonth() {
             // Dashboard 2 - Mês
             const mesSelect2 = document.getElementById('mesDashboard2');
             if (mesSelect2 && currentYear) {
-                const mesesDoAno = [...new Set(
-                    (allData[currentYear] || [])
-                        .map(e => e.MES)
-                        .filter(Boolean)
-                )].sort((a, b) => parseInt(b) - parseInt(a));
+                // Obter meses disponíveis para o ano atual
+                const mesesDisponiveis = [];
+                if (allData[currentYear]) {
+                    allData[currentYear].forEach(e => {
+                        if (e.ano_mesreferencia && e.ANO === currentYear) {
+                            if (!mesesDisponiveis.includes(e.MES)) {
+                                mesesDisponiveis.push(e.MES);
+                            }
+                        }
+                    });
+                }
+                
+                // Ordenar meses do mais recente para o mais antigo
+                mesesDisponiveis.sort((a, b) => parseInt(b) - parseInt(a));
                 
                 mesSelect2.innerHTML = '';
-                mesesDoAno.forEach(mesNum => {
+                mesesDisponiveis.forEach(mesNum => {
                     const option = document.createElement('option');
                     option.value = mesNum;
                     option.textContent = monthNames[mesNum] || mesNum;
@@ -2164,7 +2070,10 @@ async function determineLatestMonth() {
                 
                 currentMonth = mes;
                 
-                filteredData = (allData[currentYear] || []).filter(estagiario => {
+                // Obter dados do ano atual
+                const dadosAnoAtual = allData[currentYear] || [];
+                
+                filteredData = dadosAnoAtual.filter(estagiario => {
                     // Filtrar por ano e mês selecionados
                     const anoMes = estagiario.ano_mesreferencia;
                     if (!anoMes) return false;
@@ -2214,7 +2123,10 @@ async function determineLatestMonth() {
                 
                 currentMonth = mes;
                 
-                filteredData = (allData[currentYear] || []).filter(estagiario => {
+                // Obter dados do ano atual
+                const dadosAnoAtual = allData[currentYear] || [];
+                
+                filteredData = dadosAnoAtual.filter(estagiario => {
                     // Filtrar por ano e mês selecionados
                     const anoMes = estagiario.ano_mesreferencia;
                     if (!anoMes) return false;
@@ -2338,57 +2250,13 @@ async function determineLatestMonth() {
         }
 
         function filterEstagiariosTable(searchTerm) {
-            const searchLower = searchTerm.toLowerCase();
-            
-            // Se não há termo de busca, mostrar todos os registros
             if (!searchTerm.trim()) {
                 updateEstagiariosTable();
                 return;
             }
             
-            // Filtrar os dados
-            const filtered = filteredData.filter(estagiario => {
-                return (
-                    estagiario.nome_estagiario.toLowerCase().includes(searchLower) ||
-                    estagiario.masp.toString().toLowerCase().includes(searchLower) ||
-                    estagiario.orgao.toLowerCase().includes(searchLower) ||
-                    estagiario.situacao_funcional.toLowerCase().includes(searchLower) ||
-                    estagiario.sigla_orgao.toLowerCase().includes(searchLower)
-                );
-            });
-            
-            // Se encontrou resultados, ir para a página 1 e mostrar
-            if (filtered.length > 0) {
-                // Encontrar o índice do primeiro resultado na lista completa
-                const firstMatchIndex = filteredData.findIndex(estagiario => 
-                    estagiario.nome_estagiario.toLowerCase().includes(searchLower)
-                );
-                
-                if (firstMatchIndex >= 0) {
-                    // Calcular em qual página está o primeiro resultado
-                    const pageForFirstResult = Math.floor(firstMatchIndex / itemsPerPageDashboard2) + 1;
-                    currentPageDashboard2 = pageForFirstResult;
-                }
-                
-                // Mostrar apenas os resultados filtrados
-                const tempFilteredData = filteredData;
-                filteredData = filtered;
-                updateEstagiariosTable();
-                filteredData = tempFilteredData; // Restaurar dados originais
-            } else {
-                // Se não encontrou resultados, mostrar mensagem
-                const tbody = document.getElementById('estagiariosTableBody');
-                const tfoot = document.getElementById('estagiariosTableFooter');
-                const countElement = document.getElementById('resumoCountDashboard2');
-                const paginationInfo = document.getElementById('paginationInfoDashboard2');
-                
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum estagiário encontrado com o termo de busca.</td></tr>';
-                if (tfoot) tfoot.innerHTML = '';
-                if (countElement) countElement.textContent = '0 estagiários';
-                if (paginationInfo) paginationInfo.textContent = 'Mostrando 0-0 de 0 registros';
-                
-                updatePaginationDashboard2(1, 1);
-            }
+            // Mostrar todos os dados filtrados e usar DataTables para busca
+            updateEstagiariosTable();
         }
 
         function clearAllFilters() {
@@ -2397,14 +2265,20 @@ async function determineLatestMonth() {
             document.getElementById('orgaoDashboard1').value = '';
             
             // Voltar para o mês mais recente do ano atual
-            const mesesDoAno = [...new Set(
-                (allData[currentYear] || [])
-                    .map(e => e.MES)
-                    .filter(Boolean)
-            )].sort((a, b) => parseInt(b) - parseInt(a));
+            const mesesDisponiveis = [];
+            if (allData[currentYear]) {
+                allData[currentYear].forEach(e => {
+                    if (e.ano_mesreferencia && e.ANO === currentYear) {
+                        if (!mesesDisponiveis.includes(e.MES)) {
+                            mesesDisponiveis.push(e.MES);
+                        }
+                    }
+                });
+            }
             
-            if (mesesDoAno.length > 0) {
-                currentMonth = mesesDoAno[0];
+            if (mesesDisponiveis.length > 0) {
+                mesesDisponiveis.sort((a, b) => parseInt(b) - parseInt(a));
+                currentMonth = mesesDisponiveis[0];
             }
             
             filteredData = (allData[currentYear] || []).filter(estagiario => {
@@ -2429,14 +2303,20 @@ async function determineLatestMonth() {
             currentSearchTerm = '';
             
             // Voltar para o mês mais recente do ano atual
-            const mesesDoAno = [...new Set(
-                (allData[currentYear] || [])
-                    .map(e => e.MES)
-                    .filter(Boolean)
-            )].sort((a, b) => parseInt(b) - parseInt(a));
+            const mesesDisponiveis = [];
+            if (allData[currentYear]) {
+                allData[currentYear].forEach(e => {
+                    if (e.ano_mesreferencia && e.ANO === currentYear) {
+                        if (!mesesDisponiveis.includes(e.MES)) {
+                            mesesDisponiveis.push(e.MES);
+                        }
+                    }
+                });
+            }
             
-            if (mesesDoAno.length > 0) {
-                currentMonth = mesesDoAno[0];
+            if (mesesDisponiveis.length > 0) {
+                mesesDisponiveis.sort((a, b) => parseInt(b) - parseInt(a));
+                currentMonth = mesesDisponiveis[0];
             }
             
             filteredData = (allData[currentYear] || []).filter(estagiario => {
@@ -2538,7 +2418,7 @@ async function determineLatestMonth() {
             const paginationInfo = document.getElementById('paginationInfoDashboard1');
             
             if (filteredData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhum dado encontrado para o período atual.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Nenhum dado encontrado para o período atual.</td></tr>';
                 tfoot.innerHTML = '';
                 if (countElement) countElement.textContent = '0 registros';
                 if (paginationInfo) paginationInfo.textContent = 'Mostrando 0-0 de 0 registros';
@@ -2554,42 +2434,35 @@ async function determineLatestMonth() {
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
-                        orgao_nome: getOrgaoExtenso(orgao),
-                        orgao_sigla: sigla,
+                        orgao: orgao,
+                        sigla: sigla,
                         total_estagiarios: 0,
-                        ativos: 0,
-                        valor_total: 0
+                        ativos: 0
                     };
                 }
                 
                 grupos[orgao].total_estagiarios++;
-                grupos[orgao].valor_total += estagiario.valor_remuneracao;
                 
                 if (estagiario.situacao_funcional.toLowerCase().includes('ativo')) {
                     grupos[orgao].ativos++;
                 }
             });
             
-            // Converter para array e calcular valor médio
-            let resumoArray = Object.values(grupos).map(item => ({
-                ...item,
-                valor_medio: item.total_estagiarios > 0 ? item.valor_total / item.total_estagiarios : 0
-            }));
+            // Converter para array
+            let resumoArray = Object.values(grupos);
             
             // Ordenar de acordo com a coluna selecionada
             resumoArray.sort((a, b) => {
                 const order = currentSortDashboard1.order === 'asc' ? 1 : -1;
                 
-                if (currentSortDashboard1.column === 'orgao_nome') {
-                    return order * a.orgao_nome.localeCompare(b.orgao_nome);
-                } else if (currentSortDashboard1.column === 'orgao_sigla') {
-                    return order * a.orgao_sigla.localeCompare(b.orgao_sigla);
+                if (currentSortDashboard1.column === 'orgao') {
+                    return order * a.orgao.localeCompare(b.orgao);
+                } else if (currentSortDashboard1.column === 'sigla') {
+                    return order * (a.sigla || '').localeCompare(b.sigla || '');
                 } else if (currentSortDashboard1.column === 'total_estagiarios') {
                     return order * (a.total_estagiarios - b.total_estagiarios);
                 } else if (currentSortDashboard1.column === 'ativos') {
                     return order * (a.ativos - b.ativos);
-                } else if (currentSortDashboard1.column === 'valor_medio') {
-                    return order * (a.valor_medio - b.valor_medio);
                 }
                 return 0;
             });
@@ -2598,8 +2471,6 @@ async function determineLatestMonth() {
             const totalOrgaos = resumoArray.length;
             const totalEstagiarios = resumoArray.reduce((sum, item) => sum + item.total_estagiarios, 0);
             const totalAtivos = resumoArray.reduce((sum, item) => sum + item.ativos, 0);
-            const valorMedioGeral = totalEstagiarios > 0 ? 
-                resumoArray.reduce((sum, item) => sum + item.valor_total, 0) / totalEstagiarios : 0;
             
             // Paginação
             const itemsPerPage = itemsPerPageDashboard1;
@@ -2613,18 +2484,13 @@ async function determineLatestMonth() {
                 return `
                 <tr>
                     <td>
-                        <a href="#" onclick="filtrarPorOrgao('${item.orgao_nome}')" class="orgao-link" title="Clique para filtrar por este órgão">
-                            ${item.orgao_nome}
+                        <a href="#" onclick="filtrarPorOrgao('${item.orgao.replace(/'/g, "\\'")}')" class="orgao-link" title="Clique para filtrar por este órgão">
+                            ${item.orgao}
                         </a>
                     </td>
-                    <td>
-                        <a href="#" onclick="filtrarPorOrgao('${item.orgao_sigla}')" class="orgao-link" title="Clique para filtrar por este órgão">
-                            ${item.orgao_sigla}
-                        </a>
-                    </td>
+                    <td>${item.sigla}</td>
                     <td>${item.total_estagiarios.toLocaleString('pt-BR')}</td>
                     <td>${item.ativos.toLocaleString('pt-BR')}</td>
-                    <td>R$ ${item.valor_medio.toFixed(2)}</td>
                 </tr>
             `}).join('');
             
@@ -2635,7 +2501,6 @@ async function determineLatestMonth() {
                     <td><strong>-</strong></td>
                     <td><strong>${totalEstagiarios.toLocaleString('pt-BR')}</strong></td>
                     <td><strong>${totalAtivos.toLocaleString('pt-BR')}</strong></td>
-                    <td><strong>R$ ${valorMedioGeral.toFixed(2)}</strong></td>
                 </tr>
             `;
             
@@ -2998,12 +2863,12 @@ async function determineLatestMonth() {
                     return order * a.nome_estagiario.localeCompare(b.nome_estagiario);
                 } else if (currentSortDashboard2.column === 'masp') {
                     return order * a.masp.localeCompare(b.masp);
-                } else if (currentSortDashboard2.column === 'orgao') {
-                    return order * a.orgao.localeCompare(b.orgao);
-                } else if (currentSortDashboard2.column === 'situacao_funcional') {
-                    return order * a.situacao_funcional.localeCompare(b.situacao_funcional);
+                } else if (currentSortDashboard2.column === 'sigla_orgao') {
+                    return order * (a.sigla_orgao || '').localeCompare(b.sigla_orgao || '');
                 } else if (currentSortDashboard2.column === 'data_inicio') {
                     return order * new Date(a.data_inicio) - new Date(b.data_inicio);
+                } else if (currentSortDashboard2.column === 'data_fim') {
+                    return order * new Date(a.data_fim || 0) - new Date(b.data_fim || 0);
                 } else if (currentSortDashboard2.column === 'valor_remuneracao') {
                     return order * (a.valor_remuneracao - b.valor_remuneracao);
                 }
@@ -3028,13 +2893,9 @@ async function determineLatestMonth() {
                 <tr>
                     <td><strong>${estagiario.nome_estagiario}</strong></td>
                     <td>${estagiario.masp}</td>
-                    <td>${getOrgaoExtenso(estagiario.orgao)}<br><small class="text-muted">${estagiario.sigla_orgao || estagiario.orgao}</small></td>
-                    <td>
-                        <span class="${getSituacaoClass(estagiario.situacao_funcional)}">
-                            ${estagiario.situacao_funcional}
-                        </span>
-                    </td>
+                    <td>${estagiario.sigla_orgao || estagiario.orgao}</td>
                     <td>${formatDate(estagiario.data_inicio)}</td>
+                    <td>${formatDate(estagiario.data_fim)}</td>
                     <td><strong>R$ ${estagiario.valor_remuneracao.toFixed(2)}</strong></td>
                     <td class="actions-column">
                         <div class="action-buttons">
@@ -3049,9 +2910,9 @@ async function determineLatestMonth() {
             // Gerar rodapé
             const footerHTML = `
                 <tr class="table-total-row">
-                    <td colspan="3"><strong>TOTAL GERAL: ${totalEstagiarios.toLocaleString('pt-BR')} estagiários</strong></td>
+                    <td colspan="2"><strong>TOTAL GERAL: ${totalEstagiarios.toLocaleString('pt-BR')} estagiários</strong></td>
                     <td><strong>${orgaosUnicos} órgãos</strong></td>
-                    <td><strong>Valor Total: R$ ${valorTotal.toFixed(2)}</strong></td>
+                    <td colspan="2"><strong>Valor Total: R$ ${valorTotal.toFixed(2)}</strong></td>
                     <td><strong>Média: R$ ${valorMedio.toFixed(2)}</strong></td>
                     <td></td>
                 </tr>
@@ -3153,123 +3014,93 @@ async function determineLatestMonth() {
             try {
                 // Encontrar todos os registros do estagiário em todos os anos
                 const historico = [];
-                let ultimoRegistro = null;
                 
-                // Primeiro, garantir que todos os anos estão carregados
-                const loadAllYears = async () => {
-                    const years = Object.keys(CSV_FILES_BY_YEAR);
-                    for (const year of years) {
-                        if (!allData[year]) {
-                            await loadYearData(year);
-                        }
-                    }
-                };
-                
-                // Carregar todos os anos se necessário
-                loadAllYears().then(() => {
-                    // Procurar em todos os anos carregados
-                    Object.keys(allData).forEach(ano => {
-                        const dadosAno = allData[ano];
-                        const registrosAno = dadosAno.filter(e => 
-                            e.masp === masp || e.nome_estagiario === nome
-                        );
-                        
-                        registrosAno.forEach(registro => {
-                            historico.push(registro);
-                            if (!ultimoRegistro || 
-                                (registro.ANO > ultimoRegistro.ANO) ||
-                                (registro.ANO === ultimoRegistro.ANO && 
-                                 registro.MES > ultimoRegistro.MES)) {
-                                ultimoRegistro = registro;
-                            }
-                        });
-                    });
+                // Procurar em todos os anos carregados
+                Object.keys(allData).forEach(ano => {
+                    const dadosAno = allData[ano];
+                    const registrosAno = dadosAno.filter(e => 
+                        e.masp === masp || e.nome_estagiario === nome
+                    );
                     
-                    // Ordenar histórico por data (mais recente primeiro)
-                    historico.sort((a, b) => {
-                        const aDate = a.ano_mesreferencia || '';
-                        const bDate = b.ano_mesreferencia || '';
-                        return bDate.localeCompare(aDate);
-                    });
-                    
-                    // Preparar informações do estagiário
-                    const estagiario = ultimoRegistro || historico[0];
-                    
-                    // Atualizar modal
-                    const modal = new bootstrap.Modal(document.getElementById('historicModal'));
-                    
-                    // Informações do estagiário
-                    const infoHTML = `
-                        <div class="employee-info-grid">
-                            <div class="info-item">
-                                <span class="info-label">MASP</span>
-                                <span class="info-value">${estagiario.masp}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Nome</span>
-                                <span class="info-value">${estagiario.nome_estagiario}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Órgão Atual</span>
-                                <span class="info-value">${getOrgaoExtenso(estagiario.orgao)}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Situação Atual</span>
-                                <span class="info-value">${estagiario.situacao_funcional}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Data Início</span>
-                                <span class="info-value">${formatDate(estagiario.data_inicio)}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Data Fim</span>
-                                <span class="info-value">${formatDate(estagiario.data_fim) || '-'}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Remuneração Atual</span>
-                                <span class="info-value">R$ ${estagiario.valor_remuneracao.toFixed(2)}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Total de Registros</span>
-                                <span class="info-value">${historico.length} meses</span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.getElementById('employeeInfo').innerHTML = infoHTML;
-                    
-                    // Atualizar título do modal
-                    document.getElementById('historicModalLabel').innerHTML = `
-                        <i class="fas fa-history me-2"></i>Histórico de ${estagiario.nome_estagiario}
-                    `;
-                    
-                    // Tabela de histórico
-                    const historicHTML = historico.map(registro => `
-                        <tr>
-                            <td>${registro.ano_mesreferencia}</td>
-                            <td>${getOrgaoExtenso(registro.orgao)}<br><small>${registro.sigla_orgao || registro.orgao}</small></td>
-                            <td>
-                                <span class="${getSituacaoClass(registro.situacao_funcional)}">
-                                    ${registro.situacao_funcional}
-                                </span>
-                            </td>
-                            <td>${formatDate(registro.data_inicio)}</td>
-                            <td>${formatDate(registro.data_fim) || '-'}</td>
-                            <td>R$ ${registro.valor_remuneracao.toFixed(2)}</td>
-                        </tr>
-                    `).join('');
-                    
-                    document.getElementById('historicTableBody').innerHTML = historicHTML || 
-                        '<tr><td colspan="6" class="text-center text-muted">Nenhum histórico encontrado</td></tr>';
-                    
-                    // Mostrar modal
-                    modal.show();
-                    showLoading(false);
-                }).catch(error => {
-                    console.error('Erro ao carregar histórico:', error);
-                    showError('Erro ao carregar histórico do estagiário.');
-                    showLoading(false);
+                    historico.push(...registrosAno);
                 });
+                
+                // Ordenar histórico por data (mais recente primeiro)
+                historico.sort((a, b) => {
+                    const aDate = a.ano_mesreferencia || '';
+                    const bDate = b.ano_mesreferencia || '';
+                    return bDate.localeCompare(aDate);
+                });
+                
+                // Preparar informações do estagiário
+                const estagiario = historico[0] || {};
+                
+                // Atualizar modal
+                const modal = new bootstrap.Modal(document.getElementById('historicModal'));
+                
+                // Informações do estagiário
+                const infoHTML = `
+                    <div class="employee-info-grid">
+                        <div class="info-item">
+                            <span class="info-label">MASP</span>
+                            <span class="info-value">${estagiario.masp || masp}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nome</span>
+                            <span class="info-value">${estagiario.nome_estagiario || nome}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Órgão Atual</span>
+                            <span class="info-value">${estagiario.orgao || '-'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Situação Atual</span>
+                            <span class="info-value">${estagiario.situacao_funcional || '-'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Data Início</span>
+                            <span class="info-value">${formatDate(estagiario.data_inicio)}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Data Fim</span>
+                            <span class="info-value">${formatDate(estagiario.data_fim) || '-'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Remuneração Atual</span>
+                            <span class="info-value">R$ ${(estagiario.valor_remuneracao || 0).toFixed(2)}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Total de Registros</span>
+                            <span class="info-value">${historico.length} meses</span>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('employeeInfo').innerHTML = infoHTML;
+                
+                // Atualizar título do modal
+                document.getElementById('historicModalLabel').innerHTML = `
+                    <i class="fas fa-history me-2"></i>Histórico de ${estagiario.nome_estagiario || nome}
+                `;
+                
+                // Tabela de histórico
+                const historicHTML = historico.map(registro => `
+                    <tr>
+                        <td>${registro.ano_mesreferencia}</td>
+                        <td>${registro.orgao}<br><small>${registro.sigla_orgao || ''}</small></td>
+                        <td>${registro.situacao_funcional}</td>
+                        <td>${formatDate(registro.data_inicio)}</td>
+                        <td>${formatDate(registro.data_fim) || '-'}</td>
+                        <td>R$ ${registro.valor_remuneracao.toFixed(2)}</td>
+                    </tr>
+                `).join('');
+                
+                document.getElementById('historicTableBody').innerHTML = historicHTML || 
+                    '<tr><td colspan="6" class="text-center text-muted">Nenhum histórico encontrado</td></tr>';
+                
+                // Mostrar modal
+                modal.show();
+                showLoading(false);
                 
             } catch (error) {
                 console.error('Erro ao carregar histórico:', error);
@@ -3376,10 +3207,6 @@ async function determineLatestMonth() {
                         document.getElementById('valorRemuneracao').value = '';
                         document.getElementById('searchEstagiarios').value = '';
                         
-                        // Configurar o ano e mês atuais
-                        document.getElementById('anoDashboard2').value = currentYear;
-                        document.getElementById('mesDashboard2').value = currentMonth;
-                        
                         // Aplicar o filtro
                         applyFilters('dashboard2');
                         
@@ -3388,7 +3215,7 @@ async function determineLatestMonth() {
                         if (tableContainer) {
                             tableContainer.scrollIntoView({ behavior: 'smooth' });
                         }
-                    }, 350); // Tempo maior para garantir que a aba mudou
+                    }, 350);
                 } else {
                     console.error('Elemento da aba não encontrado');
                 }
@@ -3452,37 +3279,28 @@ async function determineLatestMonth() {
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
                         orgao: orgao,
-                        orgao_extenso: getOrgaoExtenso(orgao),
                         sigla: sigla,
                         total_estagiarios: 0,
-                        ativos: 0,
-                        valor_total: 0
+                        ativos: 0
                     };
                 }
                 
                 grupos[orgao].total_estagiarios++;
-                grupos[orgao].valor_total += estagiario.valor_remuneracao;
                 
                 if (estagiario.situacao_funcional.toLowerCase().includes('ativo')) {
                     grupos[orgao].ativos++;
                 }
             });
             
-            // Converter para array e calcular valor médio
-            const resumoArray = Object.values(grupos).map(item => ({
-                ...item,
-                valor_medio: item.total_estagiarios > 0 ? item.valor_total / item.total_estagiarios : 0
-            }));
+            // Converter para array
+            const resumoArray = Object.values(grupos);
             
-            const headers = ['Órgão (Sigla)', 'Órgão (Nome Completo)', 'Sigla', 'Total de Estagiários', 'Ativos', 'Valor Total (R$)', 'Valor Médio (R$)'];
+            const headers = ['Órgão', 'Sigla', 'Total de Estagiários', 'Ativos'];
             const data = resumoArray.map(info => [
                 info.orgao,
-                info.orgao_extenso,
                 info.sigla,
                 info.total_estagiarios,
-                info.ativos,
-                info.valor_total.toFixed(2),
-                info.valor_medio.toFixed(2)
+                info.ativos
             ]);
             
             const csvContent = [
