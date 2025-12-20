@@ -54,5 +54,3 @@ OUTPUT.write_text(
 )
 
 print(f"✔ datapackage.json gerado com {len(resources)} recursos")
-
-
