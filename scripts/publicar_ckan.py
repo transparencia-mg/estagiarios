@@ -6,113 +6,63 @@ import json
 import requests
 from pathlib import Path
 
-# =============================
-# CONFIGURAÇÕES
-# =============================
 CKAN_URL = "https://www.dados.mg.gov.br"
 API_KEY = os.environ.get("CKAN_KEY")
 
 if not API_KEY:
-    raise RuntimeError("CKAN_KEY não encontrada como variável de ambiente")
+    raise RuntimeError("CKAN_KEY não definida")
 
 HEADERS = {
     "Authorization": API_KEY,
     "Content-Type": "application/json"
 }
 
-DATASET_NAME = "estagiarios-governo-minas-gerais"
-OWNER_ORG = "controladoria-geral-do-estado-cge"
-GITHUB_REPO = "transparencia-mg/estagiarios"
-GITHUB_BRANCH = "main"
+DATAPACKAGE = Path("datapackage/datapackage.json")
+if not DATAPACKAGE.exists():
+    raise RuntimeError("datapackage.json não encontrado")
 
-# =============================
-# Carregar datapackage
-# =============================
-datapackage = json.loads(
-    Path("datapackage/datapackage.json").read_text(encoding="utf-8")
+dp = json.loads(DATAPACKAGE.read_text(encoding="utf-8"))
+
+DATASET_NAME = dp["name"]
+OWNER_ORG = dp["owner_org"]
+
+# =========================
+# Verifica se dataset existe
+# =========================
+resp = requests.get(
+    f"{CKAN_URL}/api/3/action/package_show",
+    params={"id": DATASET_NAME},
+    headers=HEADERS
 )
 
-# =============================
-# Criar ou atualizar dataset
-# =============================
-dataset_payload = {
+exists = resp.status_code == 200
+
+payload = {
     "name": DATASET_NAME,
-    "title": datapackage["title"],
-    "notes": datapackage["description"],
+    "title": dp["title"],
+    "notes": dp["description"],
     "owner_org": OWNER_ORG,
-    "license_id": "cc-by",
-    "state": "active"
+    "private": False
 }
 
-# Verifica se o dataset já existe
-r = requests.post(
-    f"{CKAN_URL}/api/3/action/package_show",
-    headers=HEADERS,
-    json={"id": DATASET_NAME}
-)
+# =========================
+# Create ou Update dataset
+# =========================
+if exists:
+    print("🔄 Atualizando dataset no CKAN...")
+    url = f"{CKAN_URL}/api/3/action/package_update"
+else:
+    print("🆕 Criando dataset no CKAN...")
+    url = f"{CKAN_URL}/api/3/action/package_create"
 
-action = "package_update" if r.ok else "package_create"
+r = requests.post(url, headers=HEADERS, json=payload)
+r.raise_for_status()
 
-r = requests.post(
-    f"{CKAN_URL}/api/3/action/{action}",
-    headers=HEADERS,
-    json=dataset_payload
-)
+dataset = r.json()["result"]
+dataset_id = dataset["id"]
 
-if not r.ok:
-    raise RuntimeError(f"Erro ao criar/atualizar dataset: {r.text}")
+# =====
 
-print("✔ Dataset publicado/atualizado com sucesso.")
-
-# =============================
-# Criar / atualizar recursos
-# =============================
-for res in datapackage["resources"]:
-    resource_url = (
-        f"https://raw.githubusercontent.com/"
-        f"{GITHUB_REPO}/{GITHUB_BRANCH}/{res['path']}"
-    )
-
-    resource_payload = {
-        "package_id": DATASET_NAME,
-        "name": res["name"],
-        "url": resource_url,
-        "format": "CSV",
-        "description": res["description"],
-        "schema": res.get("schema")
-    }
-
-    # Verifica se o recurso já existe
-    r = requests.post(
-        f"{CKAN_URL}/api/3/action/resource_search",
-        headers=HEADERS,
-        json={
-            "query": f"name:{res['name']}",
-            "package_id": DATASET_NAME
-        }
-    )
-
-    exists = r.ok and r.json()["result"]["count"] > 0
-
-    if exists:
-        resource_id = r.json()["result"]["results"][0]["id"]
-        resource_payload["id"] = resource_id
-        action = "resource_update"
-    else:
-        action = "resource_create"
-
-    r = requests.post(
-        f"{CKAN_URL}/api/3/action/{action}",
-        headers=HEADERS,
-        json=resource_payload
-    )
-
-    if r.ok:
-        print(f"✔ Recurso publicado: {res['title']}")
-    else:
-        print(f"⚠ Erro ao publicar recurso {res['title']}: {r.text}")
-
-print("🏁 Publicação no CKAN finalizada.")
 
 
 
