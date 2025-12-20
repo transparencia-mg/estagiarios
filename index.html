@@ -1768,91 +1768,81 @@
 
         // ==================== CARREGAR DADOS DO GITHUB ====================
         async function loadYearData(year) {
-            if (allData[year] && lastDataHash) {
-                console.log(`Dados de ${year} já carregados.`);
-                estagiariosData = allData[year];
-                return;
+    if (allData[year]) {
+        console.log(`Dados de ${year} já carregados.`);
+        estagiariosData = allData[year];
+        return;
+    }
+
+    const filename = CSV_FILES_BY_YEAR[year];
+    if (!filename) {
+        console.error(`Arquivo para o ano ${year} não encontrado.`);
+        return;
+    }
+
+    const url = `${GITHUB_BASE_URL}${filename}`;
+    console.log(`Carregando dados de ${year}: ${url}`);
+
+    const normalizarMes = v => {
+        if (!v || typeof v !== 'string') return '';
+        if (v.includes('/')) return v.replace('/', '-').substring(0, 7);
+        if (v.includes('-')) return v.substring(0, 7);
+        if (v.length === 6) return `${v.substring(0,4)}-${v.substring(4,6)}`;
+        return v;
+    };
+
+    return new Promise((resolve, reject) => {
+        Papa.parse(url, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            encoding: 'UTF-8',
+            complete: function (results) {
+                const data = results.data
+                    .map(row => {
+                        const ano_mesreferencia_raw =
+                            row.ano_mesreferencia ||
+                            row['ANO_MESREFERENCIA'] ||
+                            '';
+
+                        const ano_mesreferencia = normalizarMes(ano_mesreferencia_raw);
+
+                        if (!ano_mesreferencia) return null;
+
+                        const [ano, mes] = ano_mesreferencia.split('-');
+
+                        return {
+                            ano_mesreferencia,
+                            nome_estagiario: row.nome_estagiario || row['NOME_ESTAGIARIO'] || row['NOME'] || '',
+                            masp: row.masp || row['MASP'] || '',
+                            codigo_situacao_funcional: row.codigo_situacao_funcional || row['CODIGO_SITUACAO_FUNCIONAL'] || '',
+                            situacao_funcional: row.situacao_funcional || row['SITUACAO_FUNCIONAL'] || '',
+                            data_inicio: row.data_inicio || row['DATA_INICIO'] || '',
+                            data_fim: row.data_fim || row['DATA_FIM'] || '',
+                            codigo_orgao: row.codigo_orgao || row['CODIGO_ORGAO'] || '',
+                            orgao: row.orgao || row['ORGAO'] || '',
+                            sigla_orgao: row.sigla_orgao || row['SIGLA_ORGAO'] || '',
+                            valor_remuneracao: row.valor_remuneracao || row['VALOR_REMUNERACAO'] || '',
+                            ANO: ano || '',
+                            MES: mes || ''
+                        };
+                    })
+                    .filter(Boolean);
+
+                allData[year] = data;
+                estagiariosData = data;
+
+                console.log(`Dados de ${year} carregados: ${data.length} registros`);
+                resolve();
+            },
+            error: function (err) {
+                console.error(`Erro ao carregar dados de ${year}:`, err);
+                reject(err);
             }
+        });
+    });
+}
 
-            const filename = CSV_FILES_BY_YEAR[year];
-            if (!filename) {
-                console.error(`Arquivo para o ano ${year} não encontrado.`);
-                return;
-            }
-
-            const url = `${GITHUB_BASE_URL}${filename}`;
-            console.log(`Carregando dados de ${year}: ${url}`);
-
-            return new Promise((resolve, reject) => {
-                Papa.parse(url, {
-                    download: true,
-                    header: true,
-                    skipEmptyLines: true,
-                    encoding: 'UTF-8',
-                    complete: function (results) {
-                        const data = results.data.map(row => {
-                            // Normalizar nomes de colunas
-                            const ano_mesreferencia = row.ano_mesreferencia || row['ANO_MESREFERENCIA'] || '';
-                            const nome_estagiario = row.nome_estagiario || row['NOME_ESTAGIARIO'] || row['NOME'] || '';
-                            const masp = row.masp || row['MASP'] || '';
-                            const codigo_situacao_funcional = row.codigo_situacao_funcional || row['CODIGO_SITUACAO_FUNCIONAL'] || '';
-                            const situacao_funcional = row.situacao_funcional || row['SITUACAO_FUNCIONAL'] || '';
-                            const data_inicio = row.data_inicio || row['DATA_INICIO'] || '';
-                            const data_fim = row.data_fim || row['DATA_FIM'] || '';
-                            const codigo_orgao = row.codigo_orgao || row['CODIGO_ORGAO'] || '';
-                            const orgao = row.orgao || row['ORGAO'] || '';
-                            const sigla_orgao = row.sigla_orgao || row['SIGLA_ORGAO'] || '';
-                            let valor_remuneracao = row.valor_remuneracao || row['VALOR_REMUNERACAO'] || '0';
-                            
-                            // Converter valor para número
-                            valor_remuneracao = parseFloat(valor_remuneracao.toString().replace(',', '.')) || 0;
-
-                            // Extrair ano e mês do campo ano_mesreferencia
-                            let ano = '';
-                            let mes = '';
-                            if (ano_mesreferencia) {
-                                const parts = ano_mesreferencia.split('-');
-                                if (parts.length >= 2) {
-                                    ano = parts[0];
-                                    mes = parts[1];
-                                } else if (ano_mesreferencia.length === 6) {
-                                    ano = ano_mesreferencia.substring(0, 4);
-                                    mes = ano_mesreferencia.substring(4, 6);
-                                }
-                            }
-
-                            const estagiario = {
-                                ano_mesreferencia: ano_mesreferencia,
-                                nome_estagiario: nome_estagiario,
-                                masp: masp,
-                                codigo_situacao_funcional: codigo_situacao_funcional,
-                                situacao_funcional: situacao_funcional,
-                                data_inicio: data_inicio,
-                                data_fim: data_fim,
-                                codigo_orgao: codigo_orgao,
-                                orgao: orgao,
-                                sigla_orgao: sigla_orgao,
-                                valor_remuneracao: valor_remuneracao,
-                                ANO: ano,
-                                MES: mes
-                            };
-
-                            return estagiario;
-                        }).filter(e => e.ano_mesreferencia); // só registros válidos
-
-                        allData[year] = data;
-                        estagiariosData = data;
-
-                        console.log(`Dados de ${year} carregados: ${data.length} registros`);
-                        resolve();
-                    },
-                    error: function (err) {
-                        console.error(`Erro ao carregar dados de ${year}:`, err);
-                        reject(err);
-                    }
-                });
-            });
-        }
 
 // ==================== DETERMINAR MÊS MAIS RECENTE ====================
 async function determineLatestMonth() {
