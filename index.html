@@ -1138,10 +1138,10 @@
                     </div>
                 </div>
 
-                <!-- Tabela Dashboard 1 - VISÃO GERAL POR ÓRGÃO -->
+                <!-- Tabela Dashboard 1 - VISÃO GERAL -->
                 <div class="table-container">
                     <div class="table-header">
-                        <h3 class="table-title">Visão Geral por Órgão</h3>
+                        <h3 class="table-title">Visão Geral</h3>
                         <div class="d-flex align-items-center gap-3 ms-auto">
                             <div class="items-per-page">
                                 <span>Itens por página:</span>
@@ -1295,7 +1295,7 @@
                 <!-- Tabela de Estagiários Dashboard 2 -->
                 <div class="table-container">
                     <div class="table-header">
-                        <h3 class="table-title">Consulta Individual de Estagiários</h3>
+                        <h3 class="table-title">Consulta Individual</h3>
                         <div class="d-flex align-items-center gap-3 ms-auto">
                             <div class="items-per-page">
                                 <span>Itens por página:</span>
@@ -1639,63 +1639,69 @@
 
         // MAPEAMENTO COMPLETO DE SIGLAS PARA NOMES DE ÓRGÃOS
         const orgaosExtenso = {
-            'AGE': 'Assembleia Geral do Estado',
-            'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
-            'CGE': 'Controladoria-Geral do Estado',
-            'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
-            'DEER': 'Departamento de Edificações e Estradas de Rodagem',
-            'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
-            'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
-            'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
-            'FJP': 'Fundação João Pinheiro',
-            'GMG': 'Gabinete Militar do Governador',
-            'IEF': 'Instituto Estadual de Florestas',
-            'IMA': 'Instituto Mineiro de Agropecuária',
-            'IPSEMG': 'Instituto de Previdência dos Servidores',
-            'PCMG': 'Polícia Civil',
-            'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
-            'SCC': 'Secretaria de Estado da Casa Civil',
-            'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
-            'SEC': 'Secretaria de Estado de Cultura',
-            'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
-            'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
-            'SEE': 'Secretaria de Estado de Educação',
-            'SEF': 'Secretaria de Estado de Fazenda',
-            'SEGOV': 'Secretaria de Estado de Governo',
-            'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
-            'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
-            'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
-            'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
-            'SES': 'Secretaria de Estado de Saúde',
-            'UEMG': 'Universidade do Estado de Minas Gerais',
-            'PM': 'Polícia Militar',
-            'CBMMG': 'Corpo de Bombeiros Militar',
-            'TCE': 'Tribunal de Contas do Estado',
-            'MPMG': 'Ministério Público do Estado de Minas Gerais',
-            'TJMG': 'Tribunal de Justiça do Estado de Minas Gerais',
-            'CBM': 'Corpo de Bombeiros',
-            'EP': 'Escola do Poder Legislativo',
-            'MGI': 'Minas Gerais Industrial',
-            'AGE': 'Assembleia Geral do Estado',
-            'CBM': 'Corpo de Bombeiros Militar',
-            'DETRAN': 'Departamento de Trânsito',
-            'EMATER': 'Empresa de Assistência Técnica e Extensão Rural',
-            'FUNDEP': 'Fundação de Desenvolvimento da Pesquisa',
-            'IGAM': 'Instituto Mineiro de Gestão das Águas',
-            'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico',
-            'MDC': 'Museu de Ciências',
-            'PMMG': 'Polícia Militar de Minas Gerais',
-            'SAAE': 'Serviço Autônomo de Água e Esgoto',
-            'SEBRAE': 'Serviço Brasileiro de Apoio às Micro e Pequenas Empresas',
-            'SEMEIA': 'Secretaria de Estado de Meio Ambiente',
-            'SINE': 'Sistema Nacional de Emprego',
-            'SSP': 'Secretaria de Segurança Pública',
-            'UFMG': 'Universidade Federal de Minas Gerais',
-            'UFSJ': 'Universidade Federal de São João del-Rei',
-            'UFV': 'Universidade Federal de Viçosa',
-            'UFU': 'Universidade Federal de Uberlândia',
-            'UNIMONTES': 'Universidade Estadual de Montes Claros'
-        };
+                'AGE': 'Assembleia Geral do Estado',
+    'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
+    'CGE': 'Controladoria-Geral do Estado',
+    'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
+    'DEER': 'Departamento de Edificações e Estradas de Rodagem',
+    'DER': 'Departamento de Edificações e Estradas de Rodagem',
+    'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
+    'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
+    'FAOP': 'Fundação de Arte de Ouro Preto',
+    'FHA': 'Fundação Helena Antipoff',
+    'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
+    'FJP': 'Fundação João Pinheiro',
+    'FUNED': 'Fundação Ezequiel Dias',
+    'GMG': 'Gabinete Militar do Governador',
+    'IEF': 'Instituto Estadual de Florestas',
+    'IMA': 'Instituto Mineiro de Agropecuária',
+    'IPSEMG': 'Instituto de Previdência dos Servidores',
+    'IPSM': 'Instituto de Previdência dos Servidores Militares',
+    'PCMG': 'Polícia Civil',
+    'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
+    'SCC': 'Secretaria de Estado da Casa Civil',
+    'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
+    'SEC': 'Secretaria de Estado de Cultura',
+    'SECOM': 'Secretaria de Estado de Comunicação Social',
+    'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
+    'SEDS': 'Secretaria de Estado de Defesa Social',
+    'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
+    'SEE': 'Secretaria de Estado de Educação',
+    'SEF': 'Secretaria de Estado de Fazenda',
+    'SEGOV': 'Secretaria de Estado de Governo',
+    'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
+    'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
+    'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
+    'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
+    'SES': 'Secretaria de Estado de Saúde',
+    'UEMG': 'Universidade do Estado de Minas Gerais',
+    'UNIMONTES': 'Universidade Estadual de Montes Claros',
+    'PM': 'Polícia Militar',
+    'CBMMG': 'Corpo de Bombeiros Militar',
+    'TCE': 'Tribunal de Contas do Estado',
+    'MPMG': 'Ministério Público do Estado de Minas Gerais',
+    'TJMG': 'Tribunal de Justiça do Estado de Minas Gerais',
+    'CBM': 'CBM',
+    'EP': 'EP',
+    'MGI': 'Minas Gerais Industrial',
+    'DETRAN': 'Departamento de Trânsito',
+    'EMATER': 'Empresa de Assistência Técnica e Extensão Rural',
+    'FUNDEP': 'Fundação de Desenvolvimento da Pesquisa',
+    'IGAM': 'Instituto Mineiro de Gestão das Águas',
+    'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico',
+    'MDC': 'Museu de Ciências',
+    'PMMG': 'Polícia Militar de Minas Gerais',
+    'SAAE': 'Serviço Autônomo de Água e Esgoto',
+    'SEBRAE': 'Serviço Brasileiro de Apoio às Micro e Pequenas Empresas',
+    'SEMEIA': 'SEMEIA',
+    'SINE': 'Sistema Nacional de Emprego',
+    'SSP': 'Secretaria de Segurança Pública',
+    'UFMG': 'Universidade Federal de Minas Gerais',
+    'UFSJ': 'Universidade Federal de São João del-Rei',
+    'UFV': 'Universidade Federal de Viçosa',
+    'UFU': 'Universidade Federal de Uberlândia',
+    'NAO INFORMADO': 'Órgão não informado'
+};
 
         // ==================== FUNÇÃO PARA OBTER NOME COMPLETO DO ÓRGÃO ====================
         function normalizarTexto(txt) {
