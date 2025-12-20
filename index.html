@@ -844,6 +844,12 @@
             border: 1px solid rgba(52, 152, 219, 0.3);
         }
         
+        .badge-em-andamento {
+            background-color: rgba(243, 156, 18, 0.15);
+            color: var(--warning-yellow);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+        
         /* ==================== RESPONSIVIDADE ==================== */
         @media (max-width: 768px) {
             .main-header {
@@ -1057,8 +1063,7 @@
                                 <label for="situacaoDashboard1" class="form-label filter-label">Situação</label>
                                 <select class="form-select" id="situacaoDashboard1">
                                     <option value="all">Todas as Situações</option>
-                                    <option value="ativo">Ativo</option>
-                                    <option value="inativo">Inativo</option>
+                                    <option value="em_andamento">Em Andamento</option>
                                     <option value="concluido">Concluído</option>
                                 </select>
                             </div>
@@ -1168,8 +1173,11 @@
                                     <th data-sort="total_estagiarios" data-order="desc" onclick="sortTable('visaoGeral', 'total_estagiarios')">
                                         Total de Estagiários <span class="sort-icon">▼</span>
                                     </th>
-                                    <th data-sort="ativos" data-order="desc" onclick="sortTable('visaoGeral', 'ativos')">
-                                        Ativos <span class="sort-icon">▼</span>
+                                    <th data-sort="em_andamento" data-order="desc" onclick="sortTable('visaoGeral', 'em_andamento')">
+                                        Em Andamento <span class="sort-icon">▼</span>
+                                    </th>
+                                    <th data-sort="concluido" data-order="desc" onclick="sortTable('visaoGeral', 'concluido')">
+                                        Concluído <span class="sort-icon">▼</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -1229,8 +1237,7 @@
                                 <label for="situacaoDashboard2" class="form-label filter-label">Situação</label>
                                 <select class="form-select" id="situacaoDashboard2">
                                     <option value="all">Todas as Situações</option>
-                                    <option value="ativo">Ativo</option>
-                                    <option value="inativo">Inativo</option>
+                                    <option value="em_andamento">Em Andamento</option>
                                     <option value="concluido">Concluído</option>
                                 </select>
                             </div>
@@ -1319,6 +1326,7 @@
                                     <th data-sort="data_inicio" data-order="desc" onclick="sortTable('estagiarios', 'data_inicio')">Data Início <span class="sort-icon">▼</span></th>
                                     <th data-sort="data_fim" data-order="desc" onclick="sortTable('estagiarios', 'data_fim')">Data Fim <span class="sort-icon">▼</span></th>
                                     <th data-sort="valor_remuneracao" data-order="desc" onclick="sortTable('estagiarios', 'valor_remuneracao')">Valor (R$) <span class="sort-icon">▼</span></th>
+                                    <th data-sort="situacao" data-order="asc" onclick="sortTable('estagiarios', 'situacao')">Situação <span class="sort-icon">▼</span></th>
                                     <th class="actions-column">Ações</th>
                                 </tr>
                             </thead>
@@ -2215,10 +2223,10 @@ function getOrgaoExtenso(siglaOuNome) {
                     
                     // Filtro por situação
                     if (situacao !== 'all') {
-                        const situacaoLower = estagiario.situacao_funcional.toLowerCase();
-                        if (situacao === 'ativo' && !situacaoLower.includes('ativo')) return false;
-                        if (situacao === 'inativo' && !situacaoLower.includes('inativo')) return false;
-                        if (situacao === 'concluido' && !situacaoLower.includes('concluído') && !situacaoLower.includes('concluido')) return false;
+                        // Determinar situação baseada na data_fim
+                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                        if (situacao === 'em_andamento' && temDataFim) return false;
+                        if (situacao === 'concluido' && !temDataFim) return false;
                     }
                     
                     // Filtro por órgão
@@ -2273,10 +2281,10 @@ function getOrgaoExtenso(siglaOuNome) {
                     
                     // Filtro por situação
                     if (situacao !== 'all') {
-                        const situacaoLower = estagiario.situacao_funcional.toLowerCase();
-                        if (situacao === 'ativo' && !situacaoLower.includes('ativo')) return false;
-                        if (situacao === 'inativo' && !situacaoLower.includes('inativo')) return false;
-                        if (situacao === 'concluido' && !situacaoLower.includes('concluído') && !situacaoLower.includes('concluido')) return false;
+                        // Determinar situação baseada na data_fim
+                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                        if (situacao === 'em_andamento' && temDataFim) return false;
+                        if (situacao === 'concluido' && !temDataFim) return false;
                     }
                     
                     // Filtro por órgão
@@ -2320,10 +2328,10 @@ function getOrgaoExtenso(siglaOuNome) {
                     
                     // Filtro por situação
                     if (situacao !== 'all') {
-                        const situacaoLower = estagiario.situacao_funcional.toLowerCase();
-                        if (situacao === 'ativo' && !situacaoLower.includes('ativo')) return false;
-                        if (situacao === 'inativo' && !situacaoLower.includes('inativo')) return false;
-                        if (situacao === 'concluido' && !situacaoLower.includes('concluído') && !situacaoLower.includes('concluido')) return false;
+                        // Determinar situação baseada na data_fim
+                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                        if (situacao === 'em_andamento' && temDataFim) return false;
+                        if (situacao === 'concluido' && !temDataFim) return false;
                     }
                     
                     // Filtro por órgão
@@ -2352,10 +2360,10 @@ function getOrgaoExtenso(siglaOuNome) {
                     }
                     
                     if (situacao !== 'all') {
-                        const situacaoLower = estagiario.situacao_funcional.toLowerCase();
-                        if (situacao === 'ativo' && !situacaoLower.includes('ativo')) return false;
-                        if (situacao === 'inativo' && !situacaoLower.includes('inativo')) return false;
-                        if (situacao === 'concluido' && !situacaoLower.includes('concluído') && !situacaoLower.includes('concluido')) return false;
+                        // Determinar situação baseada na data_fim
+                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                        if (situacao === 'em_andamento' && temDataFim) return false;
+                        if (situacao === 'concluido' && !temDataFim) return false;
                     }
                     
                     if (orgao !== 'all' && estagiario.orgao !== orgao) {
@@ -2479,18 +2487,13 @@ function getOrgaoExtenso(siglaOuNome) {
             // Calcular métricas
             const totalEstagiarios = filteredData.length;
             
-            // Contar por situação
-            const ativos = filteredData.filter(e => 
-                e.situacao_funcional.toLowerCase().includes('ativo')
-            ).length;
-            
-            const inativos = filteredData.filter(e => 
-                e.situacao_funcional.toLowerCase().includes('inativo')
+            // Contar por situação (baseado na data_fim)
+            const emAndamento = filteredData.filter(e => 
+                !e.data_fim || e.data_fim.trim() === ''
             ).length;
             
             const concluidos = filteredData.filter(e => 
-                e.situacao_funcional.toLowerCase().includes('concluído') || 
-                e.situacao_funcional.toLowerCase().includes('concluido')
+                e.data_fim && e.data_fim.trim() !== ''
             ).length;
             
             // Calcular valor médio de remuneração
@@ -2511,10 +2514,10 @@ function getOrgaoExtenso(siglaOuNome) {
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="metric-card success">
-                        <div class="metric-label">Estagiários Ativos</div>
-                        <div class="metric-value">${ativos}</div>
+                        <div class="metric-label">Em Andamento</div>
+                        <div class="metric-value">${emAndamento}</div>
                         <div class="metric-change positive">
-                            ${((ativos/totalEstagiarios)*100).toFixed(1)}% do total
+                            ${((emAndamento/totalEstagiarios)*100).toFixed(1)}% do total
                         </div>
                     </div>
                 </div>
@@ -2548,7 +2551,7 @@ function getOrgaoExtenso(siglaOuNome) {
             const paginationInfo = document.getElementById('paginationInfoDashboard1');
             
             if (filteredData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Nenhum dado encontrado para o período atual.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhum dado encontrado para o período atual.</td></tr>';
                 tfoot.innerHTML = '';
                 if (countElement) countElement.textContent = '0 registros';
                 if (paginationInfo) paginationInfo.textContent = 'Mostrando 0-0 de 0 registros';
@@ -2567,14 +2570,18 @@ function getOrgaoExtenso(siglaOuNome) {
                         orgao: orgao,
                         sigla: sigla,
                         total_estagiarios: 0,
-                        ativos: 0
+                        em_andamento: 0,
+                        concluido: 0
                     };
                 }
                 
                 grupos[orgao].total_estagiarios++;
                 
-                if (estagiario.situacao_funcional.toLowerCase().includes('ativo')) {
-                    grupos[orgao].ativos++;
+                // Determinar situação baseada na data_fim
+                if (!estagiario.data_fim || estagiario.data_fim.trim() === '') {
+                    grupos[orgao].em_andamento++;
+                } else {
+                    grupos[orgao].concluido++;
                 }
             });
             
@@ -2591,8 +2598,10 @@ function getOrgaoExtenso(siglaOuNome) {
                     return order * (a.sigla || '').localeCompare(b.sigla || '');
                 } else if (currentSortDashboard1.column === 'total_estagiarios') {
                     return order * (a.total_estagiarios - b.total_estagiarios);
-                } else if (currentSortDashboard1.column === 'ativos') {
-                    return order * (a.ativos - b.ativos);
+                } else if (currentSortDashboard1.column === 'em_andamento') {
+                    return order * (a.em_andamento - b.em_andamento);
+                } else if (currentSortDashboard1.column === 'concluido') {
+                    return order * (a.concluido - b.concluido);
                 }
                 return 0;
             });
@@ -2600,7 +2609,8 @@ function getOrgaoExtenso(siglaOuNome) {
             // Calcular totais
             const totalOrgaos = resumoArray.length;
             const totalEstagiarios = resumoArray.reduce((sum, item) => sum + item.total_estagiarios, 0);
-            const totalAtivos = resumoArray.reduce((sum, item) => sum + item.ativos, 0);
+            const totalEmAndamento = resumoArray.reduce((sum, item) => sum + item.em_andamento, 0);
+            const totalConcluido = resumoArray.reduce((sum, item) => sum + item.concluido, 0);
             
             // Paginação
             const itemsPerPage = itemsPerPageDashboard1;
@@ -2620,7 +2630,8 @@ function getOrgaoExtenso(siglaOuNome) {
                     </td>
                     <td>${item.sigla}</td>
                     <td>${item.total_estagiarios.toLocaleString('pt-BR')}</td>
-                    <td>${item.ativos.toLocaleString('pt-BR')}</td>
+                    <td>${item.em_andamento.toLocaleString('pt-BR')}</td>
+                    <td>${item.concluido.toLocaleString('pt-BR')}</td>
                 </tr>
             `}).join('');
             
@@ -2630,7 +2641,8 @@ function getOrgaoExtenso(siglaOuNome) {
                     <td><strong>TOTAL GERAL (${totalOrgaos} órgãos)</strong></td>
                     <td><strong>-</strong></td>
                     <td><strong>${totalEstagiarios.toLocaleString('pt-BR')}</strong></td>
-                    <td><strong>${totalAtivos.toLocaleString('pt-BR')}</strong></td>
+                    <td><strong>${totalEmAndamento.toLocaleString('pt-BR')}</strong></td>
+                    <td><strong>${totalConcluido.toLocaleString('pt-BR')}</strong></td>
                 </tr>
             `;
             
@@ -2819,21 +2831,14 @@ function getOrgaoExtenso(siglaOuNome) {
             const ctx = document.getElementById('chartSituacao')?.getContext('2d');
             if (!ctx) return;
             
-            // Contar por situação
-            const ativos = filteredData.filter(e => 
-                e.situacao_funcional.toLowerCase().includes('ativo')
-            ).length;
-            
-            const inativos = filteredData.filter(e => 
-                e.situacao_funcional.toLowerCase().includes('inativo')
+            // Contar por situação (baseado na data_fim)
+            const emAndamento = filteredData.filter(e => 
+                !e.data_fim || e.data_fim.trim() === ''
             ).length;
             
             const concluidos = filteredData.filter(e => 
-                e.situacao_funcional.toLowerCase().includes('concluído') || 
-                e.situacao_funcional.toLowerCase().includes('concluido')
+                e.data_fim && e.data_fim.trim() !== ''
             ).length;
-            
-            const outros = filteredData.length - ativos - inativos - concluidos;
             
             if (charts.situacao) {
                 charts.situacao.destroy();
@@ -2842,14 +2847,12 @@ function getOrgaoExtenso(siglaOuNome) {
             charts.situacao = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Ativos', 'Inativos', 'Concluídos', 'Outros'],
+                    labels: ['Em Andamento', 'Concluído'],
                     datasets: [{
-                        data: [ativos, inativos, concluidos, outros],
+                        data: [emAndamento, concluidos],
                         backgroundColor: [
                             chartColors.success,
-                            '#E74C3C',
-                            chartColors.accent,
-                            '#95A5A6'
+                            chartColors.accent
                         ],
                         borderWidth: 2,
                         borderColor: '#fff'
@@ -2976,7 +2979,7 @@ function getOrgaoExtenso(siglaOuNome) {
             if (!tbody) return;
             
             if (filteredData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Nenhum estagiário encontrado para o período atual.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Nenhum estagiário encontrado para o período atual.</td></tr>';
                 if (tfoot) tfoot.innerHTML = '';
                 if (countElement) countElement.textContent = '0 estagiários';
                 if (paginationInfo) paginationInfo.textContent = 'Mostrando 0-0 de 0 registros';
@@ -3001,6 +3004,11 @@ function getOrgaoExtenso(siglaOuNome) {
                     return order * new Date(a.data_fim || 0) - new Date(b.data_fim || 0);
                 } else if (currentSortDashboard2.column === 'valor_remuneracao') {
                     return order * (a.valor_remuneracao - b.valor_remuneracao);
+                } else if (currentSortDashboard2.column === 'situacao') {
+                    // Ordenar por situação (Em Andamento primeiro, depois Concluído)
+                    const situacaoA = (!a.data_fim || a.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
+                    const situacaoB = (!b.data_fim || b.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
+                    return order * situacaoA.localeCompare(situacaoB);
                 }
                 return 0;
             });
@@ -3011,6 +3019,15 @@ function getOrgaoExtenso(siglaOuNome) {
             const valorMedio = totalEstagiarios > 0 ? valorTotal / totalEstagiarios : 0;
             const orgaosUnicos = [...new Set(estagiariosArray.map(e => e.orgao))].length;
             
+            // Contar por situação
+            const emAndamento = estagiariosArray.filter(e => 
+                !e.data_fim || e.data_fim.trim() === ''
+            ).length;
+            
+            const concluidos = estagiariosArray.filter(e => 
+                e.data_fim && e.data_fim.trim() !== ''
+            ).length;
+            
             // Paginação
             const itemsPerPage = itemsPerPageDashboard2;
             const totalPages = Math.ceil(estagiariosArray.length / itemsPerPage);
@@ -3019,7 +3036,11 @@ function getOrgaoExtenso(siglaOuNome) {
             const currentData = estagiariosArray.slice(startIndex, endIndex);
             
             // Gerar HTML da tabela
-            const rowsHTML = currentData.map(estagiario => `
+            const rowsHTML = currentData.map(estagiario => {
+                const situacao = (!estagiario.data_fim || estagiario.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
+                const situacaoClass = situacao === 'Em Andamento' ? 'badge-em-andamento' : 'badge-concluido';
+                
+                return `
                 <tr>
                     <td><strong>${estagiario.nome_estagiario}</strong></td>
                     <td>${estagiario.masp}</td>
@@ -3027,6 +3048,7 @@ function getOrgaoExtenso(siglaOuNome) {
                     <td>${formatDate(estagiario.data_inicio)}</td>
                     <td>${formatDate(estagiario.data_fim)}</td>
                     <td><strong>R$ ${estagiario.valor_remuneracao.toFixed(2)}</strong></td>
+                    <td><span class="badge-situacao ${situacaoClass}">${situacao}</span></td>
                     <td class="actions-column">
                         <div class="action-buttons">
                             <button class="btn-action btn-history" onclick="showEstagiarioHistory('${estagiario.masp}', '${estagiario.nome_estagiario.replace(/'/g, "\\'")}')" title="Ver Histórico">
@@ -3035,15 +3057,16 @@ function getOrgaoExtenso(siglaOuNome) {
                         </div>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
             
             // Gerar rodapé
             const footerHTML = `
                 <tr class="table-total-row">
                     <td colspan="2"><strong>TOTAL GERAL: ${totalEstagiarios.toLocaleString('pt-BR')} estagiários</strong></td>
                     <td><strong>${orgaosUnicos} órgãos</strong></td>
-                    <td colspan="2"><strong>Valor Total: R$ ${valorTotal.toFixed(2)}</strong></td>
-                    <td><strong>Média: R$ ${valorMedio.toFixed(2)}</strong></td>
+                    <td colspan="2"><strong>Em Andamento: ${emAndamento} | Concluído: ${concluidos}</strong></td>
+                    <td><strong>Total: R$ ${valorTotal.toFixed(2)}<br>Média: R$ ${valorMedio.toFixed(2)}</strong></td>
+                    <td></td>
                     <td></td>
                 </tr>
             `;
@@ -3185,7 +3208,7 @@ function getOrgaoExtenso(siglaOuNome) {
                         </div>
                         <div class="info-item">
                             <span class="info-label">Situação Atual</span>
-                            <span class="info-value">${estagiario.situacao_funcional || '-'}</span>
+                            <span class="info-value">${(!estagiario.data_fim || estagiario.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído'}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Data Início</span>
@@ -3214,16 +3237,18 @@ function getOrgaoExtenso(siglaOuNome) {
                 `;
                 
                 // Tabela de histórico
-                const historicHTML = historico.map(registro => `
+                const historicHTML = historico.map(registro => {
+                    const situacao = (!registro.data_fim || registro.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
+                    return `
                     <tr>
                         <td>${registro.ano_mesreferencia}</td>
                         <td>${registro.orgao}<br><small>${registro.sigla_orgao || ''}</small></td>
-                        <td>${registro.situacao_funcional}</td>
+                        <td>${situacao}</td>
                         <td>${formatDate(registro.data_inicio)}</td>
                         <td>${formatDate(registro.data_fim) || '-'}</td>
                         <td>R$ ${registro.valor_remuneracao.toFixed(2)}</td>
                     </tr>
-                `).join('');
+                `}).join('');
                 
                 document.getElementById('historicTableBody').innerHTML = historicHTML || 
                     '<tr><td colspan="6" class="text-center text-muted">Nenhum histórico encontrado</td></tr>';
@@ -3411,26 +3436,31 @@ function getOrgaoExtenso(siglaOuNome) {
                         orgao: orgao,
                         sigla: sigla,
                         total_estagiarios: 0,
-                        ativos: 0
+                        em_andamento: 0,
+                        concluido: 0
                     };
                 }
                 
                 grupos[orgao].total_estagiarios++;
                 
-                if (estagiario.situacao_funcional.toLowerCase().includes('ativo')) {
-                    grupos[orgao].ativos++;
+                // Determinar situação baseada na data_fim
+                if (!estagiario.data_fim || estagiario.data_fim.trim() === '') {
+                    grupos[orgao].em_andamento++;
+                } else {
+                    grupos[orgao].concluido++;
                 }
             });
             
             // Converter para array
             const resumoArray = Object.values(grupos);
             
-            const headers = ['Órgão', 'Sigla', 'Total de Estagiários', 'Ativos'];
+            const headers = ['Órgão', 'Sigla', 'Total de Estagiários', 'Em Andamento', 'Concluído'];
             const data = resumoArray.map(info => [
                 info.orgao,
                 info.sigla,
                 info.total_estagiarios,
-                info.ativos
+                info.em_andamento,
+                info.concluido
             ]);
             
             const csvContent = [
@@ -3455,20 +3485,24 @@ function getOrgaoExtenso(siglaOuNome) {
             
             const headers = ['ano_mesreferencia', 'nome_estagiario', 'masp', 'codigo_situacao_funcional', 
                            'situacao_funcional', 'data_inicio', 'data_fim', 'codigo_orgao', 
-                           'orgao', 'sigla_orgao', 'valor_remuneracao'];
-            const data = filteredData.map(estagiario => [
-                estagiario.ano_mesreferencia,
-                estagiario.nome_estagiario,
-                estagiario.masp,
-                estagiario.codigo_situacao_funcional,
-                estagiario.situacao_funcional,
-                estagiario.data_inicio,
-                estagiario.data_fim,
-                estagiario.codigo_orgao,
-                estagiario.orgao,
-                estagiario.sigla_orgao,
-                estagiario.valor_remuneracao.toFixed(2)
-            ]);
+                           'orgao', 'sigla_orgao', 'valor_remuneracao', 'situacao'];
+            const data = filteredData.map(estagiario => {
+                const situacao = (!estagiario.data_fim || estagiario.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
+                return [
+                    estagiario.ano_mesreferencia,
+                    estagiario.nome_estagiario,
+                    estagiario.masp,
+                    estagiario.codigo_situacao_funcional,
+                    estagiario.situacao_funcional,
+                    estagiario.data_inicio,
+                    estagiario.data_fim,
+                    estagiario.codigo_orgao,
+                    estagiario.orgao,
+                    estagiario.sigla_orgao,
+                    estagiario.valor_remuneracao.toFixed(2),
+                    situacao
+                ];
+            });
             
             const csvContent = [
                 headers.join(';'),
