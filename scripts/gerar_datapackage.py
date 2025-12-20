@@ -10,74 +10,106 @@ OUTPUT = Path("datapackage/datapackage.json")
 # =========================
 SCHEMA_FIELDS = [
     {
-        "name": "matricula",
-        "title": "Matrícula do empregado terceirizado",
+        "name": "ano_mesreferencia",
+        "title": "Ano e mês de referência",
         "type": "string",
-        "description": "Identificador do empregado terceirizado"
+        "description": "Ano e mês de referência no formato AAAA-MM"
     },
     {
-        "name": "nome",
-        "title": "Nome completo do empregado terceirizado",
+        "name": "nome_estagiario",
+        "title": "Nome do estagiário",
+        "type": "string"
+    },
+    {
+        "name": "masp",
+        "title": "MASP do estagiário",
+        "type": "string",
+        "description": "Identificador funcional (MASP)"
+    },
+    {
+        "name": "codigo_situacao_funcional",
+        "title": "Código da situação funcional",
+        "type": "string"
+    },
+    {
+        "name": "situacao_funcional",
+        "title": "Situação funcional do estagiário",
+        "type": "string"
+    },
+    {
+        "name": "data_inicio",
+        "title": "Data de início do estágio",
+        "type": "string",
+        "description": "Data no formato AAAA-MM-DD"
+    },
+    {
+        "name": "data_fim",
+        "title": "Data de término do estágio",
+        "type": "string",
+        "description": "Data no formato AAAA-MM-DD"
+    },
+    {
+        "name": "codigo_orgao",
+        "title": "Código do órgão",
         "type": "string"
     },
     {
         "name": "orgao",
-        "title": "Órgão de trabalho do empregado",
+        "title": "Nome do órgão",
         "type": "string"
     },
     {
-        "name": "cargo",
-        "title": "Cargo exercido pelo empregado",
+        "name": "sigla_orgao",
+        "title": "Sigla do órgão",
         "type": "string"
     },
     {
-        "name": "empresa",
-        "title": "Nome da empresa terceirizada",
-        "type": "string"
-    },
-    {
-        "name": "cnpj_empresa",
-        "title": "CNPJ da empresa terceirizada",
+        "name": "valor_remuneracao",
+        "title": "Valor da remuneração do estagiário",
         "type": "string",
-        "description": "CNPJ com 14 dígitos, sem formatação"
-    },
-    {
-        "name": "mes_referencia",
-        "title": "Mês de referência do contrato",
-        "type": "string",
-        "description": "Mês do contrato no formato abreviado (ex: jan-25)"
+        "description": "Valor nominal conforme publicado, sem conversão numérica"
     }
 ]
 
 resources = []
 
-for csv in sorted(DATA_DIR.glob("terceirizados_*.csv")):
+# =========================
+# Recursos (1 CSV por ano)
+# =========================
+for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
     ano = csv.stem.split("_")[-1]
 
     resources.append({
-        "name": f"terceirizados-{ano}",
-        "title": f"Empregados Terceirizados – {ano}",
+        "name": f"estagiarios-{ano}",
+        "title": f"Estagiários do Governo de Minas Gerais – {ano}",
         "path": f"data/{csv.name}",
         "format": "csv",
         "mediatype": "text/csv",
         "encoding": "utf-8",
-        "description": f"Dados de empregados terceirizados do ano de {ano}",
+        "description": f"Dados de estagiários do Governo de Minas Gerais referentes ao ano de {ano}",
         "schema": {
             "fields": SCHEMA_FIELDS,
-            "primaryKey": ["matricula", "mes_referencia"]
+            "primaryKey": ["masp", "ano_mesreferencia"]
         }
     })
 
+# =========================
+# Data Package
+# =========================
 datapackage = {
     "profile": "data-package",
-    "name": "empregados-terceirizados",
-    "title": "Empregados Terceirizados do Governo de Minas Gerais",
-    "description": "Base anual de empregados terceirizados do Governo do Estado de Minas Gerais.",
+    "name": "estagiarios-governo-minas-gerais",
+    "title": "Estagiários do Governo do Estado de Minas Gerais",
+    "description": (
+        "Base de dados contendo informações cadastrais, "
+        "funcionais e de remuneração dos estagiários "
+        "do Governo do Estado de Minas Gerais."
+    ),
 
-    # 👇 OBRIGATÓRIO PARA dpckan
+    # Obrigatório para dpckan / CKAN
     "owner_org": "controladoria-geral-do-estado-cge",
 
-    # 👇 Compatibilidade CKAN
+    # Compatibilidade CKAN
     "ckan": {
         "owner_org": "controladoria-geral-do-estado-cge",
         "private": False,
@@ -89,15 +121,17 @@ datapackage = {
         "title": "Creative Commons Attribution 4.0",
         "url": "https://creativecommons.org/licenses/by/4.0/"
     },
+
     "resources": resources
 }
 
+# =========================
+# Escrita do arquivo
+# =========================
 OUTPUT.parent.mkdir(exist_ok=True)
 OUTPUT.write_text(
     json.dumps(datapackage, indent=2, ensure_ascii=False),
     encoding="utf-8"
 )
 
-print("datapackage.json gerado com schema das colunas.")
-
-
+print("datapackage.json gerado com sucesso (schema de estagiários).")
