@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-normalizar_mes_referencia.py
+normalizar_ano_mesreferencia.py
 
-Converte a coluna 'MÊS REFERÊNCIA' do formato:
-DD/MM/AAAA  →  MM/AAAA
+Converte a coluna 'ano_mesreferencia' do formato:
+AAAA/MM  →  MM/AAAA
 
 Regras:
 - NÃO altera outras colunas
@@ -21,18 +21,18 @@ import pandas as pd
 # CONFIGURAÇÕES
 # =========================
 DATA_DIR = Path("data")
-COLUNA_DATA = "MÊS REFERÊNCIA"
+COLUNA_DATA = "ano_mesreferencia"
 
 # =========================
 # FUNÇÃO DE CONVERSÃO
 # =========================
-def converter_mes_ano(valor: str) -> str:
+def converter_ano_mes(valor: str) -> str:
     if not valor or not isinstance(valor, str):
         return ""
     partes = valor.split("/")
-    if len(partes) == 3:
-        # DD/MM/AAAA → MM/AAAA
-        return f"{partes[1]}/{partes[2]}"
+    if len(partes) == 2:
+        # AAAA/MM → MM/AAAA
+        return f"{partes[1]}/{partes[0]}"
     return valor
 
 # =========================
@@ -42,7 +42,7 @@ def main():
     if not DATA_DIR.exists():
         raise FileNotFoundError("Pasta /data não encontrada")
 
-    arquivos = sorted(DATA_DIR.glob("terceirizados_*.csv"))
+    arquivos = sorted(DATA_DIR.glob("*.csv"))
 
     if not arquivos:
         print("Nenhum CSV encontrado para processar")
@@ -62,7 +62,7 @@ def main():
             print(f"  ⚠ Coluna '{COLUNA_DATA}' não encontrada — ignorado")
             continue
 
-        df[COLUNA_DATA] = df[COLUNA_DATA].apply(converter_mes_ano)
+        df[COLUNA_DATA] = df[COLUNA_DATA].apply(converter_ano_mes)
 
         df.to_csv(
             arquivo,
@@ -70,7 +70,7 @@ def main():
             encoding="utf-8"
         )
 
-        print(f"  ✔ Normalizado com sucesso")
+        print("  ✔ Normalizado com sucesso")
 
 if __name__ == "__main__":
     main()
