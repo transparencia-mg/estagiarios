@@ -3,66 +3,104 @@
 
 import os
 import json
-import requests
 from pathlib import Path
+from ckanapi import RemoteCKAN
 
-CKAN_URL = "https://www.dados.mg.gov.br"
-API_KEY = os.environ.get("CKAN_KEY")
+CKAN_HOST = "https://www.dados.mg.gov.br"
+CKAN_KEY = os.environ.get("CKAN_KEY")
+DATASET = "estagiarios"
+GITHUB_REPO = "transparencia-mg/estagiarios"
+GITHUB_BRANCH = "main"
 
-if not API_KEY:
+if not CKAN_KEY:
     raise RuntimeError("CKAN_KEY não definida")
 
-HEADERS = {
-    "Authorization": API_KEY,
-    "Content-Type": "application/json"
-}
+ckan = RemoteCKAN(CKAN_HOST, apikey=CKAN_KEY)
 
-DATAPACKAGE = Path("datapackage/datapackage.json")
-if not DATAPACKAGE.exists():
-    raise RuntimeError("datapackage.json não encontrado")
+# ======================================================
+# 1️⃣ LER README.md PARA USAR COMO DESCRIÇÃO DO DATASET
+# ======================================================
 
-dp = json.loads(DATAPACKAGE.read_text(encoding="utf-8"))
+readme_path = Path("README.md")
+if not readme_path.exists():
+    raise RuntimeError("README.md não encontrado")
 
-DATASET_NAME = dp["name"]
-OWNER_ORG = dp["owner_org"]
+readme_text = readme_path.read_text(encoding="utf-8")
 
-# =========================
-# Verifica se dataset existe
-# =========================
-resp = requests.get(
-    f"{CKAN_URL}/api/3/action/package_show",
-    params={"id": DATASET_NAME},
-    headers=HEADERS
+# ======================================================
+# 2️⃣ ATUALIZAR DATASET (DESCRIÇÃO = README)
+# ======================================================
+
+print("📦 Atualizando dataset (descrição a partir do README.md)")
+ckan.action.package_update(
+    name=DATASET,
+    title="Estagários do Governo de Minas Gerais",
+    notes=readme_text,
+    state="active"
 )
 
-exists = resp.status_code == 200
+# ======================================================
+# FUNÇÃO AUXILIAR
+# ======================================================
 
-payload = {
-    "name": DATASET_NAME,
-    "title": dp["title"],
-    "notes": dp["description"],
-    "owner_org": OWNER_ORG,
-    "private": False
-}
+def upsert_resource(name, title, url, description, fmt):
+    search = ckan.action.resource_search(
+        query=f'name:"{name}"',
+        package_id=DATASET
+    )
 
-# =========================
-# Create ou Update dataset
-# =========================
-if exists:
-    print("🔄 Atualizando dataset no CKAN...")
-    url = f"{CKAN_URL}/api/3/action/package_update"
-else:
-    print("🆕 Criando dataset no CKAN...")
-    url = f"{CKAN_URL}/api/3/action/package_create"
+    payload = {
+        "package_id": DATASET,
+        "name": name,
+        "title": title,
+        "url": url,
+        "url_type": "link",
+        "format": fmt,
+        "description": description
+    }
 
-r = requests.post(url, headers=HEADERS, json=payload)
-r.raise_for_status()
+    if search["count"] > 0:
+        payload["id"] = search["results"][0]["id"]
+        ckan.action.resource_update(**payload)
+        print(f"🔄 Atualizado: {name}")
+    else:
+        ckan.action.resource_create(**payload)
+        print(f"🆕 Criado: {name}")
 
-dataset = r.json()["result"]
-dataset_id = dataset["id"]
+# ======================================================
+# 3️⃣ PUBLICAR / ATUALIZAR CSVs (via datapackage)
+# ======================================================
 
-# =====
+dp_path = Path("datapackage/datapackage.json")
+datapackage = json.loads(dp_path.read_text(encoding="utf-8"))
 
+for res in datapackage["resources"]:
+    name = res["name"]
+    title = res.get("title", name)
+    path = res["path"]
+    desc = res.get("description", "")
+    fmt = res.get("format", "CSV").upper()
 
+    url = f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/{path}"
 
+    upsert_resource(
+        name=name,
+        title=title,
+        url=url,
+        description=desc,
+        fmt=fmt
+    )
 
+# ======================================================
+# 4️⃣ PUBLICAR datapackage.json (COMO RECURSO)
+# ======================================================
+
+upsert_resource(
+    name="datapackage-json",
+    title="Datapackage do conjunto de dados",
+    url=f"https://raw.githubusercontent.com/{GITHUB_REPO}/{GITHUB_BRANCH}/datapackage/datapackage.json",
+    description="Arquivo datapackage.json com metadados e schema dos recursos.",
+    fmt="JSON"
+)
+
+print("✅ Dataset atualizado com descrição (README), CSVs e datapackage")
