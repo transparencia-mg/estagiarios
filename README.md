@@ -38,7 +38,7 @@ Os arquivos disponibilizados contêm, entre outros, os seguintes campos:
 
 ## 🔄 Periodicidade de Atualização
 
-A atualização dos dados ocorre de forma **regular**, conforme a disponibilização das informações pelos sistemas corporativos do Estado, com inclusão de novos períodos e eventuais correções quando necessárias.
+A atualização dos dados ocorre de forma mensal, conforme a disponibilização das informações pelos sistemas corporativos do Estado, com inclusão de novos períodos e eventuais correções quando necessárias.
 
 ---
 
