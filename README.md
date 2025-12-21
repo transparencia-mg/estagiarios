@@ -1,5 +1,3 @@
-# Estagiários do Governo do Estado de Minas Gerais
-
 Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos **estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais**, disponibilizado em conformidade com a política de transparência e dados abertos do Estado.
 
 ---
