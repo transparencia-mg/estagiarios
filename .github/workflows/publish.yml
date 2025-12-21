@@ -1,35 +1,37 @@
-name: Publicar dataset no CKAN (dados.mg.gov.br)
+name: Publicar dataset no CKAN
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - "data/**"
-      - "datapackage/**"
-      - "README.md"
-      - "scripts/**"
+      - data/**
+      - scripts/**
+      - datapackage/**
   workflow_dispatch:
 
 jobs:
-  publish_ckan:
+  publish:
     runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Configurar Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
 
       - name: Instalar dependências
         run: |
-          python -m pip install --upgrade pip
-          pip install ckanapi
+          pip install --upgrade pip
+          pip install pandas frictionless dpckan
 
-      - name: Publicar dataset e recursos no CKAN
+      - name: Gerar datapackage
+        run: python scripts/gerar_datapackage.py
+
+      - name: Publicar no CKAN
         env:
+          CKAN_HOST: ${{ secrets.CKAN_HOST }}
           CKAN_KEY: ${{ secrets.CKAN_KEY }}
-        run: |
-          python scripts/publish_ckan.py
+        run: python scripts/publicar_ckan.py

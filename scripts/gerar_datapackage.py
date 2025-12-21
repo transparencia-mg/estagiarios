@@ -2,55 +2,63 @@
 # -*- coding: utf-8 -*-
 
 import json
+import hashlib
 from pathlib import Path
+from gerar_schema import gerar_schema
 
-DATA_DIR = Path("data")
-OUTPUT = Path("datapackage/datapackage.json")
+BASE_DIR = Path(".")
+DATA_DIR = BASE_DIR / "data"
+OUTPUT = BASE_DIR / "datapackage" / "datapackage.json"
 
 resources = []
 
 for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
     ano = csv.stem.split("_")[-1]
 
+    hash_md5 = hashlib.md5(csv.read_bytes()).hexdigest()
+
+    schema = gerar_schema(csv)
+
     resources.append({
         "name": f"estagiarios-{ano}",
-        "title": f"Estagiários – {ano}",
-        "description": f"Conjunto de dados de estagiários do Estado de Minas Gerais. 
-        Dados disponíveis a partir de dezembro de 2022. Os dados são atualizados mensalmente",
+        "title": f"Estagiários do Governo de Minas Gerais – {ano}",
         "path": f"data/{csv.name}",
         "format": "csv",
         "mediatype": "text/csv",
         "encoding": "utf-8",
-        "profile": "tabular-data-resource",
-        "schema": {
-            "fields": [
-                {"name": "ano_mesreferencia", "type": "string"},
-                {"name": "nome_estagiario", "type": "string"},
-                {"name": "masp", "type": "string"},
-                {"name": "codigo_situacao_funcional", "type": "string"},
-                {"name": "situacao_funcional", "type": "string"},
-                {"name": "data_inicio", "type": "string"},
-                {"name": "data_fim", "type": "string"},
-                {"name": "codigo_orgao", "type": "string"},
-                {"name": "orgao", "type": "string"},
-                {"name": "orgao_sigla", "type": "string"},
-                {"name": "valor_remuneracao", "type": "string"}
-            ]
-        }
+        "hash": f"md5:{hash_md5}",
+        "schema": schema
     })
 
 datapackage = {
-    "profile": "data-package",
-    "name": "estagiarios",
-    "title": "Estagiários do Governo de Minas Gerais",
-    "owner_org": "controladoria-geral-do-estado-cge",
+    "profile": "tabular-data-package",
+    "name": "estagiarios-governo-minas-gerais",
+    "title": "Estagiários do Governo do Estado de Minas Gerais",
+    "description": (
+        "Relação de estagiários vinculados aos órgãos e entidades "
+        "do Poder Executivo do Estado de Minas Gerais."
+    ),
+    "keywords": [
+        "estagiários",
+        "educação",
+        "recursos humanos",
+        "Governo de Minas Gerais"
+    ],
+    "license": "CC-BY-4.0",
+    "sources": [
+        {
+            "title": "Portal da Transparência do Estado de Minas Gerais",
+            "path": "https://www.transparencia.mg.gov.br"
+        }
+    ],
     "resources": resources
 }
 
-OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+OUTPUT.parent.mkdir(exist_ok=True)
 OUTPUT.write_text(
-    json.dumps(datapackage, indent=2, ensure_ascii=False),
+    json.dumps(datapackage, ensure_ascii=False, indent=2),
     encoding="utf-8"
 )
 
-print(f"✔ datapackage.json gerado com {len(resources)} recursos")
+print("✔ datapackage.json gerado com schema, hash e metadados completos")
+
