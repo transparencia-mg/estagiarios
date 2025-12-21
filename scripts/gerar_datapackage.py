@@ -25,7 +25,7 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
         "path": f"data/{csv.name}",
         "format": "csv",
         "mediatype": "text/csv",
-        "encoding": "utf-8",
+        "encoding": "latin1",
         "hash": f"md5:{hash_md5}",
         "schema": schema
     })
@@ -60,5 +60,6 @@ OUTPUT.write_text(
     encoding="utf-8"
 )
 
-print("✔ datapackage.json gerado com schema, hash e metadados completos")
+print("✔ datapackage.json gerado com encoding tolerante, hash e schema")
+
 

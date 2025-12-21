@@ -4,21 +4,35 @@
 import pandas as pd
 
 def inferir_tipo(serie: pd.Series) -> str:
-    if pd.api.types.is_integer_dtype(serie):
-        return "integer"
-    if pd.api.types.is_float_dtype(serie):
-        return "number"
-    if pd.api.types.is_datetime64_any_dtype(serie):
-        return "date"
+    """
+    Inferência segura apenas para metadados.
+    Não converte valores.
+    """
     return "string"
 
 def gerar_schema(csv_path):
-    df = pd.read_csv(csv_path, dtype=str)
+    """
+    Lê CSV com fallback de encoding (igual padrão CGE).
+    """
+    try:
+        df = pd.read_csv(
+            csv_path,
+            dtype=str,
+            encoding="utf-8",
+            low_memory=False
+        )
+    except UnicodeDecodeError:
+        df = pd.read_csv(
+            csv_path,
+            dtype=str,
+            encoding="latin1",
+            low_memory=False
+        )
 
     fields = []
     for col in df.columns:
         fields.append({
-            "name": col,
+            "name": col.strip(),
             "type": inferir_tipo(df[col])
         })
 
@@ -26,4 +40,3 @@ def gerar_schema(csv_path):
         "fields": fields,
         "missingValues": ["", "NA", "N/A", "null"]
     }
-
