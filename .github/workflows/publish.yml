@@ -34,4 +34,4 @@ jobs:
         env:
           CKAN_HOST: ${{ secrets.CKAN_HOST }}
           CKAN_KEY: ${{ secrets.CKAN_KEY }}
-        run: python scripts/publicar_ckan.py
+        run: python scripts/publish_ckan.py
