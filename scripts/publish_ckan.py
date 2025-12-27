@@ -21,13 +21,22 @@ base_cmd = [
 ]
 
 print("🔄 Tentando atualizar dataset no CKAN...")
-update_cmd = base_cmd + ["dataset", "update"]
-
-result = subprocess.run(update_cmd)
+result = subprocess.run(
+    base_cmd + ["dataset", "update"],
+    capture_output=True,
+    text=True
+)
 
 if result.returncode != 0:
-    print("ℹ Dataset não existe. Criando dataset...")
-    create_cmd = base_cmd + ["dataset", "create"]
-    subprocess.run(create_cmd, check=True)
+    print("⚠️ Falha ao atualizar dataset")
+    print(result.stdout)
+    print(result.stderr)
+
+    print("🆕 Tentando criar dataset...")
+    subprocess.run(
+        base_cmd + ["dataset", "create"],
+        check=True
+    )
 else:
     print("✅ Dataset atualizado com sucesso")
+
