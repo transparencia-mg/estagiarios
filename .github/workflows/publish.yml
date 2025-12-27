@@ -3,10 +3,6 @@ name: Publicar dataset no CKAN
 on:
   push:
     branches: [ main ]
-    paths:
-      - data/**
-      - scripts/**
-      - datapackage/**
   workflow_dispatch:
 
 jobs:
