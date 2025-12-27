@@ -24,7 +24,7 @@
       "format": "csv",
       "mediatype": "text/csv",
       "encoding": "latin1",
-      "hash": "md5:c1734db432610f87a654d0dafca0d5a7",
+      "hash": "md5:ab65af0493ad42ee1541437b91d943b6",
       "schema": {
         "fields": [
           {
@@ -92,7 +92,7 @@
       "format": "csv",
       "mediatype": "text/csv",
       "encoding": "latin1",
-      "hash": "md5:f64d2beaaa626a9432c844bcd2a91394",
+      "hash": "md5:4ede8544d72853dea6c95f8b82d8da19",
       "schema": {
         "fields": [
           {
@@ -160,7 +160,7 @@
       "format": "csv",
       "mediatype": "text/csv",
       "encoding": "latin1",
-      "hash": "md5:bfd77ee2d8fddb76093ac79b8fbe2ed2",
+      "hash": "md5:e82ff06aaa78d182a12b334a4f2890f9",
       "schema": {
         "fields": [
           {
