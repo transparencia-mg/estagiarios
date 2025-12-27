@@ -16,8 +16,7 @@ cmd = [
     "dpckan",
     "--ckan-host", CKAN_HOST,
     "--ckan-key", CKAN_KEY,
-    "--datastore",          # 🔑 filtros, seleção, API
-    "--create-views",       # 🔑 views automáticas
+    "--datastore",
     "--update",
     "--datapackage", "datapackage/datapackage.json",
     "dataset", "create"
