@@ -1,0 +1,293 @@
+{
+  "profile": "tabular-data-package",
+  "name": "estagiarios",
+  "title": "Estagiários do Governo do Estado de Minas Gerais",
+  "description": "Relação de estagiários vinculados aos órgãos e entidades do Poder Executivo do Estado de Minas Gerais.",
+  "keywords": [
+    "estagiarios",
+    "educacao",
+    "recursos humanos",
+    "minas gerais"
+  ],
+  "license": "CC-BY-4.0",
+  "sources": [
+    {
+      "title": "Portal da Transparência do Estado de Minas Gerais",
+      "path": "https://www.transparencia.mg.gov.br"
+    }
+  ],
+  "resources": [
+    {
+      "name": "estagiario_2022",
+      "title": "Estagiários do Governo de Minas Gerais (2022)",
+      "path": "data/estagiarios_2022.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "latin1",
+      "hash": "md5:c1734db432610f87a654d0dafca0d5a7",
+      "schema": {
+        "fields": [
+          {
+            "name": "_id",
+            "type": "string"
+          },
+          {
+            "name": "ano_mesreferencia",
+            "type": "string"
+          },
+          {
+            "name": "nome_estagiario",
+            "type": "string"
+          },
+          {
+            "name": "masp",
+            "type": "string"
+          },
+          {
+            "name": "codigo_situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "data_inicio",
+            "type": "string"
+          },
+          {
+            "name": "data_fim",
+            "type": "string"
+          },
+          {
+            "name": "codigo_orgao",
+            "type": "string"
+          },
+          {
+            "name": "orgao",
+            "type": "string"
+          },
+          {
+            "name": "sigla_orgao",
+            "type": "string"
+          },
+          {
+            "name": "valor_remuneracao",
+            "type": "string"
+          }
+        ],
+        "primaryKey": "_id",
+        "missingValues": [
+          "",
+          "NA",
+          "N/A",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "estagiario_2023",
+      "title": "Estagiários do Governo de Minas Gerais (2023)",
+      "path": "data/estagiarios_2023.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "latin1",
+      "hash": "md5:f64d2beaaa626a9432c844bcd2a91394",
+      "schema": {
+        "fields": [
+          {
+            "name": "_id",
+            "type": "string"
+          },
+          {
+            "name": "ano_mesreferencia",
+            "type": "string"
+          },
+          {
+            "name": "nome_estagiario",
+            "type": "string"
+          },
+          {
+            "name": "masp",
+            "type": "string"
+          },
+          {
+            "name": "codigo_situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "data_inicio",
+            "type": "string"
+          },
+          {
+            "name": "data_fim",
+            "type": "string"
+          },
+          {
+            "name": "codigo_orgao",
+            "type": "string"
+          },
+          {
+            "name": "orgao",
+            "type": "string"
+          },
+          {
+            "name": "sigla_orgao",
+            "type": "string"
+          },
+          {
+            "name": "valor_remuneracao",
+            "type": "string"
+          }
+        ],
+        "primaryKey": "_id",
+        "missingValues": [
+          "",
+          "NA",
+          "N/A",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "estagiario_2024",
+      "title": "Estagiários do Governo de Minas Gerais (2024)",
+      "path": "data/estagiarios_2024.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "latin1",
+      "hash": "md5:bfd77ee2d8fddb76093ac79b8fbe2ed2",
+      "schema": {
+        "fields": [
+          {
+            "name": "_id",
+            "type": "string"
+          },
+          {
+            "name": "ano_mesreferencia",
+            "type": "string"
+          },
+          {
+            "name": "nome_estagiario",
+            "type": "string"
+          },
+          {
+            "name": "masp",
+            "type": "string"
+          },
+          {
+            "name": "codigo_situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "data_inicio",
+            "type": "string"
+          },
+          {
+            "name": "data_fim",
+            "type": "string"
+          },
+          {
+            "name": "codigo_orgao",
+            "type": "string"
+          },
+          {
+            "name": "orgao",
+            "type": "string"
+          },
+          {
+            "name": "sigla_orgao",
+            "type": "string"
+          },
+          {
+            "name": "valor_remuneracao",
+            "type": "string"
+          }
+        ],
+        "primaryKey": "_id",
+        "missingValues": [
+          "",
+          "NA",
+          "N/A",
+          "null"
+        ]
+      }
+    },
+    {
+      "name": "estagiario_2025",
+      "title": "Estagiários do Governo de Minas Gerais (2025)",
+      "path": "data/estagiarios_2025.csv",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "latin1",
+      "hash": "md5:d474a958c7184f8b86313c6bdd36713b",
+      "schema": {
+        "fields": [
+          {
+            "name": "_id",
+            "type": "string"
+          },
+          {
+            "name": "ano_mesreferencia",
+            "type": "string"
+          },
+          {
+            "name": "nome_estagiario",
+            "type": "string"
+          },
+          {
+            "name": "masp",
+            "type": "string"
+          },
+          {
+            "name": "codigo_situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "situacao_funcional",
+            "type": "string"
+          },
+          {
+            "name": "data_inicio",
+            "type": "string"
+          },
+          {
+            "name": "data_fim",
+            "type": "string"
+          },
+          {
+            "name": "codigo_orgao",
+            "type": "string"
+          },
+          {
+            "name": "orgao",
+            "type": "string"
+          },
+          {
+            "name": "sigla_orgao",
+            "type": "string"
+          },
+          {
+            "name": "valor_remuneracao",
+            "type": "string"
+          }
+        ],
+        "primaryKey": "_id",
+        "missingValues": [
+          "",
+          "NA",
+          "N/A",
+          "null"
+        ]
+      }
+    }
+  ]
+}
