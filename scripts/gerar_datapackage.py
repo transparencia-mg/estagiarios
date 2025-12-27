@@ -21,7 +21,7 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
 
     resources.append({
         # 🔑 ESTE CAMPO GARANTE A REUTILIZAÇÃO DO ID NO CKAN
-        "name": f"estagiarios-{ano}",
+        "name": f"estagiario_{ano}",
 
         "title": f"Estagiários do Governo de Minas Gerais ({ano})",
         "path": f"data/{csv.name}",
@@ -37,8 +37,7 @@ datapackage = {
     "name": "estagiarios-governo-minas-gerais",
     "title": "Estagiários do Governo do Estado de Minas Gerais",
     "description": (
-        "Relação de estagiários vinculados aos órgãos e entidades "
-        "do Poder Executivo do Estado de Minas Gerais."
+        "Relação de estagiários vinculados aos órgãos e entidades do Poder Executivo do Estado de Minas Gerais."
     ),
     "keywords": [
         "estagiarios",
