@@ -18,9 +18,9 @@
   ],
   "resources": [
     {
-      "name": "estagiario_2022",
-      "title": "Estagiários do Governo de Minas Gerais (2022)",
-      "path": "data/estagiarios_2022.csv",
+      "name": "estagiario_2022v2",
+      "title": "Estagiários do Governo de Minas Gerais (2022v2)",
+      "path": "data/estagiarios_2022v2.csv",
       "format": "csv",
       "mediatype": "text/csv",
       "encoding": "latin1",
