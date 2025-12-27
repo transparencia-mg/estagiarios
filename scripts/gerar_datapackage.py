@@ -34,7 +34,7 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
 
 datapackage = {
     "profile": "tabular-data-package",
-    "name": "estagiarios-governo-minas-gerais",
+    "name": "estagiarios",
     "title": "Estagiários do Governo do Estado de Minas Gerais",
     "description": (
         "Relação de estagiários vinculados aos órgãos e entidades do Poder Executivo do Estado de Minas Gerais."
