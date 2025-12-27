@@ -12,17 +12,17 @@ if not CKAN_HOST or not CKAN_KEY:
     print("❌ CKAN_HOST ou CKAN_KEY não definidos")
     sys.exit(1)
 
+print("🚀 Publicando / atualizando dataset no CKAN com DataStore...")
+
 cmd = [
     "dpckan",
     "--ckan-host", CKAN_HOST,
     "--ckan-key", CKAN_KEY,
     "--datastore",
-    "--update",
     "--datapackage", "datapackage/datapackage.json",
-    "dataset", "create"
+    "dataset", "update"
 ]
 
-print("🚀 Publicando dataset no CKAN com Datastore e views...")
 subprocess.run(cmd, check=True)
-print("✅ Publicação concluída com sucesso")
 
+print("✅ Publicação concluída com sucesso")
