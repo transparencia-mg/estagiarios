@@ -1,3 +1,9 @@
+name: Commit datapackage.json
+  uses: stefanzweifel/git-auto-commit-action@v5
+  with:
+    commit_message: Atualiza datapackage automaticamente
+    file_pattern: datapackage/datapackage.json
+
 name: Publicar dataset no CKAN
 
 on:
