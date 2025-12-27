@@ -20,8 +20,10 @@ for csv in sorted(DATA_DIR.glob("estagiarios_*.csv")):
     schema = gerar_schema(csv)
 
     resources.append({
+        # 🔑 ESTE CAMPO GARANTE A REUTILIZAÇÃO DO ID NO CKAN
         "name": f"estagiarios-{ano}",
-        "title": f"Estagiários do Governo de Minas Gerais – {ano}",
+
+        "title": f"Estagiários do Governo de Minas Gerais ({ano})",
         "path": f"data/{csv.name}",
         "format": "csv",
         "mediatype": "text/csv",
@@ -39,10 +41,10 @@ datapackage = {
         "do Poder Executivo do Estado de Minas Gerais."
     ),
     "keywords": [
-        "estagiários",
-        "educação",
+        "estagiarios",
+        "educacao",
         "recursos humanos",
-        "Governo de Minas Gerais"
+        "minas gerais"
     ],
     "license": "CC-BY-4.0",
     "sources": [
@@ -60,6 +62,4 @@ OUTPUT.write_text(
     encoding="utf-8"
 )
 
-print("✔ datapackage.json gerado com encoding tolerante, hash e schema")
-
-
+print("✔ datapackage.json gerado corretamente para CKAN")
