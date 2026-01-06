@@ -36,7 +36,7 @@ resources:
         - name: valor_remuneracao
           type: string
     scheme: file
-    title: Estagiários 2022
+    title: Estagiarios 2022
   - description: Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.
     dialect:
       delimiter: ;
@@ -71,7 +71,7 @@ resources:
         - name: valor_remuneracao
           type: string
     scheme: file
-    title: Estagiários 2023
+    title: Estagiarios 2023
   - description: Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.
     dialect:
       delimiter: ;
@@ -106,7 +106,7 @@ resources:
         - name: valor_remuneracao
           type: string
     scheme: file
-    title: Estagiários 2024
+    title: Estagiarios 2024
   - description: Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.
     dialect:
       delimiter: ;
@@ -141,5 +141,5 @@ resources:
         - name: valor_remuneracao
           type: string
     scheme: file
-    title: Estagiários 2025
+    title: Estagiarios 2025
 title: Estagiarios
