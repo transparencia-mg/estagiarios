@@ -1,11 +1,11 @@
 {
   "version": "4.16.6",
-  "time": 1.449,
+  "time": 1.446,
   "errors": [],
   "tasks": [
     {
       "resource": {
-        "description": "Insira a descrição/explicação detalhada deste recurso.",
+        "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
         "dialect": {
           "delimiter": ";"
         },
@@ -64,7 +64,7 @@
           ]
         },
         "scheme": "file",
-        "title": "Insira um título humanamente legível para este recurso.",
+        "title": "Estagiarios 2022",
         "stats": {
           "hash": "63a97d7091a50d532d88cd7037ec546b",
           "bytes": 48110,
@@ -102,7 +102,7 @@
     },
     {
       "resource": {
-        "description": "Insira a descrição/explicação detalhada deste recurso.",
+        "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
         "dialect": {
           "delimiter": ";"
         },
@@ -161,7 +161,7 @@
           ]
         },
         "scheme": "file",
-        "title": "Insira um título humanamente legível para este recurso.",
+        "title": "Estagiarios 2023",
         "stats": {
           "hash": "deb1c9c687b0f8efba24f8d25f16cade",
           "bytes": 738512,
@@ -169,7 +169,7 @@
           "rows": 7970
         }
       },
-      "time": 0.281,
+      "time": 0.279,
       "scope": [
         "hash-count-error",
         "byte-count-error",
@@ -199,7 +199,7 @@
     },
     {
       "resource": {
-        "description": "Insira a descrição/explicação detalhada deste recurso.",
+        "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
         "dialect": {
           "delimiter": ";"
         },
@@ -258,7 +258,7 @@
           ]
         },
         "scheme": "file",
-        "title": "Insira um título humanamente legível para este recurso.",
+        "title": "Estagiarios 2024",
         "stats": {
           "hash": "f70d66bfc6046891642bfa94c6417372",
           "bytes": 1537200,
@@ -266,7 +266,7 @@
           "rows": 16763
         }
       },
-      "time": 0.572,
+      "time": 0.569,
       "scope": [
         "hash-count-error",
         "byte-count-error",
@@ -296,7 +296,7 @@
     },
     {
       "resource": {
-        "description": "Insira a descrição/explicação detalhada deste recurso.",
+        "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
         "dialect": {
           "delimiter": ";"
         },
@@ -355,7 +355,7 @@
           ]
         },
         "scheme": "file",
-        "title": "Insira um título humanamente legível para este recurso.",
+        "title": "Estagiarios 2025",
         "stats": {
           "hash": "2143a425916437206c3aea9008939a74",
           "bytes": 1369359,
@@ -363,7 +363,7 @@
           "rows": 14859
         }
       },
-      "time": 0.518,
+      "time": 0.519,
       "scope": [
         "hash-count-error",
         "byte-count-error",
