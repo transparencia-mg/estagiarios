@@ -1,10 +1,10 @@
 {
   "name": "estagiarios",
-  "owner_org": "",
+  "owner_org": "secretaria-de-estado-de-planejamento-e-gestao-seplag",
   "profile": "data-package",
   "resources": [
     {
-      "description": "Insira a descrição/explicação detalhada deste recurso.",
+      "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
       "dialect": {
         "delimiter": ";"
       },
@@ -63,10 +63,10 @@
         ]
       },
       "scheme": "file",
-      "title": "Insira um título humanamente legível para este recurso."
+      "title": "Estagiarios 2022"
     },
     {
-      "description": "Insira a descrição/explicação detalhada deste recurso.",
+      "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
       "dialect": {
         "delimiter": ";"
       },
@@ -125,10 +125,10 @@
         ]
       },
       "scheme": "file",
-      "title": "Insira um título humanamente legível para este recurso."
+      "title": "Estagiarios 2023"
     },
     {
-      "description": "Insira a descrição/explicação detalhada deste recurso.",
+      "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
       "dialect": {
         "delimiter": ";"
       },
@@ -187,10 +187,10 @@
         ]
       },
       "scheme": "file",
-      "title": "Insira um título humanamente legível para este recurso."
+      "title": "Estagiarios 2024"
     },
     {
-      "description": "Insira a descrição/explicação detalhada deste recurso.",
+      "description": "Conjunto de dados contendo informações cadastrais, funcionais e de remuneração dos estagiários vinculados aos órgãos e entidades do Governo do Estado de Minas Gerais.",
       "dialect": {
         "delimiter": ";"
       },
@@ -249,7 +249,7 @@
         ]
       },
       "scheme": "file",
-      "title": "Insira um título humanamente legível para este recurso."
+      "title": "Estagiarios 2025"
     }
   ],
   "title": "Estagiarios"
