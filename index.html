@@ -8,6 +8,7 @@
     <!-- ==================== ESTILOS E BIBLIOTECAS ==================== -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -33,7 +34,7 @@
         
         /* ==================== ESTILOS GERAIS ==================== */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-light);
             padding-bottom: 30px;
         }
@@ -262,6 +263,7 @@
             overflow: hidden;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
             margin-bottom: 20px;
+            border: 1px solid #dee2e6;
         }
         
         .table-header {
@@ -308,6 +310,7 @@
         
         .table-fixed-header-container table thead th {
             background-color: #f8f9fa !important;
+            color: white !important;
             position: sticky;
             top: 0;
             z-index: 20;
@@ -324,11 +327,13 @@
             font-size: 13px;
             border-collapse: separate;
             border-spacing: 0;
+            border: 1px solid #dee2e6;
         }
         
+        /* Adicionar bordas verticais ao cabeçalho da tabela */
         .table thead th {
-            background-color: #f8f9fa !important;
-            color: var(--primary-dark);
+            background-color: var(--primary-dark) !important;
+            color: white !important;
             font-weight: 600;
             border: none;
             padding: 12px 10px;
@@ -342,6 +347,16 @@
             top: 0;
             z-index: 20;
             white-space: nowrap;
+            border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        .table thead th:first-child {
+            border-left: none !important;
+        }
+        
+        .table thead th:last-child {
+            border-right: none !important;
         }
         
         .sort-icon {
@@ -349,6 +364,7 @@
             margin-left: 4px;
             font-size: 9px;
             transition: opacity 0.2s ease;
+            color: white;
         }
         
         .table thead th:hover {
@@ -371,22 +387,48 @@
         .table thead th.sorted-desc .sort-icon::after {
             content: "↓";
         }
+
+                /* Aplicar bordas verticais a TODAS as tabelas */
+        .table-container table th, 
+        .table-container table td {
+            border-left: 1px solid #dee2e6;
+            border-right: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
         
-        .table tbody tr {
-            transition: background-color 0.2s ease;
+        .table-container table th:first-child,
+        .table-container table td:first-child {
+            border-left: none;
+        }
+        
+        .table-container table th:last-child,
+        .table-container table td:last-child {
+            border-right: none;
+        }
+        
+        /* Borda inferior para linhas */
+        .table-container table tbody tr {
             border-bottom: 1px solid #f1f1f1;
         }
         
+        .table-container table tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        
         .table tbody tr:hover {
-            background-color: rgba(26, 82, 118, 0.04);
+            background-color: rgba(41, 67, 90, 0.04);
         }
         
         .table tbody td {
             padding: 12px 10px;
             vertical-align: middle;
             font-size: 13px;
-        }
-        
+        }        
+   
         /* Coluna de ações na tabela */
         .actions-column {
             width: 100px;
@@ -478,6 +520,21 @@
             color: white;
             transform: translateY(-1px);
         }
+
+        .btn-primary-custom .material-icons,
+        .btn-secondary-custom .material-icons {
+            font-size: 16px;
+            vertical-align: middle;
+            margin-right: 8px;
+            line-height: 1;
+        }
+
+        .btn-primary-custom,
+        .btn-secondary-custom {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
         
         /* ==================== MENU DE NAVEGAÇÃO ==================== */
         .nav-tabs-container {
@@ -486,6 +543,7 @@
             padding: 12px;
             margin-bottom: 20px;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+            margin-top: 10px; 
         }
         
         .nav-tabs {
@@ -504,6 +562,8 @@
             transition: all 0.3s ease;
             font-size: 13px;
             white-space: nowrap;
+            display: flex;
+            align-items: center;
         }
         
         .nav-tabs .nav-link:hover {
@@ -513,6 +573,17 @@
         
         .nav-tabs .nav-link.active {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%);
+            color: white;
+        }
+
+        .nav-tabs .nav-link .material-icons {
+            font-size: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+            line-height: 1;
+        }
+        
+        .nav-tabs .nav-link.active .material-icons {
             color: white;
         }
         
@@ -534,6 +605,17 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        /* Container para alinhar itens à direita */
+        .right-aligned-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
         }
         
         /* ==================== LOADING OVERLAY ==================== */
@@ -575,6 +657,10 @@
             border-top: 2px solid #dee2e6 !important;
         }
 
+       .table-total-row td.quantidade {
+            text-align: center;
+        }
+
         /* ==================== LINK CLICÁVEL ==================== */
         .orgao-link {
             color: var(--primary-dark);
@@ -586,14 +672,20 @@
             padding: 2px 4px;
             border-radius: 4px;
             font-size: 13px;
-            border-bottom: 1px dashed rgba(26, 82, 118, 0.3);
+            border-bottom: none !important;
+            text-transform: none;
         }
 
         .orgao-link:hover {
-            color: var(--accent-blue);
-            background-color: rgba(52, 152, 219, 0.05);
-            border-bottom: 1px solid var(--accent-blue);
+            color: var(--accent-red) !important;
+            background-color: rgba(185, 60, 66, 0.05);
             transform: translateY(-1px);
+            text-decoration: none !important;
+        }
+
+        .orgao-link.selected {
+            color: var(--hover-blue) !important;
+            background-color: rgba(0, 106, 130, 0.1);
         }
 
         .orgao-link:active {
@@ -604,6 +696,21 @@
         #visaoGeralTable .orgao-link {
             padding: 4px 8px;
             margin: -4px -8px;
+            text-transform: none;
+            font-weight: 600;
+        }
+        
+        /* Link de órgão na Consulta Individual NÃO deve trocar de cor ao passar mouse */
+        #empregadosTable .orgao-link {
+            color: var(--primary-darker) !important;
+            background-color: transparent !important;
+            cursor: default;
+        }
+        
+        #empregadosTable .orgao-link:hover {
+            color: var(--primary-darker) !important;
+            background-color: transparent !important;
+            transform: none;
         }
         
         /* ==================== PAGINAÇÃO ==================== */
@@ -714,7 +821,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 0;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
         }
         
         .search-box-container label {
@@ -732,6 +842,7 @@
             transition: all 0.3s ease !important;
             width: 100% !important;
             max-width: 300px !important;
+            background: white;
         }
         
         .search-box-container input:focus {
@@ -815,6 +926,15 @@
         .historic-table tbody td {
             padding: 8px 10px;
             vertical-align: middle;
+        }
+
+        /* ==================== DATA ATUALIZAÇÃO MINIMALISTA ==================== */
+        .data-atualizacao-container {
+            text-align: center;
+            margin: 10px 0 20px 0;
+            font-size: 12px;
+            color: var(--primary-darker);
+            opacity: 0.8;
         }
         
         /* ==================== BADGES DE SITUAÇÃO ==================== */
@@ -974,42 +1094,6 @@
 </head>
 <body>
 
-    <!-- ==================== HEADER PRINCIPAL ==================== -->
-    <header class="main-header">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="logo-container">
-                    <div class="logo">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div>
-                        <h1 class="header-title">Estagiários do Governo de MG</h1>
-                        <p class="header-subtitle">Governo do Estado de Minas Gerais - Dados de Estagiários</p>
-                        <div class="header-info">
-                            <a href="https://dados.mg.gov.br/dataset/estagiarios" target="_blank" class="link-legislacao">
-                                <i class="fas fa-external-link-alt"></i> Portal de Dados Abertos MG
-                            </a>
-                            <a href="https://github.com/transparencia-mg/estagiarios" target="_blank" class="link-legislacao">
-                                <i class="fab fa-github"></i> Repositório GitHub
-                            </a>
-                            <span class="badge-atualizacao-header">
-                                <i class="fas fa-sync-alt"></i> Última atualização: <span id="data-atualizacao-header">Carregando...</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Informação de Fonte de Dados -->
-                <div class="text-end">
-                    <div class="btn-export" style="background: rgba(255, 255, 255, 0.2); color: white; border-color: white;">
-                        <i class="fas fa-database me-2"></i> Fonte: GitHub
-                    </div>
-                    <small class="text-white d-block mt-1" style="font-size: 10px;">Atualização automática</small>
-                </div>
-            </div>
-        </div>
-    </header>
-
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
     <div class="container">
         <!-- ==================== MENU DE NAVEGAÇÃO ==================== -->
@@ -1017,17 +1101,17 @@
             <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="dashboard1-tab" data-bs-toggle="tab" data-bs-target="#dashboard1" type="button" role="tab">
-                        <i class="fas fa-chart-bar me-2"></i>Visão Geral
+                        <i class="material-icons me-2">bar_chart</i>Visão Geral
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="dashboard2-tab" data-bs-toggle="tab" data-bs-target="#dashboard2" type="button" role="tab">
-                        <i class="fas fa-user-graduate me-2"></i>Consulta Individual
+                        <i class="material-icons me-2">perm_identity</i>Consulta Individual
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="dashboard3-tab" data-bs-toggle="tab" data-bs-target="#dashboard3" type="button" role="tab">
-                        <i class="fas fa-download me-2"></i>Downloads
+                        <i class="material-icons me-2">downloading</i>Downloads
                     </button>
                 </li>
             </ul>
@@ -1038,6 +1122,12 @@
             
             <!-- ==================== DASHBOARD 1: VISÃO GERAL ==================== -->
             <div class="tab-pane fade show active" id="dashboard1" role="tabpanel">
+
+                <!-- Data de Atualização -->
+                <div class="data-atualizacao-container">
+                    <i class="fas fa-sync-alt me-2"></i>
+                    <span id="data-atualizacao-body">Última atualização: Carregando...</span>
+                </div>
                 
                 <!-- Filtros Dashboard 1 -->
                 <div class="filter-container">
@@ -1145,21 +1235,6 @@
 
                 <!-- Tabela Dashboard 1 - VISÃO GERAL -->
                 <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Visão Geral</h3>
-                        <div class="d-flex align-items-center gap-3 ms-auto">
-                            <div class="items-per-page">
-                                <span>Itens por página:</span>
-                                <select id="itemsPerPageDashboard1">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50" selected>50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <span class="table-badge" id="resumoCountDashboard1">0 registros</span>
-                        </div>
-                    </div>
                     <div class="table-fixed-header-container">
                         <table class="table table-hover" id="visaoGeralTable">
                             <thead>
@@ -1282,42 +1357,43 @@
                     </div>
                 </div>
 
-                <!-- Campo de Busca de Registros Dashboard 2 -->
+                <!-- Ações Dashboard 2 -->
                 <div class="actions-container mb-4">
-                    <div class="export-buttons">
-                        <button class="btn-export" id="exportCSVDashboard2">
-                            <i class="fas fa-file-csv"></i> Exportar CSV
-                        </button>
-                        <button class="btn-export" id="printDashboard2">
-                            <i class="fas fa-print"></i> Imprimir
-                        </button>
-                    </div>
+                    <div class="d-flex align-items-center gap-3 w-100">
+                        <div class="export-buttons">
+                            <button class="btn-export" id="exportCSVDashboard2">
+                                <i class="fas fa-file-csv me-2"></i> Exportar CSV
+                            </button>
+                            <button class="btn-export" id="printDashboard2">
+                                <i class="fas fa-print me-2"></i> Imprimir
+                            </button>
+                        </div>
 
-                    <div class="search-box-container">
-                        <label for="searchEstagiarios">Buscar registros:</label>
-                        <input type="text" id="searchEstagiarios" placeholder="Buscar por nome, MASP, órgão ou situação...">
+                        <div class="right-aligned-container">
+                            <div class="search-box-container">
+                                <label for="searchEstagiários">Buscar registros:</label>
+                                <input type="text" id="searchEstagiários" placeholder="Buscar por nome, cargo, empresa ou órgão...">
+                            </div>
+
+                       <div class="items-per-page">
+                           <span>Itens por página:</span>
+                           <select id="itemsPerPageDashboard2">
+                               <option value="10">10</option>
+                               <option value="25">25</option>
+                               <option value="50" selected>50</option>
+                               <option value="100">100</option>
+                           </select>
+                       </div>
+                            
+                            <span class="table-badge" id="resumoCountDashboard2">0 empregados</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Tabela de Estagiários Dashboard 2 -->
                 <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Consulta Individual</h3>
-                        <div class="d-flex align-items-center gap-3 ms-auto">
-                            <div class="items-per-page">
-                                <span>Itens por página:</span>
-                                <select id="itemsPerPageDashboard2">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50" selected>50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </div>
-                            <span class="table-badge" id="resumoCountDashboard2">0 estagiários</span>
-                        </div>
-                    </div>
                     <div class="table-fixed-header-container">
-                        <table class="table table-hover" id="estagiariosTable">
+                        <table class="table table-hover" id="empregadosTable">
                             <thead>
                                 <tr>
                                     <th data-sort="nome_estagiario" data-order="asc" onclick="sortTable('estagiarios', 'nome_estagiario')">Nome <span class="sort-icon">▼</span></th>
@@ -1506,30 +1582,6 @@
         </div>
     </div>
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="footer mt-4 pt-4 border-top">
-        <div class="container text-center text-muted">
-            <p class="mb-1">
-                <i class="fas fa-sync-alt me-2"></i> 
-                Data de Atualização — 
-                <span id="footer-atualizacao">Carregando...</span>
-            </p>
-            <p class="mb-0" style="font-size: 0.85rem;">
-                © 2025 Estagiários - Governo do Estado de Minas Gerais
-            </p>
-            <p class="mt-2 mb-0 small">
-                <a href="https://dados.mg.gov.br/dataset/estagiarios" style="color: var(--primary-dark); text-decoration: none; font-weight: 600;">
-                    <i class="fas fa-external-link-alt"></i> dados.mg.gov.br
-                </a>
-                | 
-                <a href="https://github.com/transparencia-mg/estagiarios" 
-                   style="color: var(--primary-dark); text-decoration: none; font-weight: 600;">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-            </p>
-        </div>
-    </footer>
-
     <!-- ==================== MODAL DE HISTÓRICO ==================== -->
     <div class="modal fade" id="historicModal" tabindex="-1" aria-labelledby="historicModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-historic">
@@ -1630,7 +1682,7 @@
         const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/transparencia-mg/estagiarios/main/dataset/data/';
         const GITHUB_API_URL = 'https://api.github.com/repos/transparencia-mg/estagiarios/commits?path=dataset/data&per_page=1';
 
-        // LISTA CSV - CORRIGIDA: REMOVIDO 2021
+        // LISTA CSV
         const CSV_FILES_BY_YEAR = {
             '2022': 'estagiarios_2022.csv',
             '2023': 'estagiarios_2023.csv',
@@ -1647,24 +1699,40 @@
 
         // MAPEAMENTO COMPLETO DE SIGLAS PARA NOMES DE ÓRGÃOS
         const orgaosExtenso = {
-                'AGE': 'Assembleia Geral do Estado',
+    'AGE': 'Assembleia Geral do Estado',
+    'ARMVA': 'Administração Regional do Médio Vale do Aço',
     'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
+    'CBMMG': 'Corpo de Bombeiros Militar de Minas Gerais',
     'CGE': 'Controladoria-Geral do Estado',
     'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
+    'COHAB': 'Companhia de Habitação do Estado de Minas Gerais',            
     'DEER': 'Departamento de Edificações e Estradas de Rodagem',
     'DER': 'Departamento de Edificações e Estradas de Rodagem',
     'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
+    'EPAMIG': 'Empresa de Pesquisa Agropecuária de Minas Gerais',
+    'ESP': 'Escola de Saúde Pública do Estado de Minas Gerais', 
     'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
     'FAOP': 'Fundação de Arte de Ouro Preto',
+    'FCS': 'Fundação Clóvis Salgado',
+    'FEAM': 'Fundação Estadual do Meio Ambiente',        
     'FHA': 'Fundação Helena Antipoff',
     'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
     'FJP': 'Fundação João Pinheiro',
+    'FUCAM': 'Fundação Caio Martins',
     'FUNED': 'Fundação Ezequiel Dias',
     'GMG': 'Gabinete Militar do Governador',
+    'HEMOMINAS': 'Fundação Centro de Hematologia e Hemoterapia de Minas Gerais',
+    'HPM': 'Hospital da Polícia Militar',
+    'IDENE': 'Instituto de Desenvolvimento do Norte e Nordeste de Minas Gerais',
     'IEF': 'Instituto Estadual de Florestas',
+    'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico de Minas Gerais',
+    'IGAM': 'Instituto Mineiro de Gestão das Águas',
     'IMA': 'Instituto Mineiro de Agropecuária',
     'IPSEMG': 'Instituto de Previdência dos Servidores',
     'IPSM': 'Instituto de Previdência dos Servidores Militares',
+    'JUCEMG: 'Junta Comercial do Estado de Minas Gerais',
+    'LEMG': 'Loteria Mineira',
+    'OGE': 'Ouvidoria-Geral do Estado',            
     'PCMG': 'Polícia Civil',
     'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
     'SCC': 'Secretaria de Estado da Casa Civil',
@@ -1682,8 +1750,10 @@
     'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
     'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
     'SES': 'Secretaria de Estado de Saúde',
+    'SG': 'Secretaria Geral do Estado',
     'UEMG': 'Universidade do Estado de Minas Gerais',
     'UNIMONTES': 'Universidade Estadual de Montes Claros',
+    'UTRAMIG': 'Fundação de Educação para o Trabalho de Minas Gerais',
     'PM': 'Polícia Militar',
     'CBMMG': 'Corpo de Bombeiros Militar',
     'TCE': 'Tribunal de Contas do Estado',
@@ -1764,6 +1834,11 @@ function getOrgaoExtenso(siglaOuNome) {
     // 4️⃣ Não encontrou → retorna original
     return valorOriginal;
 }
+
+        // ==================== FUNÇÃO PARA ATUALIZAR ALTURA DO IFRAME ====================
+        function iframeUpdateHeight() { 
+            window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 10 }, '*'); 
+        }
 
 
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
