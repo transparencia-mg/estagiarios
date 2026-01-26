@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -30,6 +31,10 @@
             --secondary-purple: #8E44AD;
             --secondary-orange: #E67E22;
             --secondary-teal: #16A085;
+            --danger-red: #E74C3C;
+            --hover-blue: #006A82;
+            --btn-danger: #dc3545;
+            --btn-danger-hover: #bb2d3b;
         }
         
         /* ==================== ESTILOS GERAIS ==================== */
@@ -305,11 +310,11 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            background-color: #f8f9fa !important;
+            background-color: var(--primary-dark) !important;
         }
         
         .table-fixed-header-container table thead th {
-            background-color: #f8f9fa !important;
+            background-color: var(--primary-dark) !important;
             color: white !important;
             position: sticky;
             top: 0;
@@ -368,7 +373,7 @@
         }
         
         .table thead th:hover {
-            background-color: #f1f3f5 !important;
+            background-color: var(--primary-darker) !important;
         }
         
         .table thead th:hover .sort-icon {
@@ -388,7 +393,7 @@
             content: "↓";
         }
 
-                /* Aplicar bordas verticais a TODAS as tabelas */
+        /* Aplicar bordas verticais a TODAS as tabelas */
         .table-container table th, 
         .table-container table td {
             border-left: 1px solid #dee2e6;
@@ -482,6 +487,24 @@
             color: white;
         }
         
+        .btn-danger-custom {
+            background: linear-gradient(to right, var(--btn-danger), #e53935);
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            color: white;
+        }
+        
+        .btn-danger-custom:hover {
+            background: linear-gradient(to right, #c62828, var(--btn-danger));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+            color: white;
+        }
+        
         .btn-secondary-custom {
             background: white;
             border: 2px solid var(--primary-dark);
@@ -522,7 +545,8 @@
         }
 
         .btn-primary-custom .material-icons,
-        .btn-secondary-custom .material-icons {
+        .btn-secondary-custom .material-icons,
+        .btn-danger-custom .material-icons {
             font-size: 16px;
             vertical-align: middle;
             margin-right: 8px;
@@ -530,7 +554,8 @@
         }
 
         .btn-primary-custom,
-        .btn-secondary-custom {
+        .btn-secondary-custom,
+        .btn-danger-custom {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -677,8 +702,8 @@
         }
 
         .orgao-link:hover {
-            color: var(--accent-red) !important;
-            background-color: rgba(185, 60, 66, 0.05);
+            color: var(--hover-blue) !important;
+            background-color: rgba(0, 106, 130, 0.05);
             transform: translateY(-1px);
             text-decoration: none !important;
         }
@@ -756,24 +781,24 @@
             align-items: center;
             gap: 8px;
             font-size: 12px;
-            color: white;
+            color: var(--primary-dark);
             font-weight: 600;
         }
         
         .items-per-page select {
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid var(--primary-dark);
             border-radius: 6px;
             padding: 5px 10px;
             font-size: 12px;
             width: auto;
             min-width: 70px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
+            background-color: white;
+            color: var(--primary-dark);
         }
         
         .items-per-page select option {
-            background-color: var(--primary-dark);
-            color: white;
+            background-color: white;
+            color: var(--primary-dark);
         }
         
         /* ==================== CARDS ==================== */
@@ -1045,7 +1070,8 @@
             }
             
             .btn-primary-custom,
-            .btn-secondary-custom {
+            .btn-secondary-custom,
+            .btn-danger-custom {
                 padding: 8px 15px;
                 font-size: 12px;
             }
@@ -1093,6 +1119,7 @@
     </style>
 </head>
 <body>
+
 
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
     <div class="container">
@@ -1171,7 +1198,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex gap-3 flex-wrap">
-                                <button class="btn-primary-custom" id="aplicarFiltros">
+                                <button class="btn-danger-custom" id="aplicarFiltros">
                                     <i class="fas fa-filter me-2"></i>Pesquisar
                                 </button>
                                 <button class="btn-secondary-custom" id="limparFiltros">
@@ -1230,6 +1257,21 @@
                         <button class="btn-export" id="printDashboard1">
                             <i class="fas fa-print me-2"></i> Imprimir
                         </button>
+                    </div>
+                    <div class="right-aligned-container">
+                        <div class="search-box-container">
+                            <label for="searchResumo">Buscar órgão:</label>
+                            <input type="text" id="searchResumo" placeholder="Buscar por nome ou sigla...">
+                        </div>
+                        <div class="items-per-page">
+                            <span>Itens por página:</span>
+                            <select id="itemsPerPageDashboard1">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50" selected>50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -1346,7 +1388,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex gap-3 flex-wrap">
-                                <button class="btn-primary-custom" id="pesquisarEstagiarios">
+                                <button class="btn-danger-custom" id="pesquisarEstagiarios">
                                     <i class="fas fa-search me-2"></i>Pesquisar
                                 </button>
                                 <button class="btn-secondary-custom" id="limparFiltrosDashboard2">
@@ -1371,8 +1413,8 @@
 
                         <div class="right-aligned-container">
                             <div class="search-box-container">
-                                <label for="searchEstagiários">Buscar registros:</label>
-                                <input type="text" id="searchEstagiários" placeholder="Buscar por nome, cargo, empresa ou órgão...">
+                                <label for="searchEstagiarios">Buscar registros:</label>
+                                <input type="text" id="searchEstagiarios" placeholder="Buscar por nome, MASP ou órgão...">
                             </div>
 
                        <div class="items-per-page">
@@ -1385,7 +1427,7 @@
                            </select>
                        </div>
                             
-                            <span class="table-badge" id="resumoCountDashboard2">0 empregados</span>
+                            <span class="table-badge" id="resumoCountDashboard2">0 estagiários</span>
                         </div>
                     </div>
                 </div>
@@ -1435,9 +1477,9 @@
                 
                 <!-- Filtro de Download -->
                 <div class="filter-container">
-                    <div class="row">
+                    <div class="row align-items-end">
                         <div class="col-md-6">
-                            <div class="mb-3">
+                            <div class="mb-0">
                                 <label for="anoDownload" class="form-label filter-label">Selecione o Ano para Download</label>
                                 <select class="form-select" id="anoDownload">
                                     <option value="">Selecione um ano...</option>
@@ -1448,19 +1490,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 d-flex align-items-end">
-                            <button class="btn-primary-custom w-100" id="downloadAnoCSV">
-                                <i class="fas fa-download me-2"></i>Baixar CSV do Ano Selecionado
-                            </button>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-end h-100">
+                                <button class="btn-primary-custom w-100 mt-3" id="downloadAnoCSV">
+                                    <i class="fas fa-download me-2"></i>Baixar CSV do Ano Selecionado
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Informações sobre os dados -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Informações sobre os Dados</h3>
-                    </div>
+                <div class="table-container mt-4">
                     <div class="p-4">
                         <div class="row">
                             <div class="col-md-6 col-12">
@@ -1662,32 +1703,17 @@
         let currentSortDashboard1 = { column: 'orgao', order: 'asc' };
         let currentSortDashboard2 = { column: 'nome_estagiario', order: 'asc' };
         let currentSearchTerm = '';
-        let lastGitHubCheck = null;
-        let lastDataHash = null;
+        let dashboardAnterior = 'dashboard1'; // Para controle das tabs
         
-        const chartColors = {
-            primary: '#1A5276',
-            accent: '#3498DB',
-            bright: '#2980B9',
-            dark: '#0E2F44',
-            success: '#27AE60',
-            warning: '#F39C12',
-            info: '#17A589',
-            purple: '#8E44AD',
-            orange: '#E67E22',
-            teal: '#16A085'
-        };
-
-        // URLs dos CSVs no GitHub
+        // URLs dos CSVs no GitHub - CORRIGIDO para a nova estrutura
         const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/transparencia-mg/estagiarios/main/dataset/data/';
-        const GITHUB_API_URL = 'https://api.github.com/repos/transparencia-mg/estagiarios/commits?path=dataset/data&per_page=1';
-
-        // LISTA CSV
+        
+        // Mapeamento de anos para arquivos (agora no formato correto)
         const CSV_FILES_BY_YEAR = {
-            '2022': 'estagiarios_2022.csv',
-            '2023': 'estagiarios_2023.csv',
-            '2024': 'estagiarios_2024.csv',
-            '2025': 'estagiarios_2025.csv'
+            '2022': 'estagiarios_mg_2022.csv',
+            '2023': 'estagiarios_mg_2023.csv',
+            '2024': 'estagiarios_mg_2024.csv',
+            '2025': 'estagiarios_mg_2025.csv'
         };
 
         const monthNames = {
@@ -1697,149 +1723,142 @@
             '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro'
         };
 
-        // MAPEAMENTO COMPLETO DE SIGLAS PARA NOMES DE ÓRGÃOS
+        // MAPEAMENTO COMPLETO DE SIGLAS PARA NOMES DE ÓRGÃOS - CORRIGIDO!
         const orgaosExtenso = {
-    'AGE': 'Assembleia Geral do Estado',
-    'ARMVA': 'Administração Regional do Médio Vale do Aço',
-    'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
-    'CBMMG': 'Corpo de Bombeiros Militar de Minas Gerais',
-    'CGE': 'Controladoria-Geral do Estado',
-    'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
-    'COHAB': 'Companhia de Habitação do Estado de Minas Gerais',            
-    'DEER': 'Departamento de Edificações e Estradas de Rodagem',
-    'DER': 'Departamento de Edificações e Estradas de Rodagem',
-    'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
-    'EPAMIG': 'Empresa de Pesquisa Agropecuária de Minas Gerais',
-    'ESP': 'Escola de Saúde Pública do Estado de Minas Gerais', 
-    'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
-    'FAOP': 'Fundação de Arte de Ouro Preto',
-    'FCS': 'Fundação Clóvis Salgado',
-    'FEAM': 'Fundação Estadual do Meio Ambiente',        
-    'FHA': 'Fundação Helena Antipoff',
-    'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
-    'FJP': 'Fundação João Pinheiro',
-    'FUCAM': 'Fundação Caio Martins',
-    'FUNED': 'Fundação Ezequiel Dias',
-    'GMG': 'Gabinete Militar do Governador',
-    'HEMOMINAS': 'Fundação Centro de Hematologia e Hemoterapia de Minas Gerais',
-    'HPM': 'Hospital da Polícia Militar',
-    'IDENE': 'Instituto de Desenvolvimento do Norte e Nordeste de Minas Gerais',
-    'IEF': 'Instituto Estadual de Florestas',
-    'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico de Minas Gerais',
-    'IGAM': 'Instituto Mineiro de Gestão das Águas',
-    'IMA': 'Instituto Mineiro de Agropecuária',
-    'IPSEMG': 'Instituto de Previdência dos Servidores',
-    'IPSM': 'Instituto de Previdência dos Servidores Militares',
-    'JUCEMG: 'Junta Comercial do Estado de Minas Gerais',
-    'LEMG': 'Loteria Mineira',
-    'OGE': 'Ouvidoria-Geral do Estado',            
-    'PCMG': 'Polícia Civil',
-    'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
-    'SCC': 'Secretaria de Estado da Casa Civil',
-    'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
-    'SEC': 'Secretaria de Estado de Cultura',
-    'SECOM': 'Secretaria de Estado de Comunicação Social',
-    'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
-    'SEDS': 'Secretaria de Estado de Defesa Social',
-    'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
-    'SEE': 'Secretaria de Estado de Educação',
-    'SEF': 'Secretaria de Estado de Fazenda',
-    'SEGOV': 'Secretaria de Estado de Governo',
-    'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
-    'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
-    'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
-    'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
-    'SES': 'Secretaria de Estado de Saúde',
-    'SG': 'Secretaria Geral do Estado',
-    'UEMG': 'Universidade do Estado de Minas Gerais',
-    'UNIMONTES': 'Universidade Estadual de Montes Claros',
-    'UTRAMIG': 'Fundação de Educação para o Trabalho de Minas Gerais',
-    'PM': 'Polícia Militar',
-    'CBMMG': 'Corpo de Bombeiros Militar',
-    'TCE': 'Tribunal de Contas do Estado',
-    'MPMG': 'Ministério Público do Estado de Minas Gerais',
-    'TJMG': 'Tribunal de Justiça do Estado de Minas Gerais',
-    'CBM': 'CBM',
-    'EP': 'EP',
-    'MGI': 'Minas Gerais Industrial',
-    'DETRAN': 'Departamento de Trânsito',
-    'EMATER': 'Empresa de Assistência Técnica e Extensão Rural',
-    'FUNDEP': 'Fundação de Desenvolvimento da Pesquisa',
-    'IGAM': 'Instituto Mineiro de Gestão das Águas',
-    'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico',
-    'MDC': 'Museu de Ciências',
-    'PMMG': 'Polícia Militar de Minas Gerais',
-    'SAAE': 'Serviço Autônomo de Água e Esgoto',
-    'SEBRAE': 'Serviço Brasileiro de Apoio às Micro e Pequenas Empresas',
-    'SEMEIA': 'SEMEIA',
-    'SINE': 'Sistema Nacional de Emprego',
-    'SSP': 'Secretaria de Segurança Pública',
-    'UFMG': 'Universidade Federal de Minas Gerais',
-    'UFSJ': 'Universidade Federal de São João del-Rei',
-    'UFV': 'Universidade Federal de Viçosa',
-    'UFU': 'Universidade Federal de Uberlândia',
-    'NAO INFORMADO': 'Órgão não informado'
-};
+            'AGE': 'Assembleia Geral do Estado',
+            'ARMVA': 'Administração Regional do Médio Vale do Aço',
+            'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
+            'CBMMG': 'Corpo de Bombeiros Militar de Minas Gerais',
+            'CGE': 'Controladoria-Geral do Estado',
+            'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
+            'COHAB': 'Companhia de Habitação do Estado de Minas Gerais',            
+            'DEER': 'Departamento de Edificações e Estradas de Rodagem',
+            'DER': 'Departamento de Edificações e Estradas de Rodagem',
+            'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
+            'EPAMIG': 'Empresa de Pesquisa Agropecuária de Minas Gerais',
+            'ESP': 'Escola de Saúde Pública do Estado de Minas Gerais', 
+            'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
+            'FAOP': 'Fundação de Arte de Ouro Preto',
+            'FCS': 'Fundação Clóvis Salgado',
+            'FEAM': 'Fundação Estadual do Meio Ambiente',        
+            'FHA': 'Fundação Helena Antipoff',
+            'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
+            'FJP': 'Fundação João Pinheiro',
+            'FUCAM': 'Fundação Caio Martins',
+            'FUNED': 'Fundação Ezequiel Dias',
+            'GMG': 'Gabinete Militar do Governador',
+            'HEMOMINAS': 'Fundação Centro de Hematologia e Hemoterapia de Minas Gerais',
+            'HPM': 'Hospital da Polícia Militar',
+            'IDENE': 'Instituto de Desenvolvimento do Norte e Nordeste de Minas Gerais',
+            'IEF': 'Instituto Estadual de Florestas',
+            'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico de Minas Gerais',
+            'IGAM': 'Instituto Mineiro de Gestão das Águas',
+            'IMA': 'Instituto Mineiro de Agropecuária',
+            'IPSEMG': 'Instituto de Previdência dos Servidores',
+            'IPSM': 'Instituto de Previdência dos Servidores Militares',
+            'JUCEMG': 'Junta Comercial do Estado de Minas Gerais',
+            'LEMG': 'Loteria Mineira',
+            'OGE': 'Ouvidoria-Geral do Estado',            
+            'PCMG': 'Polícia Civil',
+            'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
+            'SCC': 'Secretaria de Estado da Casa Civil',
+            'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
+            'SEC': 'Secretaria de Estado de Cultura',
+            'SECOM': 'Secretaria de Estado de Comunicação Social',
+            'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
+            'SEDS': 'Secretaria de Estado de Defesa Social',
+            'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
+            'SEE': 'Secretaria de Estado de Educação',
+            'SEF': 'Secretaria de Estado de Fazenda',
+            'SEGOV': 'Secretaria de Estado de Governo',
+            'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
+            'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
+            'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
+            'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
+            'SES': 'Secretaria de Estado de Saúde',
+            'SG': 'Secretaria Geral do Estado',
+            'UEMG': 'Universidade do Estado de Minas Gerais',
+            'UNIMONTES': 'Universidade Estadual de Montes Claros',
+            'UTRAMIG': 'Fundação de Educação para o Trabalho de Minas Gerais',
+            'PM': 'Polícia Militar',
+            'CBM': 'CBM',
+            'EP': 'EP',
+            'MGI': 'Minas Gerais Industrial',
+            'DETRAN': 'Departamento de Trânsito',
+            'EMATER': 'Empresa de Assistência Técnica e Extensão Rural',
+            'FUNDEP': 'Fundação de Desenvolvimento da Pesquisa',
+            'MDC': 'Museu de Ciências',
+            'PMMG': 'Polícia Militar de Minas Gerais',
+            'SAAE': 'Serviço Autônomo de Água e Esgoto',
+            'SEBRAE': 'Serviço Brasileiro de Apoio às Micro e Pequenas Empresas',
+            'SEMEIA': 'SEMEIA',
+            'SINE': 'Sistema Nacional de Emprego',
+            'SSP': 'Secretaria de Segurança Pública',
+            'UFMG': 'Universidade Federal de Minas Gerais',
+            'UFSJ': 'Universidade Federal de São João del-Rei',
+            'UFV': 'Universidade Federal de Viçosa',
+            'UFU': 'Universidade Federal de Uberlândia',
+            'NAO INFORMADO': 'Órgão não informado',
+            '': 'Órgão não informado'
+        };
 
         // ==================== FUNÇÃO PARA OBTER NOME COMPLETO DO ÓRGÃO ====================
         function normalizarTexto(txt) {
-    return txt
-        .toUpperCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // remove acentos
-        .replace(/[^A-Z0-9 ]/g, " ")     // remove pontuação
-        .replace(/\s+/g, " ")
-        .trim();
-}
-
-function getOrgaoExtenso(siglaOuNome) {
-    if (!siglaOuNome || typeof siglaOuNome !== "string") {
-        return siglaOuNome || "";
-    }
-
-    if (typeof orgaosExtenso !== "object") {
-        console.warn("Mapa orgaosExtenso não encontrado");
-        return siglaOuNome;
-    }
-
-    const valorOriginal = siglaOuNome.trim();
-    const valorNormalizado = normalizarTexto(valorOriginal);
-
-    // 1️⃣ Se já for nome completo, retorna como está
-    for (const nomeExtenso of Object.values(orgaosExtenso)) {
-        if (normalizarTexto(nomeExtenso) === valorNormalizado) {
-            return nomeExtenso;
-        }
-    }
-
-    // 2️⃣ Se for exatamente a sigla
-    if (orgaosExtenso[valorNormalizado]) {
-        return orgaosExtenso[valorNormalizado];
-    }
-
-    // 3️⃣ Se a sigla estiver dentro do texto (ex: "(SES)")
-    for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
-        const siglaNorm = normalizarTexto(sigla);
-
-        if (
-            valorNormalizado === siglaNorm ||
-            valorNormalizado.includes(` ${siglaNorm} `) ||
-            valorNormalizado.endsWith(` ${siglaNorm}`) ||
-            valorNormalizado.startsWith(`${siglaNorm} `)
-        ) {
-            return nomeExtenso;
-        }
-    }
-
-    // 4️⃣ Não encontrou → retorna original
-    return valorOriginal;
-}
-
-        // ==================== FUNÇÃO PARA ATUALIZAR ALTURA DO IFRAME ====================
-        function iframeUpdateHeight() { 
-            window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 10 }, '*'); 
+            if (!txt || typeof txt !== "string") return "";
+            
+            return txt
+                .toUpperCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // remove acentos
+                .replace(/[^A-Z0-9 ]/g, " ")     // remove pontuação
+                .replace(/\s+/g, " ")
+                .trim();
         }
 
+        function getOrgaoExtenso(siglaOuNome) {
+            if (!siglaOuNome || typeof siglaOuNome !== "string") {
+                return siglaOuNome || "Órgão não informado";
+            }
+
+            if (typeof orgaosExtenso !== "object") {
+                console.warn("Mapa orgaosExtenso não encontrado");
+                return siglaOuNome;
+            }
+
+            const valorOriginal = siglaOuNome.trim();
+            if (!valorOriginal) return "Órgão não informado";
+            
+            const valorNormalizado = normalizarTexto(valorOriginal);
+
+            // 1️⃣ Se já for nome completo, retorna como está
+            for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
+                if (normalizarTexto(nomeExtenso) === valorNormalizado) {
+                    return nomeExtenso;
+                }
+            }
+
+            // 2️⃣ Se for exatamente a sigla
+            if (orgaosExtenso[valorOriginal]) {
+                return orgaosExtenso[valorOriginal];
+            }
+
+            // 3️⃣ Se a sigla estiver dentro do texto (ex: "(SES)")
+            for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
+                const siglaNorm = normalizarTexto(sigla);
+
+                if (
+                    valorNormalizado === siglaNorm ||
+                    valorNormalizado.includes(` ${siglaNorm} `) ||
+                    valorNormalizado.endsWith(` ${siglaNorm}`) ||
+                    valorNormalizado.startsWith(`${siglaNorm} `)
+                ) {
+                    return nomeExtenso;
+                }
+            }
+
+            // 4️⃣ Não encontrou → retorna original
+            return valorOriginal;
+        }
 
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1849,8 +1868,25 @@ function getOrgaoExtenso(siglaOuNome) {
             showLoading(true);
             
             try {
-                // Carregar dados do ano mais recente (2025)
-                await loadYearData('2025');
+                // Tentar carregar dados do ano mais recente (2024 primeiro, pois 2025 pode não existir ainda)
+                const anosDisponiveis = Object.keys(CSV_FILES_BY_YEAR).sort().reverse();
+                let dadosCarregados = false;
+                
+                for (const ano of anosDisponiveis) {
+                    try {
+                        console.log(`Tentando carregar dados de ${ano}...`);
+                        await loadYearData(ano);
+                        currentYear = ano;
+                        dadosCarregados = true;
+                        break;
+                    } catch (error) {
+                        console.warn(`Erro ao carregar dados de ${ano}:`, error);
+                    }
+                }
+                
+                if (!dadosCarregados) {
+                    throw new Error('Não foi possível carregar dados de nenhum ano');
+                }
                 
                 // Determinar o mês mais recente
                 await determineLatestMonth();
@@ -1860,7 +1896,6 @@ function getOrgaoExtenso(siglaOuNome) {
                 updateFilterOptions();
                 updateDashboard1();
                 initializeDashboard2();
-                updateDashboard3();
                 setupEventListeners();
                 
                 console.log('Dashboard inicializado com sucesso!');
@@ -1868,16 +1903,20 @@ function getOrgaoExtenso(siglaOuNome) {
                 
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
-                showError('Erro ao carregar dados do GitHub. Por favor, tente novamente.');
+                showError('Erro ao carregar dados do GitHub. Por favor, verifique sua conexão e tente novamente.');
             } finally {
                 showLoading(false);
             }
+            
+            // Chama a função iframeUpdateHeight após carregamento
+            setTimeout(iframeUpdateHeight, 500);
         });
 
         // ==================== CARREGAR DADOS DO GITHUB ====================
         async function loadYearData(year) {
-            if (allData[year]) {
-                console.log(`Dados de ${year} já carregados.`);
+            // Verificar se já temos os dados em cache
+            if (allData[year] && allData[year].length > 0) {
+                console.log(`Dados de ${year} já carregados do cache.`);
                 estagiariosData = allData[year];
                 return;
             }
@@ -1891,11 +1930,43 @@ function getOrgaoExtenso(siglaOuNome) {
             const url = `${GITHUB_BASE_URL}${filename}`;
             console.log(`Carregando dados de ${year}: ${url}`);
 
+            // Função para normalizar o formato do mês
             const normalizarMes = v => {
                 if (!v || typeof v !== 'string') return '';
-                if (v.includes('/')) return v.replace('/', '-').substring(0, 7);
-                if (v.includes('-')) return v.substring(0, 7);
-                if (v.length === 6) return `${v.substring(0,4)}-${v.substring(4,6)}`;
+                
+                // Remover espaços extras
+                v = v.trim();
+                
+                // Tentar diferentes formatos de data
+                if (v.includes('/')) {
+                    // Formato DD/MM/YYYY ou MM/YYYY
+                    const parts = v.split('/');
+                    if (parts.length >= 2) {
+                        const mes = parts.length === 2 ? parts[0] : parts[1];
+                        const ano = parts.length === 2 ? parts[1] : parts[2];
+                        return `${ano}-${mes.padStart(2, '0')}`;
+                    }
+                }
+                
+                if (v.includes('-')) {
+                    // Formato YYYY-MM ou YYYY-MM-DD
+                    const parts = v.split('-');
+                    if (parts.length >= 2) {
+                        return `${parts[0]}-${parts[1].padStart(2, '0')}`;
+                    }
+                }
+                
+                if (v.length === 6 && /^\d{6}$/.test(v)) {
+                    // Formato YYYYMM
+                    return `${v.substring(0,4)}-${v.substring(4,6)}`;
+                }
+                
+                if (v.length === 7 && v.indexOf('-') === 4) {
+                    // Já está no formato YYYY-MM
+                    return v;
+                }
+                
+                console.warn(`Formato de data não reconhecido: "${v}"`);
                 return v;
             };
 
@@ -1905,64 +1976,96 @@ function getOrgaoExtenso(siglaOuNome) {
                     header: true,
                     skipEmptyLines: true,
                     encoding: 'UTF-8',
+                    delimiter: ',',
                     complete: function (results) {
+                        console.log(`Parse completo para ${year}: ${results.data.length} registros`);
+                        
                         const data = results.data
                             .map(row => {
-                                const ano_mesreferencia_raw =
-                                    row.ano_mesreferencia ||
-                                    row['ANO_MESREFERENCIA'] ||
-                                    '';
+                                try {
+                                    // Normalizar nomes das colunas (maiúsculas/minúsculas)
+                                    const rowNormalized = {};
+                                    Object.keys(row).forEach(key => {
+                                        const normalizedKey = key.toLowerCase().trim();
+                                        rowNormalized[normalizedKey] = row[key];
+                                    });
 
-                                const ano_mesreferencia = normalizarMes(ano_mesreferencia_raw);
+                                    // Obter ano_mesreferencia
+                                    const ano_mesreferencia_raw = 
+                                        rowNormalized['ano_mesreferencia'] || 
+                                        rowNormalized['ano_mes_referencia'] ||
+                                        rowNormalized['mes_referencia'] ||
+                                        '';
+                                    
+                                    const ano_mesreferencia = normalizarMes(ano_mesreferencia_raw);
 
-                                if (!ano_mesreferencia) return null;
+                                    if (!ano_mesreferencia || !ano_mesreferencia.includes('-')) {
+                                        console.warn(`Data inválida ou não encontrada: "${ano_mesreferencia_raw}"`);
+                                        return null;
+                                    }
 
-                                const [ano, mes] = ano_mesreferencia.split('-');
+                                    const [ano, mes] = ano_mesreferencia.split('-');
 
-                                // Obter sigla e nome do órgão
-                                const sigla_orgao = row.sigla_orgao || row['SIGLA_ORGAO'] || '';
-                                const orgao_nome = row.orgao || row['ORGAO'] || '';
-                                
-                                // Se o nome do órgão parece ser uma sigla, obter o nome completo
-                                const orgao_completo = getOrgaoExtenso(orgao_nome || sigla_orgao);
+                                    // Obter sigla e nome do órgão
+                                    const sigla_orgao = (rowNormalized['sigla_orgao'] || rowNormalized['sigla'] || '').trim();
+                                    const orgao_nome = (rowNormalized['orgao'] || rowNormalized['orgão'] || '').trim();
+                                    
+                                    // Se o nome do órgão parece ser uma sigla, obter o nome completo
+                                    const orgao_completo = getOrgaoExtenso(orgao_nome || sigla_orgao);
 
-                                // Converter valor_remuneracao para número
-                                let valorRemuneracao = 0;
-                                const valorRaw = row.valor_remuneracao || row['VALOR_REMUNERACAO'] || '0';
-                                if (valorRaw) {
-                                    // Remover R$, pontos e substituir vírgula por ponto
-                                    const valorStr = valorRaw.toString()
-                                        .replace('R$', '')
-                                        .replace(/\./g, '')
-                                        .replace(',', '.')
-                                        .trim();
-                                    valorRemuneracao = parseFloat(valorStr) || 0;
+                                    // Converter valor_remuneracao para número
+                                    let valorRemuneracao = 0;
+                                    const valorRaw = rowNormalized['valor_remuneracao'] || rowNormalized['remuneracao'] || rowNormalized['valor'] || '0';
+                                    if (valorRaw) {
+                                        // Remover R$, pontos e substituir vírgula por ponto
+                                        const valorStr = valorRaw.toString()
+                                            .replace(/R\$/g, '')
+                                            .replace(/\./g, '')
+                                            .replace(',', '.')
+                                            .trim();
+                                        valorRemuneracao = parseFloat(valorStr) || 0;
+                                    }
+
+                                    // Obter nome do estagiário
+                                    const nome_estagiario = (rowNormalized['nome_estagiario'] || rowNormalized['nome'] || '').trim();
+
+                                    // Obter MASP
+                                    const masp = (rowNormalized['masp'] || '').toString().trim();
+
+                                    return {
+                                        ano_mesreferencia,
+                                        nome_estagiario,
+                                        masp,
+                                        codigo_situacao_funcional: rowNormalized['codigo_situacao_funcional'] || rowNormalized['situacao'] || '',
+                                        situacao_funcional: rowNormalized['situacao_funcional'] || rowNormalized['situacao'] || '',
+                                        data_inicio: (rowNormalized['data_inicio'] || '').trim(),
+                                        data_fim: (rowNormalized['data_fim'] || '').trim(),
+                                        codigo_orgao: rowNormalized['codigo_orgao'] || rowNormalized['codigo'] || '',
+                                        orgao: orgao_completo, // Nome completo do órgão
+                                        orgao_sigla: sigla_orgao || orgao_completo.substring(0, 20), // Sigla ou nome curto
+                                        sigla_orgao: sigla_orgao || orgao_completo.substring(0, 10), // Para compatibilidade
+                                        valor_remuneracao: valorRemuneracao,
+                                        ANO: ano || '',
+                                        MES: mes || ''
+                                    };
+                                } catch (error) {
+                                    console.error('Erro ao processar linha:', row, error);
+                                    return null;
                                 }
-
-                                return {
-                                    ano_mesreferencia,
-                                    nome_estagiario: row.nome_estagiario || row['NOME_ESTAGIARIO'] || row['NOME'] || '',
-                                    masp: (row.masp || row['MASP'] || '').toString(),
-                                    codigo_situacao_funcional: row.codigo_situacao_funcional || row['CODIGO_SITUACAO_FUNCIONAL'] || '',
-                                    situacao_funcional: row.situacao_funcional || row['SITUACAO_FUNCIONAL'] || '',
-                                    data_inicio: row.data_inicio || row['DATA_INICIO'] || '',
-                                    data_fim: row.data_fim || row['DATA_FIM'] || '',
-                                    codigo_orgao: row.codigo_orgao || row['CODIGO_ORGAO'] || '',
-                                    orgao: orgao_completo, // Nome completo do órgão
-                                    orgao_sigla: sigla_orgao || orgao_nome, // Sigla ou nome curto
-                                    sigla_orgao: sigla_orgao || orgao_nome, // Para compatibilidade
-                                    valor_remuneracao: valorRemuneracao,
-                                    ANO: ano || '',
-                                    MES: mes || ''
-                                };
                             })
-                            .filter(Boolean);
+                            .filter(Boolean); // Remover nulls
 
                         allData[year] = data;
                         estagiariosData = data;
 
-                        console.log(`Dados de ${year} carregados: ${data.length} registros`);
+                        console.log(`Dados de ${year} processados: ${data.length} registros válidos`);
                         console.log(`Órgãos processados: ${[...new Set(data.map(d => d.orgao))].length} nomes completos`);
+                        
+                        // Verificar se há dados
+                        if (data.length === 0) {
+                            console.warn(`Nenhum dado válido encontrado para ${year}`);
+                        }
+                        
                         resolve();
                     },
                     error: function (err) {
@@ -1984,16 +2087,17 @@ function getOrgaoExtenso(siglaOuNome) {
             // Obter todos os meses disponíveis
             const mesesComData = [];
             estagiariosData.forEach(e => {
-                if (e.ano_mesreferencia) {
-                    const [ano, mes] = e.ano_mesreferencia.split('-');
-                    if (ano && mes) {
-                        mesesComData.push({ ano, mes });
-                    }
+                if (e.ano_mesreferencia && e.ANO && e.MES) {
+                    mesesComData.push({ 
+                        ano: e.ANO, 
+                        mes: e.MES,
+                        data: e.ano_mesreferencia 
+                    });
                 }
             });
 
             if (mesesComData.length === 0) {
-                console.warn('Nenhum mês encontrado.');
+                console.warn('Nenhum mês encontrado nos dados.');
                 filteredData = estagiariosData;
                 return;
             }
@@ -2001,8 +2105,13 @@ function getOrgaoExtenso(siglaOuNome) {
             // Encontrar o mês mais recente
             let ultimoMes = mesesComData[0];
             mesesComData.forEach(mesData => {
-                if (mesData.ano > ultimoMes.ano || 
-                    (mesData.ano === ultimoMes.ano && mesData.mes > ultimoMes.mes)) {
+                const mesDataInt = parseInt(mesData.mes);
+                const ultimoMesInt = parseInt(ultimoMes.mes);
+                const mesDataAno = parseInt(mesData.ano);
+                const ultimoMesAno = parseInt(ultimoMes.ano);
+                
+                if (mesDataAno > ultimoMesAno || 
+                    (mesDataAno === ultimoMesAno && mesDataInt > ultimoMesInt)) {
                     ultimoMes = mesData;
                 }
             });
@@ -2048,18 +2157,34 @@ function getOrgaoExtenso(siglaOuNome) {
             // Download por ano na aba Downloads
             document.getElementById('downloadAnoCSV').addEventListener('click', downloadYearCSV);
             
-            // Campo de busca na Consulta Individual
+            // Campo de busca
             document.getElementById('searchEstagiarios').addEventListener('input', function(e) {
                 currentSearchTerm = e.target.value.toLowerCase();
                 filterEstagiariosTable(currentSearchTerm);
             });
             
-            // Troca de abas
-            document.getElementById('dashboard1-tab').addEventListener('click', function() {
-                setTimeout(updateDashboard1, 100);
+            document.getElementById('searchResumo').addEventListener('input', function(e) {
+                filterResumoTable(e.target.value.toLowerCase());
             });
-            document.getElementById('dashboard2-tab').addEventListener('click', function() {
-                setTimeout(updateDashboard2, 100);
+            
+            // Troca de abas
+            const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    const tabId = this.getAttribute('data-bs-target').replace('#', '');
+                    if (tabId === 'dashboard3') {
+                        // Se vem de outro dashboard, mostra botão voltar
+                        if (dashboardAnterior && dashboardAnterior !== 'dashboard3') {
+                            // Você pode adicionar lógica para mostrar um botão voltar se necessário
+                        } else {
+                            // Oculta o botão voltar se não vier de outro dashboard
+                        }
+                    } else {
+                        dashboardAnterior = tabId;
+                    }
+                    // Atualiza a altura do iframe
+                    setTimeout(iframeUpdateHeight, 300);
+                });
             });
             
             // Itens por página
@@ -2067,23 +2192,27 @@ function getOrgaoExtenso(siglaOuNome) {
                 itemsPerPageDashboard1 = parseInt(this.value);
                 currentPageDashboard1 = 1;
                 updateResumoTable();
+                setTimeout(iframeUpdateHeight, 300);
             });
             
             document.getElementById('itemsPerPageDashboard2').addEventListener('change', function() {
                 itemsPerPageDashboard2 = parseInt(this.value);
                 currentPageDashboard2 = 1;
                 updateEstagiariosTable();
+                setTimeout(iframeUpdateHeight, 300);
             });
             
             // Mudança de ano nos selects
             document.getElementById('anoDashboard1').addEventListener('change', async function() {
                 const selectedYear = this.value;
                 await switchYearData(selectedYear);
+                setTimeout(iframeUpdateHeight, 300);
             });
             
             document.getElementById('anoDashboard2').addEventListener('change', async function() {
                 const selectedYear = this.value;
                 await switchYearData(selectedYear);
+                setTimeout(iframeUpdateHeight, 300);
             });
         }
 
@@ -2105,11 +2234,27 @@ function getOrgaoExtenso(siglaOuNome) {
             container.prepend(errorDiv);
         }
 
+        function showSuccess(message) {
+            const container = document.querySelector('.container');
+            const successDiv = document.createElement('div');
+            successDiv.className = 'alert alert-success alert-dismissible fade show';
+            successDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            container.prepend(successDiv);
+        }
+
         function updateDataAtualizacao() {
             const now = new Date();
             const dataFormatada = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
-            document.getElementById('data-atualizacao-header').textContent = dataFormatada;
-            document.getElementById('footer-atualizacao').textContent = dataFormatada;
+            
+            const headerElement = document.getElementById('data-atualizacao-header');
+            const bodyElement = document.getElementById('data-atualizacao-body');
+            
+            if (headerElement) headerElement.textContent = `Atualizado em: ${dataFormatada}`;
+            if (bodyElement) bodyElement.textContent = `Última atualização: ${dataFormatada}`;
         }
 
         // Função para formatar valor monetário
@@ -2123,14 +2268,54 @@ function getOrgaoExtenso(siglaOuNome) {
 
         // Função para formatar data
         function formatDate(dateString) {
-            if (!dateString) return '-';
-            const date = new Date(dateString);
-            if (isNaN(date.getTime())) return dateString;
-            return date.toLocaleDateString('pt-BR');
+            if (!dateString || dateString.trim() === '') return '-';
+            
+            try {
+                // Tentar diferentes formatos de data
+                let date;
+                
+                if (dateString.includes('/')) {
+                    // Formato DD/MM/YYYY
+                    const parts = dateString.split('/');
+                    if (parts.length === 3) {
+                        date = new Date(parts[2], parts[1] - 1, parts[0]);
+                    } else if (parts.length === 2) {
+                        date = new Date(parts[1], parts[0] - 1, 1);
+                    }
+                } else if (dateString.includes('-')) {
+                    // Formato YYYY-MM-DD
+                    const parts = dateString.split('-');
+                    if (parts.length === 3) {
+                        date = new Date(parts[0], parts[1] - 1, parts[2]);
+                    } else if (parts.length === 2) {
+                        date = new Date(parts[0], parts[1] - 1, 1);
+                    }
+                } else if (dateString.length === 8 && /^\d{8}$/.test(dateString)) {
+                    // Formato YYYYMMDD
+                    const year = dateString.substring(0,4);
+                    const month = dateString.substring(4,6);
+                    const day = dateString.substring(6,8);
+                    date = new Date(year, month - 1, day);
+                } else {
+                    // Tentar parse direto
+                    date = new Date(dateString);
+                }
+                
+                if (isNaN(date.getTime())) {
+                    return dateString; // Retorna original se não conseguir parse
+                }
+                
+                return date.toLocaleDateString('pt-BR');
+            } catch (error) {
+                console.warn(`Erro ao formatar data "${dateString}":`, error);
+                return dateString;
+            }
         }
 
         // ==================== FUNÇÕES DE ANO E MES ====================
         async function switchYearData(year) {
+            if (year === currentYear) return;
+            
             showLoading(true);
             try {
                 await loadYearData(year);
@@ -2139,6 +2324,7 @@ function getOrgaoExtenso(siglaOuNome) {
                 updateFilterOptions();
                 updateDashboard1();
                 updateDashboard2();
+                showSuccess(`Dados de ${year} carregados com sucesso!`);
             } catch (error) {
                 console.error('Erro ao trocar ano:', error);
                 showError('Erro ao carregar dados do ano selecionado.');
@@ -2152,8 +2338,12 @@ function getOrgaoExtenso(siglaOuNome) {
             // Dashboard 1 - Ano
             const anoSelect1 = document.getElementById('anoDashboard1');
             if (anoSelect1) {
+                // Limpar opções existentes
                 anoSelect1.innerHTML = '';
-                Object.keys(CSV_FILES_BY_YEAR).forEach(ano => {
+                
+                // Adicionar anos disponíveis
+                const anos = Object.keys(CSV_FILES_BY_YEAR).sort((a, b) => b - a);
+                anos.forEach(ano => {
                     const option = document.createElement('option');
                     option.value = ano;
                     option.textContent = ano;
@@ -2166,35 +2356,42 @@ function getOrgaoExtenso(siglaOuNome) {
             const mesSelect1 = document.getElementById('mesDashboard1');
             if (mesSelect1 && currentYear) {
                 // Obter meses disponíveis para o ano atual
-                const mesesDisponiveis = [];
+                const mesesDisponiveis = new Set();
                 if (allData[currentYear]) {
                     allData[currentYear].forEach(e => {
-                        if (e.ano_mesreferencia && e.ANO === currentYear) {
-                            if (!mesesDisponiveis.includes(e.MES)) {
-                                mesesDisponiveis.push(e.MES);
-                            }
+                        if (e.MES && e.ANO === currentYear) {
+                            mesesDisponiveis.add(e.MES);
                         }
                     });
                 }
                 
-                // Ordenar meses do mais recente para o mais antigo
-                mesesDisponiveis.sort((a, b) => parseInt(b) - parseInt(a));
+                // Converter para array e ordenar do mais recente para o mais antigo
+                const mesesArray = Array.from(mesesDisponiveis)
+                    .filter(mes => mes && mes.length === 2)
+                    .sort((a, b) => parseInt(b) - parseInt(a));
                 
                 mesSelect1.innerHTML = '';
-                mesesDisponiveis.forEach(mesNum => {
+                mesesArray.forEach(mesNum => {
                     const option = document.createElement('option');
                     option.value = mesNum;
-                    option.textContent = monthNames[mesNum] || mesNum;
+                    option.textContent = `${monthNames[mesNum] || mesNum} (${mesNum})`;
                     if (mesNum === currentMonth) option.selected = true;
                     mesSelect1.appendChild(option);
                 });
+                
+                // Se não encontrou o mês atual na lista, seleciona o primeiro
+                if (mesesArray.length > 0 && !mesesArray.includes(currentMonth)) {
+                    currentMonth = mesesArray[0];
+                    mesSelect1.value = currentMonth;
+                }
             }
             
             // Dashboard 2 - Ano
             const anoSelect2 = document.getElementById('anoDashboard2');
             if (anoSelect2) {
                 anoSelect2.innerHTML = '';
-                Object.keys(CSV_FILES_BY_YEAR).forEach(ano => {
+                const anos = Object.keys(CSV_FILES_BY_YEAR).sort((a, b) => b - a);
+                anos.forEach(ano => {
                     const option = document.createElement('option');
                     option.value = ano;
                     option.textContent = ano;
@@ -2207,43 +2404,40 @@ function getOrgaoExtenso(siglaOuNome) {
             const mesSelect2 = document.getElementById('mesDashboard2');
             if (mesSelect2 && currentYear) {
                 // Obter meses disponíveis para o ano atual
-                const mesesDisponiveis = [];
+                const mesesDisponiveis = new Set();
                 if (allData[currentYear]) {
                     allData[currentYear].forEach(e => {
-                        if (e.ano_mesreferencia && e.ANO === currentYear) {
-                            if (!mesesDisponiveis.includes(e.MES)) {
-                                mesesDisponiveis.push(e.MES);
-                            }
+                        if (e.MES && e.ANO === currentYear) {
+                            mesesDisponiveis.add(e.MES);
                         }
                     });
                 }
                 
-                // Ordenar meses do mais recente para o mais antigo
-                mesesDisponiveis.sort((a, b) => parseInt(b) - parseInt(a));
+                const mesesArray = Array.from(mesesDisponiveis)
+                    .filter(mes => mes && mes.length === 2)
+                    .sort((a, b) => parseInt(b) - parseInt(a));
                 
                 mesSelect2.innerHTML = '';
-                mesesDisponiveis.forEach(mesNum => {
+                mesesArray.forEach(mesNum => {
                     const option = document.createElement('option');
                     option.value = mesNum;
-                    option.textContent = monthNames[mesNum] || mesNum;
+                    option.textContent = `${monthNames[mesNum] || mesNum} (${mesNum})`;
                     if (mesNum === currentMonth) option.selected = true;
                     mesSelect2.appendChild(option);
                 });
             }
             
             // Obter todos os órgãos únicos do período atual
-            const orgaosUnicos = [...new Set(filteredData.map(e => e.orgao))].sort();
+            const orgaosUnicos = [...new Set(filteredData.map(e => e.orgao).filter(Boolean))].sort();
             
             // Dashboard 1 - datalist de órgãos
             const orgaoDatalist1 = document.getElementById('orgaosListDashboard1');
             if (orgaoDatalist1) {
                 orgaoDatalist1.innerHTML = '<option value="all">Todos os Órgãos</option>';
                 orgaosUnicos.forEach(orgao => {
-                    if (orgao) {
-                        const option = document.createElement('option');
-                        option.value = orgao;
-                        orgaoDatalist1.appendChild(option);
-                    }
+                    const option = document.createElement('option');
+                    option.value = orgao;
+                    orgaoDatalist1.appendChild(option);
                 });
             }
             
@@ -2252,11 +2446,9 @@ function getOrgaoExtenso(siglaOuNome) {
             if (orgaoDatalist2) {
                 orgaoDatalist2.innerHTML = '<option value="all">Todos os Órgãos</option>';
                 orgaosUnicos.forEach(orgao => {
-                    if (orgao) {
-                        const option = document.createElement('option');
-                        option.value = orgao;
-                        orgaoDatalist2.appendChild(option);
-                    }
+                    const option = document.createElement('option');
+                    option.value = orgao;
+                    orgaoDatalist2.appendChild(option);
                 });
             }
         }
@@ -2264,218 +2456,255 @@ function getOrgaoExtenso(siglaOuNome) {
         function applyFilters(dashboard) {
             showLoading(true);
             
-            if (dashboard === 'dashboard1') {
-                const ano = document.getElementById('anoDashboard1').value;
-                const mes = document.getElementById('mesDashboard1').value;
-                const situacao = document.getElementById('situacaoDashboard1').value;
-                const orgaoInput = document.getElementById('orgaoDashboard1').value;
-                
-                const orgao = orgaoInput === 'all' || orgaoInput === '' ? 'all' : orgaoInput;
-                
-                // Se o ano mudou, carregar os dados do ano
-                if (ano !== currentYear) {
-                    switchYearData(ano).then(() => {
-                        // Após carregar o ano, aplicar os filtros
-                        applyFiltersAfterYearLoad(dashboard, mes, situacao, orgao);
+            try {
+                if (dashboard === 'dashboard1') {
+                    const ano = document.getElementById('anoDashboard1').value;
+                    const mes = document.getElementById('mesDashboard1').value;
+                    const situacao = document.getElementById('situacaoDashboard1').value;
+                    const orgaoInput = document.getElementById('orgaoDashboard1').value;
+                    
+                    const orgao = orgaoInput === 'all' || orgaoInput === '' ? 'all' : orgaoInput;
+                    
+                    // Se o ano mudou, carregar os dados do ano
+                    if (ano !== currentYear) {
+                        switchYearData(ano).then(() => {
+                            // Após carregar o ano, aplicar os filtros
+                            applyFiltersAfterYearLoad(dashboard, mes, situacao, orgao);
+                        });
+                        return;
+                    }
+                    
+                    currentMonth = mes;
+                    
+                    // Obter dados do ano atual
+                    const dadosAnoAtual = allData[currentYear] || [];
+                    
+                    filteredData = dadosAnoAtual.filter(estagiario => {
+                        // Filtrar por ano e mês selecionados
+                        const anoMes = estagiario.ano_mesreferencia;
+                        if (!anoMes) return false;
+                        
+                        const [estAno, estMes] = anoMes.split('-');
+                        if (estAno !== currentYear || estMes !== currentMonth) {
+                            return false;
+                        }
+                        
+                        // Filtro por situação
+                        if (situacao !== 'all') {
+                            // Determinar situação baseada na data_fim
+                            const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                            if (situacao === 'em_andamento' && temDataFim) return false;
+                            if (situacao === 'concluido' && !temDataFim) return false;
+                        }
+                        
+                        // Filtro por órgão
+                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                            return false;
+                        }
+                        
+                        return true;
                     });
-                    return;
-                }
-                
-                currentMonth = mes;
-                
-                // Obter dados do ano atual
-                const dadosAnoAtual = allData[currentYear] || [];
-                
-                filteredData = dadosAnoAtual.filter(estagiario => {
-                    // Filtrar por ano e mês selecionados
-                    const anoMes = estagiario.ano_mesreferencia;
-                    if (!anoMes) return false;
                     
-                    const [estAno, estMes] = anoMes.split('-');
-                    if (estAno !== currentYear || estMes !== currentMonth) {
-                        return false;
+                    updateDashboard1();
+                    
+                } else if (dashboard === 'dashboard2') {
+                    const ano = document.getElementById('anoDashboard2').value;
+                    const mes = document.getElementById('mesDashboard2').value;
+                    const nome = document.getElementById('nomeEstagiario').value.toLowerCase();
+                    const situacao = document.getElementById('situacaoDashboard2').value;
+                    const orgaoInput = document.getElementById('orgaoDashboard2').value;
+                    const masp = document.getElementById('maspDashboard2').value;
+                    const valorRemuneracao = parseFloat(document.getElementById('valorRemuneracao').value) || 0;
+                    
+                    const orgao = orgaoInput === 'all' || orgaoInput === '' ? 'all' : orgaoInput;
+                    
+                    // Se o ano mudou, carregar os dados do ano
+                    if (ano !== currentYear) {
+                        switchYearData(ano).then(() => {
+                            // Após carregar o ano, aplicar os filtros
+                            applyFiltersAfterYearLoad(dashboard, mes, nome, situacao, orgao, masp, valorRemuneracao);
+                        });
+                        return;
                     }
                     
-                    // Filtro por situação
-                    if (situacao !== 'all') {
-                        // Determinar situação baseada na data_fim
-                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
-                        if (situacao === 'em_andamento' && temDataFim) return false;
-                        if (situacao === 'concluido' && !temDataFim) return false;
-                    }
+                    currentMonth = mes;
                     
-                    // Filtro por órgão
-                    if (orgao !== 'all' && estagiario.orgao !== orgao) {
-                        return false;
-                    }
+                    // Obter dados do ano atual
+                    const dadosAnoAtual = allData[currentYear] || [];
                     
-                    return true;
-                });
-                
-                updateDashboard1();
-                
-            } else if (dashboard === 'dashboard2') {
-                const ano = document.getElementById('anoDashboard2').value;
-                const mes = document.getElementById('mesDashboard2').value;
-                const nome = document.getElementById('nomeEstagiario').value.toLowerCase();
-                const situacao = document.getElementById('situacaoDashboard2').value;
-                const orgaoInput = document.getElementById('orgaoDashboard2').value;
-                const masp = document.getElementById('maspDashboard2').value;
-                const valorRemuneracao = parseFloat(document.getElementById('valorRemuneracao').value) || 0;
-                
-                const orgao = orgaoInput === 'all' || orgaoInput === '' ? 'all' : orgaoInput;
-                
-                // Se o ano mudou, carregar os dados do ano
-                if (ano !== currentYear) {
-                    switchYearData(ano).then(() => {
-                        // Após carregar o ano, aplicar os filtros
-                        applyFiltersAfterYearLoad(dashboard, mes, nome, situacao, orgao, masp, valorRemuneracao);
+                    filteredData = dadosAnoAtual.filter(estagiario => {
+                        // Filtrar por ano e mês selecionados
+                        const anoMes = estagiario.ano_mesreferencia;
+                        if (!anoMes) return false;
+                        
+                        const [estAno, estMes] = anoMes.split('-');
+                        if (estAno !== currentYear || estMes !== currentMonth) {
+                            return false;
+                        }
+                        
+                        // Filtro por nome
+                        if (nome && !estagiario.nome_estagiario.toLowerCase().includes(nome)) {
+                            return false;
+                        }
+                        
+                        // Filtro por situação
+                        if (situacao !== 'all') {
+                            // Determinar situação baseada na data_fim
+                            const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                            if (situacao === 'em_andamento' && temDataFim) return false;
+                            if (situacao === 'concluido' && !temDataFim) return false;
+                        }
+                        
+                        // Filtro por órgão
+                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                            return false;
+                        }
+                        
+                        // Filtro por MASP
+                        if (masp && !estagiario.masp.toString().includes(masp)) {
+                            return false;
+                        }
+                        
+                        // Filtro por valor de remuneração
+                        if (valorRemuneracao > 0 && estagiario.valor_remuneracao < valorRemuneracao) {
+                            return false;
+                        }
+                        
+                        return true;
                     });
-                    return;
+                    
+                    updateDashboard2();
                 }
-                
-                currentMonth = mes;
-                
-                // Obter dados do ano atual
-                const dadosAnoAtual = allData[currentYear] || [];
-                
-                filteredData = dadosAnoAtual.filter(estagiario => {
-                    // Filtrar por ano e mês selecionados
-                    const anoMes = estagiario.ano_mesreferencia;
-                    if (!anoMes) return false;
-                    
-                    const [estAno, estMes] = anoMes.split('-');
-                    if (estAno !== currentYear || estMes !== currentMonth) {
-                        return false;
-                    }
-                    
-                    // Filtro por nome
-                    if (nome && !estagiario.nome_estagiario.toLowerCase().includes(nome)) {
-                        return false;
-                    }
-                    
-                    // Filtro por situação
-                    if (situacao !== 'all') {
-                        // Determinar situação baseada na data_fim
-                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
-                        if (situacao === 'em_andamento' && temDataFim) return false;
-                        if (situacao === 'concluido' && !temDataFim) return false;
-                    }
-                    
-                    // Filtro por órgão
-                    if (orgao !== 'all' && estagiario.orgao !== orgao) {
-                        return false;
-                    }
-                    
-                    // Filtro por MASP
-                    if (masp && !estagiario.masp.toString().includes(masp)) {
-                        return false;
-                    }
-                    
-                    // Filtro por valor de remuneração
-                    if (valorRemuneracao > 0 && estagiario.valor_remuneracao < valorRemuneracao) {
-                        return false;
-                    }
-                    
-                    return true;
-                });
-                
-                updateDashboard2();
+            } catch (error) {
+                console.error('Erro ao aplicar filtros:', error);
+                showError('Erro ao aplicar filtros.');
+            } finally {
+                showLoading(false);
+                setTimeout(iframeUpdateHeight, 300);
             }
-            
-            showLoading(false);
         }
 
         async function applyFiltersAfterYearLoad(dashboard, mes, ...otherFilters) {
             currentMonth = mes;
             
-            if (dashboard === 'dashboard1') {
-                const [situacao, orgao] = otherFilters;
-                
-                filteredData = (allData[currentYear] || []).filter(estagiario => {
-                    const anoMes = estagiario.ano_mesreferencia;
-                    if (!anoMes) return false;
+            try {
+                if (dashboard === 'dashboard1') {
+                    const [situacao, orgao] = otherFilters;
                     
-                    const [estAno, estMes] = anoMes.split('-');
-                    if (estAno !== currentYear || estMes !== currentMonth) {
-                        return false;
-                    }
+                    filteredData = (allData[currentYear] || []).filter(estagiario => {
+                        const anoMes = estagiario.ano_mesreferencia;
+                        if (!anoMes) return false;
+                        
+                        const [estAno, estMes] = anoMes.split('-');
+                        if (estAno !== currentYear || estMes !== currentMonth) {
+                            return false;
+                        }
+                        
+                        // Filtro por situação
+                        if (situacao !== 'all') {
+                            // Determinar situação baseada na data_fim
+                            const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                            if (situacao === 'em_andamento' && temDataFim) return false;
+                            if (situacao === 'concluido' && !temDataFim) return false;
+                        }
+                        
+                        // Filtro por órgão
+                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                            return false;
+                        }
+                        
+                        return true;
+                    });
                     
-                    // Filtro por situação
-                    if (situacao !== 'all') {
-                        // Determinar situação baseada na data_fim
-                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
-                        if (situacao === 'em_andamento' && temDataFim) return false;
-                        if (situacao === 'concluido' && !temDataFim) return false;
-                    }
+                    updateDashboard1();
+                } else if (dashboard === 'dashboard2') {
+                    const [nome, situacao, orgao, masp, valorRemuneracao] = otherFilters;
                     
-                    // Filtro por órgão
-                    if (orgao !== 'all' && estagiario.orgao !== orgao) {
-                        return false;
-                    }
+                    filteredData = (allData[currentYear] || []).filter(estagiario => {
+                        const anoMes = estagiario.ano_mesreferencia;
+                        if (!anoMes) return false;
+                        
+                        const [estAno, estMes] = anoMes.split('-');
+                        if (estAno !== currentYear || estMes !== currentMonth) {
+                            return false;
+                        }
+                        
+                        if (nome && !estagiario.nome_estagiario.toLowerCase().includes(nome)) {
+                            return false;
+                        }
+                        
+                        if (situacao !== 'all') {
+                            // Determinar situação baseada na data_fim
+                            const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
+                            if (situacao === 'em_andamento' && temDataFim) return false;
+                            if (situacao === 'concluido' && !temDataFim) return false;
+                        }
+                        
+                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                            return false;
+                        }
+                        
+                        if (masp && !estagiario.masp.toString().includes(masp)) {
+                            return false;
+                        }
+                        
+                        if (valorRemuneracao > 0 && estagiario.valor_remuneracao < valorRemuneracao) {
+                            return false;
+                        }
+                        
+                        return true;
+                    });
                     
-                    return true;
-                });
-                
-                updateDashboard1();
-            } else if (dashboard === 'dashboard2') {
-                const [nome, situacao, orgao, masp, valorRemuneracao] = otherFilters;
-                
-                filteredData = (allData[currentYear] || []).filter(estagiario => {
-                    const anoMes = estagiario.ano_mesreferencia;
-                    if (!anoMes) return false;
-                    
-                    const [estAno, estMes] = anoMes.split('-');
-                    if (estAno !== currentYear || estMes !== currentMonth) {
-                        return false;
-                    }
-                    
-                    if (nome && !estagiario.nome_estagiario.toLowerCase().includes(nome)) {
-                        return false;
-                    }
-                    
-                    if (situacao !== 'all') {
-                        // Determinar situação baseada na data_fim
-                        const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
-                        if (situacao === 'em_andamento' && temDataFim) return false;
-                        if (situacao === 'concluido' && !temDataFim) return false;
-                    }
-                    
-                    if (orgao !== 'all' && estagiario.orgao !== orgao) {
-                        return false;
-                    }
-                    
-                    if (masp && !estagiario.masp.toString().includes(masp)) {
-                        return false;
-                    }
-                    
-                    if (valorRemuneracao > 0 && estagiario.valor_remuneracao < valorRemuneracao) {
-                        return false;
-                    }
-                    
-                    return true;
-                });
-                
-                updateDashboard2();
+                    updateDashboard2();
+                }
+            } catch (error) {
+                console.error('Erro após carregar ano:', error);
+                showError('Erro ao aplicar filtros após carregar ano.');
+            } finally {
+                showLoading(false);
+                setTimeout(iframeUpdateHeight, 300);
             }
-            
-            showLoading(false);
         }
 
         function filterEstagiariosTable(searchTerm) {
             if (!searchTerm.trim()) {
+                currentPageDashboard2 = 1;
                 updateEstagiariosTable();
                 return;
             }
             
-            // Mostrar todos os dados filtrados e usar DataTables para busca
+            // Implementação simples de filtro local
+            const filtered = filteredData.filter(estagiario => {
+                return estagiario.nome_estagiario.toLowerCase().includes(searchTerm) ||
+                       estagiario.masp.toLowerCase().includes(searchTerm) ||
+                       estagiario.orgao.toLowerCase().includes(searchTerm) ||
+                       (estagiario.sigla_orgao && estagiario.sigla_orgao.toLowerCase().includes(searchTerm));
+            });
+            
+            // Usar dados filtrados temporariamente
+            const tempData = filteredData;
+            filteredData = filtered;
+            currentPageDashboard2 = 1;
             updateEstagiariosTable();
+            filteredData = tempData; // Restaurar dados originais
+        }
+
+        function filterResumoTable(searchTerm) {
+            if (!searchTerm.trim()) {
+                currentPageDashboard1 = 1;
+                updateResumoTable();
+                return;
+            }
+            
+            // Esta função será implementada quando necessário
+            console.log('Filtrando resumo por:', searchTerm);
         }
 
         function clearAllFilters() {
             // Resetar filtros do Dashboard 1
             document.getElementById('situacaoDashboard1').value = 'all';
             document.getElementById('orgaoDashboard1').value = '';
+            document.getElementById('searchResumo').value = '';
             
             // Voltar para o mês mais recente do ano atual
             const mesesDisponiveis = [];
@@ -2502,8 +2731,10 @@ function getOrgaoExtenso(siglaOuNome) {
                 return estAno === currentYear && estMes === currentMonth;
             });
             
+            currentPageDashboard1 = 1;
             updateFilterOptions();
             updateDashboard1();
+            showSuccess('Filtros limpos com sucesso!');
         }
 
         function clearDashboard2Filters() {
@@ -2540,8 +2771,10 @@ function getOrgaoExtenso(siglaOuNome) {
                 return estAno === currentYear && estMes === currentMonth;
             });
             
+            currentPageDashboard2 = 1;
             updateFilterOptions();
             updateDashboard2();
+            showSuccess('Filtros limpos com sucesso!');
         }
 
         // ==================== DASHBOARD 1: VISÃO GERAL ====================
@@ -2553,6 +2786,8 @@ function getOrgaoExtenso(siglaOuNome) {
 
         function updateSummaryCards() {
             const container = document.getElementById('summaryCards');
+            
+            if (!container) return;
             
             if (filteredData.length === 0) {
                 container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Nenhum dado encontrado para o período atual.</p></div>';
@@ -2590,16 +2825,16 @@ function getOrgaoExtenso(siglaOuNome) {
                 <div class="col-md-3 col-6">
                     <div class="metric-card success">
                         <div class="metric-label">Em Andamento</div>
-                        <div class="metric-value">${emAndamento}</div>
+                        <div class="metric-value">${emAndamento.toLocaleString('pt-BR')}</div>
                         <div class="metric-change positive">
-                            ${((emAndamento/totalEstagiarios)*100).toFixed(1)}% do total
+                            ${totalEstagiarios > 0 ? ((emAndamento/totalEstagiarios)*100).toFixed(1) : 0}% do total
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
                     <div class="metric-card purple">
                         <div class="metric-label">Valor Médio</div>
-                        <div class="metric-value">R$ ${valorMedio.toFixed(2)}</div>
+                        <div class="metric-value">${formatCurrency(valorMedio)}</div>
                         <div class="update-info">
                             <i class="fas fa-dollar-sign"></i> Remuneração média
                         </div>
@@ -2608,7 +2843,7 @@ function getOrgaoExtenso(siglaOuNome) {
                 <div class="col-md-3 col-6">
                     <div class="metric-card info">
                         <div class="metric-label">Órgãos com Estagiários</div>
-                        <div class="metric-value">${orgaosUnicos}</div>
+                        <div class="metric-value">${orgaosUnicos.toLocaleString('pt-BR')}</div>
                         <div class="metric-change warning">
                             <i class="fas fa-building me-1"></i> Com estagiários
                         </div>
@@ -2625,10 +2860,12 @@ function getOrgaoExtenso(siglaOuNome) {
             const countElement = document.getElementById('resumoCountDashboard1');
             const paginationInfo = document.getElementById('paginationInfoDashboard1');
             
+            if (!tbody) return;
+            
             if (filteredData.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhum dado encontrado para o período atual.</td></tr>';
-                tfoot.innerHTML = '';
-                if (countElement) countElement.textContent = '0 registros';
+                if (tfoot) tfoot.innerHTML = '';
+                if (countElement) countElement.textContent = '0 órgãos';
                 if (paginationInfo) paginationInfo.textContent = 'Mostrando 0-0 de 0 registros';
                 updatePaginationDashboard1(1, 1);
                 return;
@@ -2637,8 +2874,8 @@ function getOrgaoExtenso(siglaOuNome) {
             // Agrupar por órgão
             const grupos = {};
             filteredData.forEach(estagiario => {
-                const orgao = estagiario.orgao;
-                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao;
+                const orgao = estagiario.orgao || 'Órgão não informado';
+                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao.substring(0, 10);
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
@@ -2713,7 +2950,7 @@ function getOrgaoExtenso(siglaOuNome) {
             // Gerar rodapé
             const footerHTML = `
                 <tr class="table-total-row">
-                    <td><strong>TOTAL GERAL (${totalOrgaos} órgãos)</strong></td>
+                    <td><strong>TOTAL GERAL (${totalOrgaos.toLocaleString('pt-BR')} órgãos)</strong></td>
                     <td><strong>-</strong></td>
                     <td><strong>${totalEstagiarios.toLocaleString('pt-BR')}</strong></td>
                     <td><strong>${totalEmAndamento.toLocaleString('pt-BR')}</strong></td>
@@ -2722,9 +2959,9 @@ function getOrgaoExtenso(siglaOuNome) {
             `;
             
             tbody.innerHTML = rowsHTML;
-            tfoot.innerHTML = footerHTML;
-            if (countElement) countElement.textContent = `${totalOrgaos.toLocaleString()} órgãos`;
-            if (paginationInfo) paginationInfo.textContent = `Mostrando ${startIndex + 1}-${endIndex} de ${resumoArray.length.toLocaleString()} registros`;
+            if (tfoot) tfoot.innerHTML = footerHTML;
+            if (countElement) countElement.textContent = `${totalOrgaos.toLocaleString('pt-BR')} órgãos`;
+            if (paginationInfo) paginationInfo.textContent = `Mostrando ${startIndex + 1}-${endIndex} de ${resumoArray.length.toLocaleString('pt-BR')} registros`;
             
             updatePaginationDashboard1(totalPages, currentPageDashboard1);
             
@@ -2849,6 +3086,17 @@ function getOrgaoExtenso(siglaOuNome) {
                 .slice(0, 8);
             
             // Cores para o gráfico
+            const chartColors = {
+                primary: '#1A5276',
+                accent: '#3498DB',
+                success: '#27AE60',
+                warning: '#F39C12',
+                info: '#17A589',
+                purple: '#8E44AD',
+                orange: '#E67E22',
+                teal: '#16A085'
+            };
+            
             const pieColors = [
                 chartColors.primary, chartColors.accent, chartColors.success,
                 chartColors.warning, chartColors.purple, chartColors.orange,
@@ -2926,8 +3174,8 @@ function getOrgaoExtenso(siglaOuNome) {
                     datasets: [{
                         data: [emAndamento, concluidos],
                         backgroundColor: [
-                            chartColors.success,
-                            chartColors.accent
+                            '#27AE60', // Verde
+                            '#3498DB'  // Azul
                         ],
                         borderWidth: 2,
                         borderColor: '#fff'
@@ -2977,7 +3225,7 @@ function getOrgaoExtenso(siglaOuNome) {
             };
             
             filteredData.forEach(estagiario => {
-                const valor = estagiario.valor_remuneracao;
+                const valor = estagiario.valor_remuneracao || 0;
                 if (valor <= 500) {
                     faixas['Até R$ 500']++;
                 } else if (valor <= 1000) {
@@ -3002,8 +3250,8 @@ function getOrgaoExtenso(siglaOuNome) {
                     datasets: [{
                         label: 'Quantidade de Estagiários',
                         data: Object.values(faixas),
-                        backgroundColor: chartColors.accent,
-                        borderColor: chartColors.primary,
+                        backgroundColor: '#3498DB',
+                        borderColor: '#1A5276',
                         borderWidth: 1
                     }]
                 },
@@ -3068,17 +3316,21 @@ function getOrgaoExtenso(siglaOuNome) {
                 const order = currentSortDashboard2.order === 'asc' ? 1 : -1;
                 
                 if (currentSortDashboard2.column === 'nome_estagiario') {
-                    return order * a.nome_estagiario.localeCompare(b.nome_estagiario);
+                    return order * (a.nome_estagiario || '').localeCompare(b.nome_estagiario || '');
                 } else if (currentSortDashboard2.column === 'masp') {
-                    return order * a.masp.localeCompare(b.masp);
+                    return order * (a.masp || '').localeCompare(b.masp || '');
                 } else if (currentSortDashboard2.column === 'sigla_orgao') {
                     return order * (a.sigla_orgao || '').localeCompare(b.sigla_orgao || '');
                 } else if (currentSortDashboard2.column === 'data_inicio') {
-                    return order * new Date(a.data_inicio) - new Date(b.data_inicio);
+                    const dateA = a.data_inicio ? new Date(a.data_inicio) : new Date(0);
+                    const dateB = b.data_inicio ? new Date(b.data_inicio) : new Date(0);
+                    return order * (dateA - dateB);
                 } else if (currentSortDashboard2.column === 'data_fim') {
-                    return order * new Date(a.data_fim || 0) - new Date(b.data_fim || 0);
+                    const dateA = a.data_fim ? new Date(a.data_fim) : new Date(0);
+                    const dateB = b.data_fim ? new Date(b.data_fim) : new Date(0);
+                    return order * (dateA - dateB);
                 } else if (currentSortDashboard2.column === 'valor_remuneracao') {
-                    return order * (a.valor_remuneracao - b.valor_remuneracao);
+                    return order * ((a.valor_remuneracao || 0) - (b.valor_remuneracao || 0));
                 } else if (currentSortDashboard2.column === 'situacao') {
                     // Ordenar por situação (Em Andamento primeiro, depois Concluído)
                     const situacaoA = (!a.data_fim || a.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
@@ -3090,7 +3342,7 @@ function getOrgaoExtenso(siglaOuNome) {
             
             // Calcular totais
             const totalEstagiarios = estagiariosArray.length;
-            const valorTotal = estagiariosArray.reduce((sum, e) => sum + e.valor_remuneracao, 0);
+            const valorTotal = estagiariosArray.reduce((sum, e) => sum + (e.valor_remuneracao || 0), 0);
             const valorMedio = totalEstagiarios > 0 ? valorTotal / totalEstagiarios : 0;
             const orgaosUnicos = [...new Set(estagiariosArray.map(e => e.orgao))].length;
             
@@ -3117,16 +3369,16 @@ function getOrgaoExtenso(siglaOuNome) {
                 
                 return `
                 <tr>
-                    <td><strong>${estagiario.nome_estagiario}</strong></td>
-                    <td>${estagiario.masp}</td>
-                    <td>${estagiario.sigla_orgao || estagiario.orgao_sigla || estagiario.orgao}</td>
+                    <td><strong>${estagiario.nome_estagiario || 'Nome não informado'}</strong></td>
+                    <td>${estagiario.masp || '-'}</td>
+                    <td>${estagiario.sigla_orgao || estagiario.orgao_sigla || estagiario.orgao || '-'}</td>
                     <td>${formatDate(estagiario.data_inicio)}</td>
                     <td>${formatDate(estagiario.data_fim)}</td>
-                    <td><strong>R$ ${estagiario.valor_remuneracao.toFixed(2)}</strong></td>
+                    <td><strong>${formatCurrency(estagiario.valor_remuneracao || 0)}</strong></td>
                     <td><span class="badge-situacao ${situacaoClass}">${situacao}</span></td>
                     <td class="actions-column">
                         <div class="action-buttons">
-                            <button class="btn-action btn-history" onclick="showEstagiarioHistory('${estagiario.masp}', '${estagiario.nome_estagiario.replace(/'/g, "\\'")}')" title="Ver Histórico">
+                            <button class="btn-action btn-history" onclick="showEstagiarioHistory('${estagiario.masp}', '${(estagiario.nome_estagiario || '').replace(/'/g, "\\'")}')" title="Ver Histórico">
                                 <i class="fas fa-history"></i><span>Histórico</span>
                             </button>
                         </div>
@@ -3138,9 +3390,9 @@ function getOrgaoExtenso(siglaOuNome) {
             const footerHTML = `
                 <tr class="table-total-row">
                     <td colspan="2"><strong>TOTAL GERAL: ${totalEstagiarios.toLocaleString('pt-BR')} estagiários</strong></td>
-                    <td><strong>${orgaosUnicos} órgãos</strong></td>
-                    <td colspan="2"><strong>Em Andamento: ${emAndamento} | Concluído: ${concluidos}</strong></td>
-                    <td><strong>Total: R$ ${valorTotal.toFixed(2)}<br>Média: R$ ${valorMedio.toFixed(2)}</strong></td>
+                    <td><strong>${orgaosUnicos.toLocaleString('pt-BR')} órgãos</strong></td>
+                    <td colspan="2"><strong>Em Andamento: ${emAndamento.toLocaleString('pt-BR')} | Concluído: ${concluidos.toLocaleString('pt-BR')}</strong></td>
+                    <td><strong>Total: ${formatCurrency(valorTotal)}<br>Média: ${formatCurrency(valorMedio)}</strong></td>
                     <td></td>
                     <td></td>
                 </tr>
@@ -3158,7 +3410,7 @@ function getOrgaoExtenso(siglaOuNome) {
         }
 
         function updateSortIconsDashboard2() {
-            const headers = document.querySelectorAll('#estagiariosTable thead th');
+            const headers = document.querySelectorAll('#empregadosTable thead th');
             headers.forEach(header => {
                 const sortIcon = header.querySelector('.sort-icon');
                 const column = header.getAttribute('data-sort');
@@ -3264,18 +3516,19 @@ function getOrgaoExtenso(siglaOuNome) {
                 const estagiario = historico[0] || {};
                 
                 // Atualizar modal
-                const modal = new bootstrap.Modal(document.getElementById('historicModal'));
+                const modalElement = document.getElementById('historicModal');
+                const modal = new bootstrap.Modal(modalElement);
                 
                 // Informações do estagiário
                 const infoHTML = `
                     <div class="employee-info-grid">
                         <div class="info-item">
                             <span class="info-label">MASP</span>
-                            <span class="info-value">${estagiario.masp || masp}</span>
+                            <span class="info-value">${estagiario.masp || masp || '-'}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Nome</span>
-                            <span class="info-value">${estagiario.nome_estagiario || nome}</span>
+                            <span class="info-value">${estagiario.nome_estagiario || nome || 'Nome não informado'}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Órgão Atual</span>
@@ -3295,7 +3548,7 @@ function getOrgaoExtenso(siglaOuNome) {
                         </div>
                         <div class="info-item">
                             <span class="info-label">Remuneração Atual</span>
-                            <span class="info-value">R$ ${(estagiario.valor_remuneracao || 0).toFixed(2)}</span>
+                            <span class="info-value">${formatCurrency(estagiario.valor_remuneracao || 0)}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Total de Registros</span>
@@ -3308,7 +3561,7 @@ function getOrgaoExtenso(siglaOuNome) {
                 
                 // Atualizar título do modal
                 document.getElementById('historicModalLabel').innerHTML = `
-                    <i class="fas fa-history me-2"></i>Histórico de ${estagiario.nome_estagiario || nome}
+                    <i class="fas fa-history me-2"></i>Histórico de ${estagiario.nome_estagiario || nome || 'Estagiário'}
                 `;
                 
                 // Tabela de histórico
@@ -3316,12 +3569,12 @@ function getOrgaoExtenso(siglaOuNome) {
                     const situacao = (!registro.data_fim || registro.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
                     return `
                     <tr>
-                        <td>${registro.ano_mesreferencia}</td>
-                        <td>${registro.orgao}<br><small>${registro.sigla_orgao || ''}</small></td>
+                        <td>${registro.ano_mesreferencia || '-'}</td>
+                        <td>${registro.orgao || '-'}<br><small>${registro.sigla_orgao || ''}</small></td>
                         <td>${situacao}</td>
                         <td>${formatDate(registro.data_inicio)}</td>
                         <td>${formatDate(registro.data_fim) || '-'}</td>
-                        <td>R$ ${registro.valor_remuneracao.toFixed(2)}</td>
+                        <td>${formatCurrency(registro.valor_remuneracao || 0)}</td>
                     </tr>
                 `}).join('');
                 
@@ -3340,10 +3593,6 @@ function getOrgaoExtenso(siglaOuNome) {
         };
 
         // ==================== DASHBOARD 3: DOWNLOADS ====================
-        function updateDashboard3() {
-            // Nada a fazer aqui
-        }
-
         async function downloadYearCSV() {
             const year = document.getElementById('anoDownload').value;
             if (!year) {
@@ -3373,17 +3622,17 @@ function getOrgaoExtenso(siglaOuNome) {
                 const csvContent = [
                     headers.join(';'),
                     ...data.map(estagiario => [
-                        estagiario.ano_mesreferencia,
-                        estagiario.nome_estagiario,
-                        estagiario.masp,
-                        estagiario.codigo_situacao_funcional,
-                        estagiario.situacao_funcional,
-                        estagiario.data_inicio,
-                        estagiario.data_fim,
-                        estagiario.codigo_orgao,
-                        estagiario.orgao,
-                        estagiario.sigla_orgao,
-                        estagiario.valor_remuneracao.toFixed(2).replace('.', ',')
+                        estagiario.ano_mesreferencia || '',
+                        estagiario.nome_estagiario || '',
+                        estagiario.masp || '',
+                        estagiario.codigo_situacao_funcional || '',
+                        estagiario.situacao_funcional || '',
+                        estagiario.data_inicio || '',
+                        estagiario.data_fim || '',
+                        estagiario.codigo_orgao || '',
+                        estagiario.orgao || '',
+                        estagiario.sigla_orgao || '',
+                        (estagiario.valor_remuneracao || 0).toFixed(2).replace('.', ',')
                     ].map(cell => `"${cell}"`).join(';'))
                 ].join('\n');
                 
@@ -3400,10 +3649,11 @@ function getOrgaoExtenso(siglaOuNome) {
                 document.body.removeChild(link);
                 
                 console.log(`Download do ano ${year} realizado: ${data.length} registros`);
+                showSuccess(`Download do ano ${year} realizado com sucesso!`);
                 
             } catch (error) {
                 console.error(`Erro ao baixar dados de ${year}:`, error);
-                alert(`Erro ao baixar dados de ${year}. Por favor, tente novamente.`);
+                showError(`Erro ao baixar dados de ${year}. Por favor, tente novamente.`);
             } finally {
                 showLoading(false);
             }
@@ -3445,6 +3695,8 @@ function getOrgaoExtenso(siglaOuNome) {
                         if (tableContainer) {
                             tableContainer.scrollIntoView({ behavior: 'smooth' });
                         }
+                        
+                        showSuccess(`Filtrado por órgão: ${orgao}`);
                     }, 350);
                 } else {
                     console.error('Elemento da aba não encontrado');
@@ -3494,17 +3746,44 @@ function getOrgaoExtenso(siglaOuNome) {
         }
 
         function printDashboard(source) {
+            // Salvar a aba atual
+            const currentTab = document.querySelector('.nav-link.active');
+            const currentTabId = currentTab ? currentTab.id : 'dashboard1-tab';
+            
+            // Mostrar todas as abas para impressão
+            document.querySelectorAll('.tab-pane').forEach(tab => {
+                tab.classList.add('show', 'active');
+            });
+            
+            // Imprimir
             window.print();
+            
+            // Restaurar estado original
+            document.querySelectorAll('.tab-pane').forEach(tab => {
+                tab.classList.remove('show', 'active');
+            });
+            
+            // Ativar a aba original
+            if (currentTabId === 'dashboard1-tab') {
+                document.getElementById('dashboard1').classList.add('show', 'active');
+            } else if (currentTabId === 'dashboard2-tab') {
+                document.getElementById('dashboard2').classList.add('show', 'active');
+            } else if (currentTabId === 'dashboard3-tab') {
+                document.getElementById('dashboard3').classList.add('show', 'active');
+            }
         }
 
         function exportResumoCSV() {
-            if (filteredData.length === 0) return;
+            if (filteredData.length === 0) {
+                showError('Não há dados para exportar.');
+                return;
+            }
             
             // Agrupar por órgão
             const grupos = {};
             filteredData.forEach(estagiario => {
-                const orgao = estagiario.orgao;
-                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao;
+                const orgao = estagiario.orgao || 'Órgão não informado';
+                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao.substring(0, 10);
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
@@ -3553,10 +3832,15 @@ function getOrgaoExtenso(siglaOuNome) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            
+            showSuccess('Exportação CSV realizada com sucesso!');
         }
 
         function exportEstagiariosCSV() {
-            if (filteredData.length === 0) return;
+            if (filteredData.length === 0) {
+                showError('Não há dados para exportar.');
+                return;
+            }
             
             const headers = ['ano_mesreferencia', 'nome_estagiario', 'masp', 'codigo_situacao_funcional', 
                            'situacao_funcional', 'data_inicio', 'data_fim', 'codigo_orgao', 
@@ -3564,17 +3848,17 @@ function getOrgaoExtenso(siglaOuNome) {
             const data = filteredData.map(estagiario => {
                 const situacao = (!estagiario.data_fim || estagiario.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
                 return [
-                    estagiario.ano_mesreferencia,
-                    estagiario.nome_estagiario,
-                    estagiario.masp,
-                    estagiario.codigo_situacao_funcional,
-                    estagiario.situacao_funcional,
-                    estagiario.data_inicio,
-                    estagiario.data_fim,
-                    estagiario.codigo_orgao,
-                    estagiario.orgao,
-                    estagiario.sigla_orgao,
-                    estagiario.valor_remuneracao.toFixed(2),
+                    estagiario.ano_mesreferencia || '',
+                    estagiario.nome_estagiario || '',
+                    estagiario.masp || '',
+                    estagiario.codigo_situacao_funcional || '',
+                    estagiario.situacao_funcional || '',
+                    estagiario.data_inicio || '',
+                    estagiario.data_fim || '',
+                    estagiario.codigo_orgao || '',
+                    estagiario.orgao || '',
+                    estagiario.sigla_orgao || '',
+                    (estagiario.valor_remuneracao || 0).toFixed(2),
                     situacao
                 ];
             });
@@ -3594,6 +3878,44 @@ function getOrgaoExtenso(siglaOuNome) {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            
+            showSuccess('Exportação CSV realizada com sucesso!');
+        }
+
+        // ==================== FUNÇÃO IFRAME HEIGHT ====================
+        function iframeUpdateHeight() { 
+            try {
+                window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 10 }, '*'); 
+                console.log('iframeUpdateHeight chamado:', document.body.scrollHeight + 10);
+            } catch (error) {
+                console.log('iframeUpdateHeight error (pode ser normal se não estiver em iframe):', error);
+            }
+        }
+
+        // ==================== OUTRAS FUNÇÕES DE INICIALIZAÇÃO ====================
+        function setupTooltips() {
+            // Inicializar tooltips do Bootstrap se necessário
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                tooltipTriggerList.forEach(tooltipTriggerEl => {
+                    new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+        }
+
+        function setupDescriptiveTooltips() {
+            // Esta função pode ser usada para adicionar tooltips descritivos
+            console.log('Tooltips descritivos configurados');
+        }
+
+        function setupAtualizacaoData() {
+            // Esta função pode ser usada para configurar dados de atualização
+            console.log('Configuração de dados de atualização');
+        }
+
+        function loadInitialData() {
+            // Esta função já é chamada no DOMContentLoaded
+            console.log('Dados iniciais carregados');
         }
     </script>
 </body>
