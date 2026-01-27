@@ -42,6 +42,7 @@
             font-family: 'Montserrat', Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-light);
             padding-bottom: 30px;
+            overflow-y: scroll; /* Sempre mostrar scrollbar para evitar jumps */
         }
         
         /* ==================== HEADER PRINCIPAL ==================== */
@@ -432,11 +433,16 @@
             padding: 12px 10px;
             vertical-align: middle;
             font-size: 13px;
-        }        
-   
+        }
+
+        /* Colunas numéricas centralizadas */
+        .table td.text-center {
+            text-align: center !important;
+        }
+        
         /* Coluna de ações na tabela */
         .actions-column {
-            width: 100px;
+            width: 90px; /* Reduzido de 100px */
             text-align: center;
         }
         
@@ -505,6 +511,25 @@
             color: white;
         }
         
+        /* Botão Pesquisar azul */
+        .btn-search-custom {
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-bright));
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            color: white;
+        }
+        
+        .btn-search-custom:hover {
+            background: linear-gradient(to right, #006A82, var(--accent-blue));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+            color: white;
+        }
+        
         .btn-secondary-custom {
             background: white;
             border: 2px solid var(--primary-dark);
@@ -546,7 +571,8 @@
 
         .btn-primary-custom .material-icons,
         .btn-secondary-custom .material-icons,
-        .btn-danger-custom .material-icons {
+        .btn-danger-custom .material-icons,
+        .btn-search-custom .material-icons {
             font-size: 16px;
             vertical-align: middle;
             margin-right: 8px;
@@ -555,7 +581,8 @@
 
         .btn-primary-custom,
         .btn-secondary-custom,
-        .btn-danger-custom {
+        .btn-danger-custom,
+        .btn-search-custom {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -682,10 +709,6 @@
             border-top: 2px solid #dee2e6 !important;
         }
 
-       .table-total-row td.quantidade {
-            text-align: center;
-        }
-
         /* ==================== LINK CLICÁVEL ==================== */
         .orgao-link {
             color: var(--primary-dark);
@@ -702,8 +725,8 @@
         }
 
         .orgao-link:hover {
-            color: var(--hover-blue) !important;
-            background-color: rgba(0, 106, 130, 0.05);
+            color: var(--danger-red) !important; /* Vermelho ao passar mouse */
+            background-color: rgba(231, 76, 60, 0.05);
             transform: translateY(-1px);
             text-decoration: none !important;
         }
@@ -969,6 +992,9 @@
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
+            white-space: nowrap; /* Impede quebra de linha */
+            display: inline-block;
+            text-align: center;
         }
         
         .badge-ativo {
@@ -1055,7 +1081,7 @@
             }
             
             .actions-column {
-                width: 80px;
+                width: 70px; /* Ajustado para mobile */
             }
             
             .btn-action {
@@ -1071,7 +1097,8 @@
             
             .btn-primary-custom,
             .btn-secondary-custom,
-            .btn-danger-custom {
+            .btn-danger-custom,
+            .btn-search-custom {
                 padding: 8px 15px;
                 font-size: 12px;
             }
@@ -1104,7 +1131,7 @@
             }
             
             .actions-column {
-                width: 70px;
+                width: 60px; /* Ajustado para telas pequenas */
             }
             
             .btn-action {
@@ -1198,8 +1225,8 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex gap-3 flex-wrap">
-                                <button class="btn-danger-custom" id="aplicarFiltros">
-                                    <i class="fas fa-filter me-2"></i>Pesquisar
+                                <button class="btn-search-custom" id="aplicarFiltros">
+                                    <i class="fas fa-search me-2"></i>Pesquisar
                                 </button>
                                 <button class="btn-secondary-custom" id="limparFiltros">
                                     <i class="fas fa-redo me-2"></i>Limpar Filtros
@@ -1388,7 +1415,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex gap-3 flex-wrap">
-                                <button class="btn-danger-custom" id="pesquisarEstagiarios">
+                                <button class="btn-search-custom" id="pesquisarEstagiarios">
                                     <i class="fas fa-search me-2"></i>Pesquisar
                                 </button>
                                 <button class="btn-secondary-custom" id="limparFiltrosDashboard2">
@@ -1903,7 +1930,7 @@
                 
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
-                showError('Erro ao carregar dados do GitHub. Por favor, verifique sua conexão e tente novamente.');
+                // Removido showError para não mostrar pop-ups
             } finally {
                 showLoading(false);
             }
@@ -2116,9 +2143,6 @@
 
     console.log(`Total de registros: ${estagiariosData.length}`);
     
-    // Log de alguns registros para verificar
-    console.log('Primeiros 3 registros:', estagiariosData.slice(0, 3));
-
     // Obter todos os meses disponíveis
     const mesesComData = [];
     estagiariosData.forEach(e => {
@@ -2204,23 +2228,17 @@
                 filterResumoTable(e.target.value.toLowerCase());
             });
             
-            // Troca de abas
+            // Troca de abas - SEM rolagem automática
             const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function(e) {
                     const tabId = this.getAttribute('data-bs-target').replace('#', '');
-                    if (tabId === 'dashboard3') {
-                        // Se vem de outro dashboard, mostra botão voltar
-                        if (dashboardAnterior && dashboardAnterior !== 'dashboard3') {
-                            // Você pode adicionar lógica para mostrar um botão voltar se necessário
-                        } else {
-                            // Oculta o botão voltar se não vier de outro dashboard
-                        }
-                    } else {
-                        dashboardAnterior = tabId;
-                    }
-                    // Atualiza a altura do iframe
-                    setTimeout(iframeUpdateHeight, 300);
+                    dashboardAnterior = tabId;
+                    
+                    // Atualiza a altura do iframe sem scroll
+                    setTimeout(() => {
+                        iframeUpdateHeight();
+                    }, 100);
                 });
             });
             
@@ -2229,27 +2247,27 @@
                 itemsPerPageDashboard1 = parseInt(this.value);
                 currentPageDashboard1 = 1;
                 updateResumoTable();
-                setTimeout(iframeUpdateHeight, 300);
+                setTimeout(iframeUpdateHeight, 100);
             });
             
             document.getElementById('itemsPerPageDashboard2').addEventListener('change', function() {
                 itemsPerPageDashboard2 = parseInt(this.value);
                 currentPageDashboard2 = 1;
                 updateEstagiariosTable();
-                setTimeout(iframeUpdateHeight, 300);
+                setTimeout(iframeUpdateHeight, 100);
             });
             
             // Mudança de ano nos selects
             document.getElementById('anoDashboard1').addEventListener('change', async function() {
                 const selectedYear = this.value;
                 await switchYearData(selectedYear);
-                setTimeout(iframeUpdateHeight, 300);
+                setTimeout(iframeUpdateHeight, 100);
             });
             
             document.getElementById('anoDashboard2').addEventListener('change', async function() {
                 const selectedYear = this.value;
                 await switchYearData(selectedYear);
-                setTimeout(iframeUpdateHeight, 300);
+                setTimeout(iframeUpdateHeight, 100);
             });
         }
 
@@ -2259,29 +2277,8 @@
             overlay.style.display = show ? 'flex' : 'none';
         }
 
-        function showError(message) {
-            const container = document.querySelector('.container');
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'alert alert-danger alert-dismissible fade show';
-            errorDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            container.prepend(errorDiv);
-        }
-
-        function showSuccess(message) {
-            const container = document.querySelector('.container');
-            const successDiv = document.createElement('div');
-            successDiv.className = 'alert alert-success alert-dismissible fade show';
-            successDiv.innerHTML = `
-                <i class="fas fa-check-circle me-2"></i>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            container.prepend(successDiv);
-        }
+        // Removida a função showError para não mostrar pop-ups
+        // Removida a função showSuccess para não mostrar pop-ups
 
         function updateDataAtualizacao() {
             const now = new Date();
@@ -2361,10 +2358,8 @@
                 updateFilterOptions();
                 updateDashboard1();
                 updateDashboard2();
-                showSuccess(`Dados de ${year} carregados com sucesso!`);
             } catch (error) {
                 console.error('Erro ao trocar ano:', error);
-                showError('Erro ao carregar dados do ano selecionado.');
             } finally {
                 showLoading(false);
             }
@@ -2614,10 +2609,9 @@
                 }
             } catch (error) {
                 console.error('Erro ao aplicar filtros:', error);
-                showError('Erro ao aplicar filtros.');
             } finally {
                 showLoading(false);
-                setTimeout(iframeUpdateHeight, 300);
+                setTimeout(iframeUpdateHeight, 100);
             }
         }
 
@@ -2696,10 +2690,9 @@
                 }
             } catch (error) {
                 console.error('Erro após carregar ano:', error);
-                showError('Erro ao aplicar filtros após carregar ano.');
             } finally {
                 showLoading(false);
-                setTimeout(iframeUpdateHeight, 300);
+                setTimeout(iframeUpdateHeight, 100);
             }
         }
 
@@ -2771,7 +2764,6 @@
             currentPageDashboard1 = 1;
             updateFilterOptions();
             updateDashboard1();
-            showSuccess('Filtros limpos com sucesso!');
         }
 
         function clearDashboard2Filters() {
@@ -2811,7 +2803,6 @@
             currentPageDashboard2 = 1;
             updateFilterOptions();
             updateDashboard2();
-            showSuccess('Filtros limpos com sucesso!');
         }
 
         // ==================== DASHBOARD 1: VISÃO GERAL ====================
@@ -2968,7 +2959,7 @@
             const endIndex = Math.min(startIndex + itemsPerPage, resumoArray.length);
             const currentData = resumoArray.slice(startIndex, endIndex);
             
-            // Gerar HTML da tabela
+            // Gerar HTML da tabela com colunas numéricas centralizadas
             const rowsHTML = currentData.map(item => {
                 return `
                 <tr>
@@ -2978,20 +2969,20 @@
                         </a>
                     </td>
                     <td>${item.sigla}</td>
-                    <td>${item.total_estagiarios.toLocaleString('pt-BR')}</td>
-                    <td>${item.em_andamento.toLocaleString('pt-BR')}</td>
-                    <td>${item.concluido.toLocaleString('pt-BR')}</td>
+                    <td class="text-center">${item.total_estagiarios.toLocaleString('pt-BR')}</td>
+                    <td class="text-center">${item.em_andamento.toLocaleString('pt-BR')}</td>
+                    <td class="text-center">${item.concluido.toLocaleString('pt-BR')}</td>
                 </tr>
             `}).join('');
             
-            // Gerar rodapé
+            // Gerar rodapé com colunas numéricas centralizadas
             const footerHTML = `
                 <tr class="table-total-row">
                     <td><strong>TOTAL GERAL (${totalOrgaos.toLocaleString('pt-BR')} órgãos)</strong></td>
                     <td><strong>-</strong></td>
-                    <td><strong>${totalEstagiarios.toLocaleString('pt-BR')}</strong></td>
-                    <td><strong>${totalEmAndamento.toLocaleString('pt-BR')}</strong></td>
-                    <td><strong>${totalConcluido.toLocaleString('pt-BR')}</strong></td>
+                    <td class="text-center"><strong>${totalEstagiarios.toLocaleString('pt-BR')}</strong></td>
+                    <td class="text-center"><strong>${totalEmAndamento.toLocaleString('pt-BR')}</strong></td>
+                    <td class="text-center"><strong>${totalConcluido.toLocaleString('pt-BR')}</strong></td>
                 </tr>
             `;
             
@@ -3088,11 +3079,6 @@
             
             currentPageDashboard1 = page;
             updateResumoTable();
-            
-            const tableContainer = document.querySelector('#dashboard1 .table-container');
-            if (tableContainer) {
-                tableContainer.scrollIntoView({ behavior: 'smooth' });
-            }
         };
 
         function updateCharts1() {
@@ -3517,11 +3503,6 @@
             
             currentPageDashboard2 = page;
             updateEstagiariosTable();
-            
-            const tableContainer = document.querySelector('#dashboard2 .table-container');
-            if (tableContainer) {
-                tableContainer.scrollIntoView({ behavior: 'smooth' });
-            }
         };
 
         // ==================== FUNÇÃO PARA MOSTRAR HISTÓRICO ====================
@@ -3624,7 +3605,6 @@
                 
             } catch (error) {
                 console.error('Erro ao carregar histórico:', error);
-                showError('Erro ao carregar histórico do estagiário.');
                 showLoading(false);
             }
         };
@@ -3686,11 +3666,10 @@
                 document.body.removeChild(link);
                 
                 console.log(`Download do ano ${year} realizado: ${data.length} registros`);
-                showSuccess(`Download do ano ${year} realizado com sucesso!`);
                 
             } catch (error) {
                 console.error(`Erro ao baixar dados de ${year}:`, error);
-                showError(`Erro ao baixar dados de ${year}. Por favor, tente novamente.`);
+                alert(`Erro ao baixar dados de ${year}. Por favor, tente novamente.`);
             } finally {
                 showLoading(false);
             }
@@ -3726,21 +3705,12 @@
                         
                         // Aplicar o filtro
                         applyFilters('dashboard2');
-                        
-                        // Rolar para a tabela
-                        const tableContainer = document.querySelector('#dashboard2 .table-container');
-                        if (tableContainer) {
-                            tableContainer.scrollIntoView({ behavior: 'smooth' });
-                        }
-                        
-                        showSuccess(`Filtrado por órgão: ${orgao}`);
                     }, 350);
                 } else {
                     console.error('Elemento da aba não encontrado');
                 }
             } catch (error) {
                 console.error('Erro ao filtrar por órgão:', error);
-                showError('Erro ao filtrar por órgão. Por favor, tente novamente.');
             }
         };
 
@@ -3812,7 +3782,7 @@
 
         function exportResumoCSV() {
             if (filteredData.length === 0) {
-                showError('Não há dados para exportar.');
+                alert('Não há dados para exportar.');
                 return;
             }
             
@@ -3869,13 +3839,11 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            showSuccess('Exportação CSV realizada com sucesso!');
         }
 
         function exportEstagiariosCSV() {
             if (filteredData.length === 0) {
-                showError('Não há dados para exportar.');
+                alert('Não há dados para exportar.');
                 return;
             }
             
@@ -3915,17 +3883,16 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            showSuccess('Exportação CSV realizada com sucesso!');
         }
 
         // ==================== FUNÇÃO IFRAME HEIGHT ====================
         function iframeUpdateHeight() { 
             try {
-                window.parent.postMessage({ iframeHeight: document.body.scrollHeight + 10 }, '*'); 
-                console.log('iframeUpdateHeight chamado:', document.body.scrollHeight + 10);
+                // Calcula a altura uma vez para evitar múltiplas chamadas
+                const height = document.body.scrollHeight + 10;
+                window.parent.postMessage({ iframeHeight: height }, '*'); 
             } catch (error) {
-                console.log('iframeUpdateHeight error (pode ser normal se não estiver em iframe):', error);
+                // Ignora erro se não estiver em iframe
             }
         }
 
