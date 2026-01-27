@@ -1930,41 +1930,6 @@
     const url = `${GITHUB_BASE_URL}${filename}`;
     console.log(`Carregando dados de ${year}: ${url}`);
 
-    // Função para normalizar data no formato 2025/01
-    const normalizarDataReferencia = (ref) => {
-        if (!ref || typeof ref !== 'string') return null;
-        
-        const dataStr = ref.trim();
-        
-        // Verificar se está vazio
-        if (dataStr === '') {
-            return null;
-        }
-        
-        // Verificar formato 2025/01
-        if (dataStr.includes('/')) {
-            const [anoStr, mesStr] = dataStr.split('/');
-            const ano = parseInt(anoStr, 10);
-            const mes = parseInt(mesStr, 10);
-            
-            if (isNaN(ano) || isNaN(mes) || mes < 1 || mes > 12) {
-                console.warn(`Formato inválido ano_mesreferencia: "${ref}"`);
-                return null;
-            }
-            
-            return {
-                ano,
-                mes,
-                ano_mesreferencia: `${ano}-${String(mes).padStart(2, '0')}`,
-                ANO: ano.toString(),
-                MES: String(mes).padStart(2, '0')
-            };
-        }
-        
-        console.warn(`Formato não suportado ano_mesreferencia: "${ref}"`);
-        return null;
-    };
-
     return new Promise((resolve, reject) => {
         Papa.parse(url, {
             download: true,
@@ -1973,58 +1938,132 @@
             encoding: 'UTF-8',
             delimiter: ',',
             complete: function (results) {
-                console.log(`Parse completo para ${year}: ${results.data.length} registros`);
+                console.log(`=== DEPURAÇÃO PARA ${year} ===`);
+                console.log(`Parse completo: ${results.data.length} registros`);
                 
+                // Verificar as primeiras linhas
+                if (results.data.length > 0) {
+                    console.log('Primeira linha do CSV:', results.data[0]);
+                    console.log('Colunas disponíveis:', Object.keys(results.data[0]));
+                    
+                    // Mostrar algumas linhas para análise
+                    for (let i = 0; i < Math.min(3, results.data.length); i++) {
+                        console.log(`Linha ${i}:`, results.data[i]);
+                    }
+                }
+                
+                // Função simplificada para processar data
+                const processarData = (ref) => {
+                    if (!ref) {
+                        console.log('Referência vazia');
+                        return null;
+                    }
+                    
+                    const str = ref.toString().trim();
+                    console.log(`Processando data: "${str}"`);
+                    
+                    // Formato 2025/01
+                    if (str.includes('/')) {
+                        const parts = str.split('/');
+                        if (parts.length >= 2) {
+                            const ano = parseInt(parts[0], 10);
+                            const mes = parseInt(parts[1], 10);
+                            
+                            if (!isNaN(ano) && !isNaN(mes) && mes >= 1 && mes <= 12) {
+                                return {
+                                    ano,
+                                    mes,
+                                    ano_mesreferencia: `${ano}-${String(mes).padStart(2, '0')}`,
+                                    ANO: ano.toString(),
+                                    MES: String(mes).padStart(2, '0')
+                                };
+                            }
+                        }
+                    }
+                    
+                    // Formato 2025-01
+                    if (str.includes('-')) {
+                        const parts = str.split('-');
+                        if (parts.length >= 2) {
+                            const ano = parseInt(parts[0], 10);
+                            const mes = parseInt(parts[1], 10);
+                            
+                            if (!isNaN(ano) && !isNaN(mes) && mes >= 1 && mes <= 12) {
+                                return {
+                                    ano,
+                                    mes,
+                                    ano_mesreferencia: str,
+                                    ANO: ano.toString(),
+                                    MES: String(mes).padStart(2, '0')
+                                };
+                            }
+                        }
+                    }
+                    
+                    console.log(`Formato não reconhecido: "${str}"`);
+                    return null;
+                };
+
                 const data = results.data
                     .map((row, index) => {
                         try {
-                            // Normalizar nomes das colunas (maiúsculas/minúsculas)
+                            // Log para debug
+                            if (index < 3) {
+                                console.log(`Processando linha ${index}:`, row);
+                            }
+                            
+                            // Normalizar nomes das colunas
                             const rowNormalized = {};
                             Object.keys(row).forEach(key => {
                                 const normalizedKey = key.toLowerCase().trim();
                                 rowNormalized[normalizedKey] = row[key];
                             });
-
-                            // Obter ano_mesreferencia
-                            const ano_mesreferencia_raw = 
-                                rowNormalized['ano_mesreferencia'] || 
-                                rowNormalized['ano_mes_referencia'] ||
-                                rowNormalized['mes_referencia'] ||
-                                '';
                             
-                            const ref = (ano_mesreferencia_raw || '').toString().trim();
-                            const dataInfo = normalizarDataReferencia(ref);
+                            // Log das colunas normalizadas
+                            if (index < 3) {
+                                console.log(`Colunas normalizadas linha ${index}:`, Object.keys(rowNormalized));
+                            }
+
+                            // Buscar a coluna ano_mesreferencia
+                            const anoMesKey = Object.keys(rowNormalized).find(key => 
+                                key.includes('ano') && key.includes('mes') || 
+                                key.includes('referencia')
+                            );
+                            
+                            let ano_mesreferencia_raw = '';
+                            if (anoMesKey) {
+                                ano_mesreferencia_raw = rowNormalized[anoMesKey];
+                                console.log(`Encontrada coluna ${anoMesKey} com valor: "${ano_mesreferencia_raw}"`);
+                            } else {
+                                // Tentar nomes específicos
+                                ano_mesreferencia_raw = 
+                                    rowNormalized['ano_mesreferencia'] || 
+                                    rowNormalized['ano_mes_referencia'] ||
+                                    rowNormalized['mes_referencia'] ||
+                                    rowNormalized['referencia'] ||
+                                    '';
+                            }
+                            
+                            console.log(`Linha ${index}: ano_mesreferencia_raw = "${ano_mesreferencia_raw}"`);
+
+                            // Processar a data
+                            const dataInfo = processarData(ano_mesreferencia_raw);
                             
                             if (!dataInfo) {
-                                // Log apenas se não for vazio (para evitar muitos logs)
-                                if (ref !== '') {
-                                    console.warn(`Linha ${index}: Ignorada - data inválida: "${ref}"`);
-                                }
+                                console.log(`Linha ${index} ignorada - data inválida`);
                                 return null;
                             }
                             
                             const { ano, mes, ano_mesreferencia, ANO, MES } = dataInfo;
-
+                            
                             // Obter sigla e nome do órgão
                             const sigla_orgao = (rowNormalized['sigla_orgao'] || rowNormalized['sigla'] || '').trim();
                             const orgao_nome = (rowNormalized['orgao'] || rowNormalized['orgão'] || '').trim();
                             
-                            // Se o nome do órgão parece ser uma sigla, obter o nome completo
-                            const orgao_completo = getOrgaoExtenso(orgao_nome || sigla_orgao);
-
                             // Converter valor_remuneracao para número
                             let valorRemuneracao = 0;
                             const valorRaw = rowNormalized['valor_remuneracao'] || rowNormalized['remuneracao'] || rowNormalized['valor'] || '0';
-                            if (valorRaw) {
-                                // Remover R$, pontos e substituir vírgula por ponto
-                                const valorStr = valorRaw.toString()
-                                    .replace(/R\$/g, '')
-                                    .replace(/\./g, '')
-                                    .replace(',', '.')
-                                    .trim();
-                                valorRemuneracao = parseFloat(valorStr) || 0;
-                            }
-
+                            
                             // Obter nome do estagiário
                             const nome_estagiario = (rowNormalized['nome_estagiario'] || rowNormalized['nome'] || '').trim();
 
@@ -2040,15 +2079,15 @@
                                 data_inicio: (rowNormalized['data_inicio'] || '').trim(),
                                 data_fim: (rowNormalized['data_fim'] || '').trim(),
                                 codigo_orgao: rowNormalized['codigo_orgao'] || rowNormalized['codigo'] || '',
-                                orgao: orgao_completo,
-                                orgao_sigla: sigla_orgao || orgao_completo.substring(0, 20),
-                                sigla_orgao: sigla_orgao || orgao_completo.substring(0, 10),
+                                orgao: orgao_nome || sigla_orgao,
+                                orgao_sigla: sigla_orgao || orgao_nome,
+                                sigla_orgao: sigla_orgao,
                                 valor_remuneracao: valorRemuneracao,
                                 ANO: ANO,
                                 MES: MES
                             };
                         } catch (error) {
-                            console.error(`Erro ao processar linha ${index}:`, row, error);
+                            console.error(`Erro ao processar linha ${index}:`, error, row);
                             return null;
                         }
                     })
@@ -2057,15 +2096,12 @@
                 allData[year] = data;
                 estagiariosData = data;
 
+                console.log(`=== RESULTADO FINAL ===`);
                 console.log(`Dados de ${year} processados: ${data.length} registros válidos`);
-                console.log(`Órgãos processados: ${[...new Set(data.map(d => d.orgao))].length} nomes completos`);
+                console.log(`Total de linhas originais: ${results.data.length}`);
                 
-                // Log de meses encontrados
-                const mesesUnicos = [...new Set(data.map(d => d.ano_mesreferencia))];
-                console.log(`Meses encontrados: ${mesesUnicos.join(', ')}`);
-                
-                if (data.length === 0) {
-                    console.warn(`Nenhum dado válido encontrado para ${year}`);
+                if (data.length > 0) {
+                    console.log('Primeiro registro processado:', data[0]);
                 }
                 
                 resolve();
