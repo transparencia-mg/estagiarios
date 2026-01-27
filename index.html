@@ -2080,56 +2080,63 @@
 
         // ==================== DETERMINAR MÊS MAIS RECENTE ====================
         async function determineLatestMonth() {
-            if (!estagiariosData || estagiariosData.length === 0) {
-                console.warn('Dados ainda não carregados.');
-                filteredData = [];
-                return;
-            }
+    if (!estagiariosData || estagiariosData.length === 0) {
+        console.warn('Dados ainda não carregados.');
+        filteredData = [];
+        return;
+    }
 
-            // Obter todos os meses disponíveis
-            const mesesComData = [];
-            estagiariosData.forEach(e => {
-                if (e.ano_mesreferencia && e.ANO && e.MES) {
-                    mesesComData.push({ 
-                        ano: e.ANO, 
-                        mes: e.MES,
-                        data: e.ano_mesreferencia 
-                    });
-                }
+    console.log(`Total de registros: ${estagiariosData.length}`);
+    
+    // Log de alguns registros para verificar
+    console.log('Primeiros 3 registros:', estagiariosData.slice(0, 3));
+
+    // Obter todos os meses disponíveis
+    const mesesComData = [];
+    estagiariosData.forEach(e => {
+        if (e.ano_mesreferencia && e.ANO && e.MES) {
+            mesesComData.push({ 
+                ano: e.ANO, 
+                mes: e.MES,
+                data: e.ano_mesreferencia 
             });
-
-            if (mesesComData.length === 0) {
-                console.warn('Nenhum mês encontrado nos dados.');
-                filteredData = estagiariosData;
-                return;
-            }
-
-            // Encontrar o mês mais recente
-            let ultimoMes = mesesComData[0];
-            mesesComData.forEach(mesData => {
-                const mesDataInt = parseInt(mesData.mes);
-                const ultimoMesInt = parseInt(ultimoMes.mes);
-                const mesDataAno = parseInt(mesData.ano);
-                const ultimoMesAno = parseInt(ultimoMes.ano);
-                
-                if (mesDataAno > ultimoMesAno || 
-                    (mesDataAno === ultimoMesAno && mesDataInt > ultimoMesInt)) {
-                    ultimoMes = mesData;
-                }
-            });
-
-            currentYear = ultimoMes.ano;
-            currentMonth = ultimoMes.mes;
-
-            // Filtrar dados do mês mais recente
-            filteredData = estagiariosData.filter(
-                e => e.ANO === currentYear && e.MES === currentMonth
-            );
-
-            console.log(
-                `Mês mais recente encontrado: ${currentMonth}/${currentYear} - ${filteredData.length} registros`
-            );
         }
+    });
+
+    console.log(`Meses com dados: ${mesesComData.length}`);
+
+    if (mesesComData.length === 0) {
+        console.warn('Nenhum mês encontrado nos dados.');
+        filteredData = estagiariosData;
+        return;
+    }
+
+    // Encontrar o mês mais recente
+    let ultimoMes = mesesComData[0];
+    mesesComData.forEach(mesData => {
+        const mesDataInt = parseInt(mesData.mes);
+        const ultimoMesInt = parseInt(ultimoMes.mes);
+        const mesDataAno = parseInt(mesData.ano);
+        const ultimoMesAno = parseInt(ultimoMes.ano);
+        
+        if (mesDataAno > ultimoMesAno || 
+            (mesDataAno === ultimoMesAno && mesDataInt > ultimoMesInt)) {
+            ultimoMes = mesData;
+        }
+    });
+
+    currentYear = ultimoMes.ano;
+    currentMonth = ultimoMes.mes;
+
+    // Filtrar dados do mês mais recente
+    filteredData = estagiariosData.filter(
+        e => e.ANO === currentYear && e.MES === currentMonth
+    );
+
+    console.log(
+        `Mês mais recente encontrado: ${currentMonth}/${currentYear} - ${filteredData.length} registros`
+    );
+}
 
         // ==================== CONFIGURAR EVENT LISTENERS ====================
         function setupEventListeners() {
