@@ -2327,37 +2327,152 @@
                 });
             }
             
-            // Obter todos os órgãos únicos do período atual - APENAS DOS DADOS FILTRADOS
-            // FILTRAR APENAS ÓRGÃOS QUE NÃO SÃO NÚMEROS
-            const orgaosUnicos = [...new Set(filteredData
-                .map(e => e.orgao)
-                .filter(orgao => orgao && orgao.trim() !== '' && !/^\d+$/.test(orgao))
-            )].sort();
-            
-            console.log('Órgãos disponíveis para filtro:', orgaosUnicos);
-            
-            // Dashboard 1 - datalist de órgãos
-            const orgaoDatalist1 = document.getElementById('orgaosListDashboard1');
-            if (orgaoDatalist1) {
-                orgaoDatalist1.innerHTML = '';
-                orgaosUnicos.forEach(orgao => {
-                    const option = document.createElement('option');
-                    option.value = orgao;
-                    orgaoDatalist1.appendChild(option);
-                });
-            }
-            
-            // Dashboard 2 - datalist de órgãos
-            const orgaoDatalist2 = document.getElementById('orgaosListDashboard2');
-            if (orgaoDatalist2) {
-                orgaoDatalist2.innerHTML = '';
-                orgaosUnicos.forEach(orgao => {
-                    const option = document.createElement('option');
-                    option.value = orgao;
-                    orgaoDatalist2.appendChild(option);
-                });
-            }
+function updateFilterOptions() {
+    // Dashboard 1 - Ano
+    const anoSelect1 = document.getElementById('anoDashboard1');
+    if (anoSelect1) {
+        anoSelect1.innerHTML = '';
+        
+        // Adicionar anos disponíveis
+        const anos = Object.keys(CSV_FILES_BY_YEAR).sort((a, b) => b - a);
+        anos.forEach(ano => {
+            const option = document.createElement('option');
+            option.value = ano;
+            option.textContent = ano;
+            if (ano === currentYear) option.selected = true;
+            anoSelect1.appendChild(option);
+        });
+    }
+    
+    // Dashboard 1 - Mês - MOSTRAR APENAS O NOME DO MÊS
+    const mesSelect1 = document.getElementById('mesDashboard1');
+    if (mesSelect1 && currentYear) {
+        // Obter meses disponíveis para o ano atual
+        const mesesDisponiveis = new Set();
+        if (allData[currentYear]) {
+            allData[currentYear].forEach(e => {
+                if (e.MES && e.ANO === currentYear) {
+                    mesesDisponiveis.add(e.MES);
+                }
+            });
         }
+        
+        // Converter para array e ordenar do mais recente para o mais antigo
+        const mesesArray = Array.from(mesesDisponiveis)
+            .filter(mes => mes && mes.length === 2)
+            .sort((a, b) => parseInt(b) - parseInt(a));
+        
+        mesSelect1.innerHTML = '';
+        mesesArray.forEach(mesNum => {
+            const option = document.createElement('option');
+            option.value = mesNum;
+            option.textContent = `${monthNames[mesNum] || mesNum}`; // APENAS NOME DO MÊS
+            if (mesNum === currentMonth) option.selected = true;
+            mesSelect1.appendChild(option);
+        });
+        
+        // Se não encontrou o mês atual na lista, seleciona o primeiro
+        if (mesesArray.length > 0 && !mesesArray.includes(currentMonth)) {
+            currentMonth = mesesArray[0];
+            mesSelect1.value = currentMonth;
+        }
+    }
+    
+    // Dashboard 2 - Ano
+    const anoSelect2 = document.getElementById('anoDashboard2');
+    if (anoSelect2) {
+        anoSelect2.innerHTML = '';
+        const anos = Object.keys(CSV_FILES_BY_YEAR).sort((a, b) => b - a);
+        anos.forEach(ano => {
+            const option = document.createElement('option');
+            option.value = ano;
+            option.textContent = ano;
+            if (ano === currentYear) option.selected = true;
+            anoSelect2.appendChild(option);
+        });
+    }
+    
+    // Dashboard 2 - Mês - MOSTRAR APENAS O NOME DO MÊS
+    const mesSelect2 = document.getElementById('mesDashboard2');
+    if (mesSelect2 && currentYear) {
+        // Obter meses disponíveis para o ano atual
+        const mesesDisponiveis = new Set();
+        if (allData[currentYear]) {
+            allData[currentYear].forEach(e => {
+                if (e.MES && e.ANO === currentYear) {
+                    mesesDisponiveis.add(e.MES);
+                }
+            });
+        }
+        
+        const mesesArray = Array.from(mesesDisponiveis)
+            .filter(mes => mes && mes.length === 2)
+            .sort((a, b) => parseInt(b) - parseInt(a));
+        
+        mesSelect2.innerHTML = '';
+        mesesArray.forEach(mesNum => {
+            const option = document.createElement('option');
+            option.value = mesNum;
+            option.textContent = `${monthNames[mesNum] || mesNum}`; // APENAS NOME DO MÊS
+            if (mesNum === currentMonth) option.selected = true;
+            mesSelect2.appendChild(option);
+        });
+    }
+    
+    // CORREÇÃO: Obter todos os órgãos únicos dos DADOS COMPLETOS do ano atual, não apenas dos filtrados
+    const orgaosUnicos = [];
+    
+    if (allData[currentYear] && allData[currentYear].length > 0) {
+        // Criar um Set para órgãos únicos
+        const orgaosSet = new Set();
+        
+        allData[currentYear].forEach(estagiario => {
+            const orgao = estagiario.orgao;
+            
+            // Filtrar apenas órgãos válidos (não vazios, não apenas números, não "Órgão não especificado")
+            if (orgao && 
+                orgao.trim() !== '' && 
+                !/^\d+$/.test(orgao) && 
+                orgao !== 'Órgão não especificado' &&
+                orgao !== 'Órgão não informado') {
+                
+                orgaosSet.add(orgao.trim());
+            }
+        });
+        
+        // Converter Set para array e ordenar
+        orgaosUnicos.push(...Array.from(orgaosSet).sort());
+        
+        console.log('Órgãos disponíveis no datalist:', orgaosUnicos.length, 'órgãos');
+        if (orgaosUnicos.length > 0) {
+            console.log('Primeiros 5 órgãos:', orgaosUnicos.slice(0, 5));
+        }
+    }
+    
+    // Dashboard 1 - datalist de órgãos
+    const orgaoDatalist1 = document.getElementById('orgaosListDashboard1');
+    if (orgaoDatalist1) {
+        orgaoDatalist1.innerHTML = '';
+        orgaosUnicos.forEach(orgao => {
+            const option = document.createElement('option');
+            option.value = orgao;
+            orgaoDatalist1.appendChild(option);
+        });
+        console.log('Datalist 1 preenchido com', orgaosUnicos.length, 'órgãos');
+    }
+    
+    // Dashboard 2 - datalist de órgãos
+    const orgaoDatalist2 = document.getElementById('orgaosListDashboard2');
+    if (orgaoDatalist2) {
+        orgaoDatalist2.innerHTML = '';
+        orgaosUnicos.forEach(orgao => {
+            const option = document.createElement('option');
+            option.value = orgao;
+            orgaoDatalist2.appendChild(option);
+        });
+        console.log('Datalist 2 preenchido com', orgaosUnicos.length, 'órgãos');
+    }
+}
 
         function applyFilters(dashboard) {
             showLoading(true);
