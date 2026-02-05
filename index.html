@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -20,101 +19,131 @@
     <style>
         /* ==================== VARIÁVEIS DE CORES ==================== */
         :root {
-            --primary-dark: #1A5276;
-            --primary-darker: #0E2F44;
-            --accent-blue: #3498DB;
-            --accent-bright: #2980B9;
-            --background-light: #F2F4F7;
-            --success-green: #27AE60;
-            --warning-yellow: #F39C12;
-            --info-blue: #17A589;
-            --secondary-purple: #8E44AD;
-            --secondary-orange: #E67E22;
-            --secondary-teal: #16A085;
-            --danger-red: #E74C3C;
-            --hover-blue: #006A82;
-            --btn-danger: #dc3545;
-            --btn-danger-hover: #bb2d3b;
+            /* Cores primárias */
+            --primary-50: #f2f8ff;
+            --primary-100: #c2dfff;
+            --primary-200: #91c6ff;
+            --primary-300: #61adff;
+            --primary-400: #3094ff;
+            --primary-500: #DB233F;
+            --primary-600: #E14964;
+            --primary-700: #0056b3;
+            --primary-800: #00448c;
+            --primary-900: #003166;
+            
+            /* Cores do sistema */
+            --primary-dark: #29435A;
+            --primary-darker: #132837;
+            --accent-red: #B93C42;
+            --accent-bright: #DB233F;
+            --background-light: #EEEFF5;
+            --success-green: #28a745;
+            --warning-yellow: #ffc107;
+            --info-blue: #17a2b8;
         }
         
         /* ==================== ESTILOS GERAIS ==================== */
         body {
             font-family: 'Montserrat', Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-light);
-            padding-bottom: 30px;
-             }
+            padding-bottom: 15px;
+            overflow-y: visible !important;
+            overflow-x: hidden !important;
+            min-height: auto !important;
+            height: auto !important;
+            position: relative;
+        }
+
+        html {
+            overflow-y: visible !important;
+            height: auto !important;
+        }
+
+        .main-container {
+            height: auto !important;
+            min-height: auto !important;
+            overflow: visible !important;
+            position: relative;
+        }
+
+        .container.dashboard-spacing {
+            overflow: visible !important;
+            height: auto !important;
+            min-height: auto !important;
+            position: relative;
+        }
+
+        .tab-content {
+            overflow: visible !important;
+            height: auto !important;
+            min-height: auto !important;
+            position: relative;
+        }
+
+        .table-container {
+            height: auto !important;
+            min-height: auto !important;
+            overflow: visible !important;
+            position: relative;
+        }
+
+        .table-fixed-header-container {
+            max-height: 500px;
+            overflow-y: auto;
+            position: relative;
+        }
         
-        /* ==================== HEADER PRINCIPAL ==================== */
+        /* ==================== HEADER MINIMALISTA ==================== */
         .main-header {
             background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 20px 0;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-bottom: 4px solid var(--accent-blue);
+            padding: 12px 0;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid var(--accent-red);
         }
         
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
         
         .logo {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-bright) 100%);
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-bright) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 20px;
-            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.25);
+            font-size: 16px;
         }
         
         .header-title {
             font-weight: 700;
-            font-size: 22px;
+            font-size: 18px;
             margin: 0;
             line-height: 1.2;
         }
         
-        .header-subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            margin: 5px 0 0 0;
-        }
-
         .header-info {
-            margin-top: 8px;
             display: flex;
-            flex-wrap: wrap;
+            justify-content: flex-end;
             align-items: center;
             gap: 10px;
         }
         
-        .link-legislacao {
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: color 0.3s;
-        }
-        
-        .link-legislacao:hover {
-            color: white;
-            text-decoration: underline;
-        }
-        
-        .badge-atualizacao-header {
+        .update-badge {
             background-color: rgba(255, 255, 255, 0.15);
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 15px;
-            font-size: 11px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         /* ==================== FILTROS ==================== */
@@ -124,7 +153,7 @@
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
             padding: 20px;
             margin-bottom: 20px;
-            border-left: 5px solid var(--accent-blue);
+            border-left: 5px solid var(--accent-red);
         }
         
         .filter-label {
@@ -146,8 +175,8 @@
         }
         
         .form-control:focus, .form-select:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(185, 60, 66, 0.15);
         }
         
         /* ==================== CARDS DE MÉTRICAS ==================== */
@@ -157,7 +186,7 @@
             padding: 20px 15px;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
             margin-bottom: 20px;
-            border-top: 4px solid var(--accent-blue);
+            border-top: 4px solid var(--accent-red);
             transition: all 0.3s ease;
             height: 100%;
             position: relative;
@@ -183,14 +212,6 @@
         
         .metric-card.info {
             border-top-color: var(--info-blue);
-        }
-        
-        .metric-card.purple {
-            border-top-color: var(--secondary-purple);
-        }
-        
-        .metric-card.orange {
-            border-top-color: var(--secondary-orange);
         }
         
         .metric-value {
@@ -219,32 +240,27 @@
         }
         
         .metric-change.positive {
-            background-color: rgba(39, 174, 96, 0.1);
+            background-color: rgba(40, 167, 69, 0.1);
             color: var(--success-green);
-        }
-        
-        .metric-change.warning {
-            background-color: rgba(243, 156, 18, 0.1);
-            color: var(--warning-yellow);
         }
         
         /* ==================== CONTAINER DE GRÁFICOS ==================== */
         .chart-container {
             background: white;
             border-radius: 10px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
             margin-bottom: 20px;
             height: 100%;
-            min-height: 280px;
+            min-height: 320px;
         }
         
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid var(--background-light);
         }
         
@@ -257,11 +273,121 @@
         
         .chart-wrapper {
             position: relative;
-            height: 220px;
+            height: 260px;
             width: 100%;
         }
         
-        /* ==================== TABELAS ==================== */
+        /* ==================== BADGES DE SITUAÇÃO ==================== */
+        .badge-situacao {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .badge-em-andamento {
+            background-color: rgba(40, 167, 69, 0.15);
+            color: var(--success-green);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        .badge-concluido {
+            background-color: rgba(23, 162, 184, 0.15);
+            color: var(--info-blue);
+            border: 1px solid rgba(23, 162, 184, 0.3);
+        }
+        
+        /* ==================== MENU DE NAVEGAÇÃO ==================== */
+        .nav-tabs-container {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+            margin-top: 10px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-tabs {
+            border: none !important;
+            gap: 4px;
+            flex-wrap: nowrap;
+            min-width: max-content;
+            padding-bottom: 5px;
+            margin-bottom: 0 !important;
+        }
+
+        .nav-tabs .nav-item {
+            flex-shrink: 0;
+        }
+
+        .nav-tabs .nav-link {
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 10px 15px !important;
+            font-weight: 600;
+            color: var(--primary-dark) !important;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            white-space: nowrap;
+            display: inline-flex !important;
+            align-items: center;
+            background: none !important;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background-color: rgba(41, 67, 90, 0.05) !important;
+            color: var(--accent-red) !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .nav-tabs .nav-link .material-icons {
+            font-size: 16px !important;
+            margin-right: 8px !important;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .nav-tabs .nav-link.active .material-icons {
+            color: white !important;
+        }
+
+        .nav-tabs-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-tabs-container::-webkit-scrollbar-track {
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .nav-tabs-container::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 4px;
+        }
+
+        .nav-tabs-container::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+
+        .nav-tabs-container {
+            scrollbar-width: thin;
+            scrollbar-color: #dee2e6 #f8f9fa;
+        }
+
+        .nav-tabs {
+            border-bottom: none !important;
+        }
+        
+        /* ==================== TABELAS COM BORDAS ==================== */
         .table-container {
             background: white;
             border-radius: 10px;
@@ -289,7 +415,7 @@
         }
         
         .table-badge {
-            background: var(--accent-blue);
+            background: var(--accent-red);
             color: white;
             padding: 4px 12px;
             border-radius: 15px;
@@ -297,7 +423,6 @@
             font-weight: 600;
         }
         
-        /* Container para tabela com cabeçalho fixo */
         .table-fixed-header-container {
             position: relative;
             max-height: 500px;
@@ -305,7 +430,6 @@
             padding: 0;
         }
         
-        /* Cabeçalho fixo para todas as tabelas */
         .table-fixed-header-container table thead {
             position: sticky;
             top: 0;
@@ -335,7 +459,6 @@
             border: 1px solid #dee2e6;
         }
         
-        /* Adicionar bordas verticais ao cabeçalho da tabela */
         .table thead th {
             background-color: var(--primary-dark) !important;
             color: white !important;
@@ -365,7 +488,7 @@
         }
         
         .sort-icon {
-            opacity: 0.5;
+            opacity: 0.8;
             margin-left: 4px;
             font-size: 9px;
             transition: opacity 0.2s ease;
@@ -392,8 +515,7 @@
         .table thead th.sorted-desc .sort-icon::after {
             content: "↓";
         }
-
-        /* Aplicar bordas verticais a TODAS as tabelas */
+        
         .table-container table th, 
         .table-container table td {
             border-left: 1px solid #dee2e6;
@@ -411,7 +533,6 @@
             border-right: none;
         }
         
-        /* Borda inferior para linhas */
         .table-container table tbody tr {
             border-bottom: 1px solid #f1f1f1;
         }
@@ -433,15 +554,14 @@
             vertical-align: middle;
             font-size: 13px;
         }
-
-        /* Colunas numéricas centralizadas */
-        .table td.text-center {
-            text-align: center !important;
+        
+        .table tbody td.quantidade {
+            text-align: center;
+            font-weight: 600;
         }
         
-        /* Coluna de ações na tabela */
         .actions-column {
-            width: 90px; /* Reduzido de 100px */
+            width: 100px;
             text-align: center;
         }
         
@@ -473,9 +593,9 @@
             transform: translateY(-1px);
         }
         
-        /* ==================== BOTÕES ==================== */
+        /* ==================== BOTÕES  ==================== */
         .btn-primary-custom {
-            background: linear-gradient(to right, var(--accent-blue), var(--accent-bright));
+            background: linear-gradient(to right, var(--accent-red), var(--accent-bright));
             border: none;
             padding: 10px 20px;
             font-weight: 600;
@@ -486,46 +606,9 @@
         }
         
         .btn-primary-custom:hover {
-            background: linear-gradient(to right, var(--accent-bright), var(--accent-blue));
+            background: linear-gradient(to right, var(--primary-darker), var(--primary-700));
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
-            color: white;
-        }
-        
-        .btn-danger-custom {
-            background: linear-gradient(to right, var(--btn-danger), #e53935);
-            border: none;
-            padding: 10px 20px;
-            font-weight: 600;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 13px;
-            color: white;
-        }
-        
-        .btn-danger-custom:hover {
-            background: linear-gradient(to right, #c62828, var(--btn-danger));
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
-            color: white;
-        }
-        
-        /* Botão Pesquisar azul */
-        .btn-search-custom {
-            background: linear-gradient(to right, var(--accent-blue), var(--accent-bright));
-            border: none;
-            padding: 10px 20px;
-            font-weight: 600;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 13px;
-            color: white;
-        }
-        
-        .btn-search-custom:hover {
-            background: linear-gradient(to right, #006A82, var(--accent-blue));
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
             color: white;
         }
         
@@ -544,7 +627,7 @@
             background-color: var(--primary-dark);
             color: white;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(26, 82, 118, 0.15);
+            box-shadow: 0 4px 12px rgba(41, 67, 90, 0.15);
         }
         
         .btn-export {
@@ -567,10 +650,31 @@
             color: white;
             transform: translateY(-1px);
         }
+        
+        .btn-search-custom {
+            background: linear-gradient(to right, var(--accent-red), var(--accent-bright));
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .btn-search-custom:hover {
+            background: linear-gradient(to right, var(--primary-darker), var(--primary-700));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+            color: white;
+        }
 
         .btn-primary-custom .material-icons,
         .btn-secondary-custom .material-icons,
-        .btn-danger-custom .material-icons,
         .btn-search-custom .material-icons {
             font-size: 16px;
             vertical-align: middle;
@@ -580,110 +684,13 @@
 
         .btn-primary-custom,
         .btn-secondary-custom,
-        .btn-danger-custom,
         .btn-search-custom {
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
-        
-        /* ==================== MENU DE NAVEGAÇÃO ==================== */
-        /* Container principal - CORRIGIDO */
-.nav-tabs-container {
-    background: white;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
-    margin-top: 10px;
-    overflow-x: auto; /* Adicionado para controlar overflow */
-    -webkit-overflow-scrolling: touch; /* Melhor rolagem no iOS */
-}
 
-/* Nav tabs - CORRIGIDO */
-.nav-tabs {
-    border: none !important; /* !important para sobrescrever Bootstrap */
-    gap: 4px;
-    flex-wrap: nowrap; /* Mantém em uma linha */
-    min-width: max-content; /* Garante largura mínima baseada no conteúdo */
-    padding-bottom: 5px; /* Espaço para scrollbar */
-    margin-bottom: 0 !important;
-}
-
-/* Itens dos tabs - NOVO, necessário */
-.nav-tabs .nav-item {
-    flex-shrink: 0; /* Não permite que os tabs encolham */
-}
-
-/* Links dos tabs - CORRIGIDO */
-.nav-tabs .nav-link {
-    border: none !important;
-    border-radius: 6px !important;
-    padding: 10px 15px !important;
-    font-weight: 600;
-    color: #1a5276 !important; /* Fallback para var(--primary-dark) */
-    transition: all 0.3s ease;
-    font-size: 13px;
-    white-space: nowrap;
-    display: inline-flex !important; /* Mudado de flex para inline-flex */
-    align-items: center;
-    background: none !important;
-}
-
-.nav-tabs .nav-link:hover {
-    background-color: rgba(26, 82, 118, 0.05) !important;
-    color: #3498db !important; /* Fallback para var(--accent-blue) */
-}
-
-.nav-tabs .nav-link.active {
-    background: linear-gradient(135deg, #1a5276 0%, #154360 100%) !important;
-    color: white !important;
-    border: none !important;
-}
-
-/* Ícones - CORRIGIDO */
-.nav-tabs .nav-link .material-icons {
-    font-size: 16px !important;
-    margin-right: 8px !important;
-    vertical-align: middle;
-    line-height: 1;
-}
-
-.nav-tabs .nav-link.active .material-icons {
-    color: white !important;
-}
-
-/* Estilizar a scrollbar para ficar discreta */
-.nav-tabs-container::-webkit-scrollbar {
-    height: 4px;
-}
-
-.nav-tabs-container::-webkit-scrollbar-track {
-    background: #f8f9fa;
-    border-radius: 4px;
-}
-
-.nav-tabs-container::-webkit-scrollbar-thumb {
-    background: #dee2e6;
-    border-radius: 4px;
-}
-
-.nav-tabs-container::-webkit-scrollbar-thumb:hover {
-    background: #adb5bd;
-}
-
-/* Para Firefox */
-.nav-tabs-container {
-    scrollbar-width: thin;
-    scrollbar-color: #dee2e6 #f8f9fa;
-}
-
-/* Remover a borda inferior padrão do Bootstrap */
-.nav-tabs {
-    border-bottom: none !important;
-}
-        
-        /* ==================== AÇÕES ==================== */
+        /* ==================== AÇÕES - CORREÇÃO DO ALINHAMENTO ==================== */
         .actions-container {
             background: white;
             border-radius: 10px;
@@ -705,8 +712,7 @@
             padding: 8px 12px;
             border-radius: 6px;
         }
-
-        /* Container para alinhar itens à direita */
+        
         .right-aligned-container {
             display: flex;
             align-items: center;
@@ -732,9 +738,9 @@
         .spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid rgba(26, 82, 118, 0.1);
+            border: 4px solid rgba(41, 67, 90, 0.1);
             border-radius: 50%;
-            border-top-color: var(--accent-blue);
+            border-top-color: var(--accent-red);
             animation: spin 1s linear infinite;
         }
         
@@ -752,10 +758,14 @@
         .table-total-row td {
             border-top: 2px solid #dee2e6 !important;
         }
+        
+        .table-total-row td.quantidade {
+            text-align: center;
+        }
 
-        /* ==================== LINK CLICÁVEL ==================== */
+        /* ==================== LINK CLICÁVEL ATUALIZADO ==================== */
         .orgao-link {
-            color: var(--primary-dark);
+            color: var(--primary-darker);
             text-decoration: none;
             font-weight: 600;
             cursor: pointer;
@@ -769,22 +779,21 @@
         }
 
         .orgao-link:hover {
-            color: var(--danger-red) !important; /* Vermelho ao passar mouse */
-            background-color: rgba(231, 76, 60, 0.05);
+            color: var(--accent-red) !important;
+            background-color: rgba(185, 60, 66, 0.05);
             transform: translateY(-1px);
             text-decoration: none !important;
         }
 
         .orgao-link.selected {
-            color: var(--hover-blue) !important;
-            background-color: rgba(0, 106, 130, 0.1);
+            color: var(--primary-600) !important;
+            background-color: rgba(225, 73, 100, 0.1);
         }
 
         .orgao-link:active {
             transform: translateY(0);
         }
 
-        /* Para a tabela específica da visão geral */
         #visaoGeralTable .orgao-link {
             padding: 4px 8px;
             margin: -4px -8px;
@@ -792,7 +801,6 @@
             font-weight: 600;
         }
         
-        /* Link de órgão na Consulta Individual NÃO deve trocar de cor ao passar mouse */
         #empregadosTable .orgao-link {
             color: var(--primary-darker) !important;
             background-color: transparent !important;
@@ -812,7 +820,7 @@
             align-items: center;
             padding: 12px 15px;
             border-top: 1px solid #dee2e6;
-            background-color: #f8f9fa;
+            background-color: white;
             flex-wrap: wrap;
             gap: 10px;
         }
@@ -842,7 +850,6 @@
             color: var(--primary-dark);
         }
         
-        /* Itens por página */
         .items-per-page {
             display: flex;
             align-items: center;
@@ -853,7 +860,7 @@
         }
         
         .items-per-page select {
-            border: 2px solid var(--primary-dark);
+            border: 2px solid rgba(41, 67, 90, 0.3);
             border-radius: 6px;
             padding: 5px 10px;
             font-size: 12px;
@@ -881,7 +888,7 @@
         .card-stats .value {
             font-size: 24px;
             font-weight: 700;
-            color: var(--accent-blue);
+            color: var(--accent-red);
             margin: 8px 0;
         }
 
@@ -899,15 +906,6 @@
             margin-bottom: 20px;
         }
 
-        .footer {
-            text-align: center;
-            padding: 15px;
-            color: var(--primary-dark);
-            font-size: 0.85rem;
-            border-top: 1px solid #dee2e6;
-            margin-top: 30px;
-        }
-        
         /* ==================== BUSCA RÁPIDA ==================== */
         .search-box-container {
             display: flex;
@@ -938,8 +936,8 @@
         }
         
         .search-box-container input:focus {
-            border-color: var(--accent-blue) !important;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15) !important;
+            border-color: var(--accent-red) !important;
+            box-shadow: 0 0 0 2px rgba(185, 60, 66, 0.15) !important;
             outline: none !important;
         }
         
@@ -951,7 +949,7 @@
         .modal-historic .modal-header {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%);
             color: white;
-            border-bottom: 4px solid var(--accent-blue);
+            border-bottom: 4px solid var(--accent-red);
         }
         
         .modal-historic .modal-body {
@@ -960,7 +958,7 @@
         }
         
         .employee-info {
-            background-color: rgba(26, 82, 118, 0.05);
+            background-color: rgba(41, 67, 90, 0.05);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
@@ -1012,78 +1010,57 @@
         }
         
         .historic-table tbody tr:hover {
-            background-color: rgba(26, 82, 118, 0.04);
+            background-color: rgba(41, 67, 90, 0.04);
         }
         
         .historic-table tbody td {
             padding: 8px 10px;
             vertical-align: middle;
         }
-
-        /* ==================== DATA ATUALIZAÇÃO MINIMALISTA ==================== */
+        
+        /* ==================== DATA ATUALIZAÇÃO CENTRALIZADA ==================== */
         .data-atualizacao-container {
-            text-align: center;
-            margin: 10px 0 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+        
+        .data-atualizacao-box {
+            background: white;
+            border-radius: 8px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             font-size: 12px;
-            color: var(--primary-darker);
-            opacity: 0.8;
-        }
-        
-        /* ==================== BADGES DE SITUAÇÃO ==================== */
-        .badge-situacao {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 10px;
+            color: var(--primary-dark);
             font-weight: 600;
-            text-transform: uppercase;
-            white-space: nowrap; /* Impede quebra de linha */
-            display: inline-block;
-            text-align: center;
         }
         
-        .badge-ativo {
-            background-color: rgba(39, 174, 96, 0.15);
-            color: var(--success-green);
-            border: 1px solid rgba(39, 174, 96, 0.3);
+        .data-atualizacao-box i {
+            font-size: 14px;
+            color: var(--accent-red);
         }
-        
-        .badge-inativo {
-            background-color: rgba(231, 76, 60, 0.15);
-            color: #E74C3C;
-            border: 1px solid rgba(231, 76, 60, 0.3);
-        }
-        
-        .badge-concluido {
-            background-color: rgba(52, 152, 219, 0.15);
-            color: var(--accent-blue);
-            border: 1px solid rgba(52, 152, 219, 0.3);
-        }
-        
-        .badge-em-andamento {
-            background-color: rgba(243, 156, 18, 0.15);
-            color: var(--warning-yellow);
-            border: 1px solid rgba(243, 156, 18, 0.3);
-        }
-        
+
         /* ==================== RESPONSIVIDADE ==================== */
         @media (max-width: 768px) {
             .main-header {
-                padding: 15px 0;
-                margin-bottom: 20px;
+                padding: 10px 0;
+                margin-bottom: 15px;
             }
             
             .logo-container {
                 flex-direction: column;
                 text-align: center;
-                gap: 10px;
+                gap: 8px;
             }
             
             .header-title {
-                font-size: 18px;
-            }
-            
-            .header-subtitle {
-                font-size: 12px;
+                font-size: 16px;
             }
             
             .header-info {
@@ -1103,6 +1080,12 @@
             .export-buttons {
                 width: 100%;
                 justify-content: flex-start;
+            }
+            
+            .right-aligned-container {
+                width: 100%;
+                justify-content: flex-start;
+                margin-left: 0;
             }
             
             .nav-tabs .nav-link {
@@ -1125,7 +1108,7 @@
             }
             
             .actions-column {
-                width: 70px; /* Ajustado para mobile */
+                width: 80px;
             }
             
             .btn-action {
@@ -1141,7 +1124,6 @@
             
             .btn-primary-custom,
             .btn-secondary-custom,
-            .btn-danger-custom,
             .btn-search-custom {
                 padding: 8px 15px;
                 font-size: 12px;
@@ -1167,7 +1149,7 @@
             }
             
             .chart-container {
-                min-height: 240px;
+                min-height: 280px;
             }
             
             .chart-wrapper {
@@ -1175,7 +1157,7 @@
             }
             
             .actions-column {
-                width: 60px; /* Ajustado para telas pequenas */
+                width: 70px;
             }
             
             .btn-action {
@@ -1190,7 +1172,6 @@
     </style>
 </head>
 <body>
-
 
     <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
     <div class="container">
@@ -1221,10 +1202,11 @@
             <!-- ==================== DASHBOARD 1: VISÃO GERAL ==================== -->
             <div class="tab-pane fade show active" id="dashboard1" role="tabpanel">
 
-                <!-- Data de Atualização -->
                 <div class="data-atualizacao-container">
-                    <i class="fas fa-sync-alt me-2"></i>
-                    <span id="data-atualizacao-body">Última atualização: Carregando...</span>
+                    <div class="data-atualizacao-box">
+                        <i class="material-icons">update</i>
+                        Atualizado em: <span id="data-atualizacao-header">Carregando...</span>
+                    </div>
                 </div>
                 
                 <!-- Filtros Dashboard 1 -->
@@ -1250,7 +1232,7 @@
                             <div class="mb-3">
                                 <label for="situacaoDashboard1" class="form-label filter-label">Situação</label>
                                 <select class="form-select" id="situacaoDashboard1">
-                                    <option value="all">Todas as Situações</option>
+                                    <option value="">Todas as Situações</option>
                                     <option value="em_andamento">Em Andamento</option>
                                     <option value="concluido">Concluído</option>
                                 </select>
@@ -1261,7 +1243,7 @@
                                 <label for="orgaoDashboard1" class="form-label filter-label">Órgão</label>
                                 <input type="text" class="form-control" list="orgaosListDashboard1" id="orgaoDashboard1" placeholder="Digite ou selecione...">
                                 <datalist id="orgaosListDashboard1">
-                                    <option value="all">Todos os Órgãos</option>
+                                    <!-- Opções serão carregadas dinamicamente -->
                                 </datalist>
                             </div>
                         </div>
@@ -1424,7 +1406,7 @@
                             <div class="mb-3">
                                 <label for="situacaoDashboard2" class="form-label filter-label">Situação</label>
                                 <select class="form-select" id="situacaoDashboard2">
-                                    <option value="all">Todas as Situações</option>
+                                    <option value="">Todas as Situações</option>
                                     <option value="em_andamento">Em Andamento</option>
                                     <option value="concluido">Concluído</option>
                                 </select>
@@ -1438,7 +1420,7 @@
                                 <label for="orgaoDashboard2" class="form-label filter-label">Órgão</label>
                                 <input type="text" class="form-control" list="orgaosListDashboard2" id="orgaoDashboard2" placeholder="Digite ou selecione...">
                                 <datalist id="orgaosListDashboard2">
-                                    <option value="all">Todos os Órgãos</option>
+                                    <!-- Opções serão carregadas dinamicamente -->
                                 </datalist>
                             </div>
                         </div>
@@ -1773,13 +1755,11 @@
         let currentMonth = '';
         let currentSortDashboard1 = { column: 'orgao', order: 'asc' };
         let currentSortDashboard2 = { column: 'nome_estagiario', order: 'asc' };
-        let currentSearchTerm = '';
-        let dashboardAnterior = 'dashboard1'; // Para controle das tabs
         
-        // URLs dos CSVs no GitHub - CORRIGIDO para a nova estrutura
+        // URLs dos CSVs no GitHub
         const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/transparencia-mg/estagiarios/main/dataset/data/';
         
-        // Mapeamento de anos para arquivos (agora no formato correto)
+        // Mapeamento de anos para arquivos
         const CSV_FILES_BY_YEAR = {
             '2022': 'estagiarios_2022.csv',
             '2023': 'estagiarios_2023.csv',
@@ -1794,142 +1774,14 @@
             '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro'
         };
 
-        // MAPEAMENTO COMPLETO DE SIGLAS PARA NOMES DE ÓRGÃOS - CORRIGIDO!
-        const orgaosExtenso = {
-            'AGE': 'Assembleia Geral do Estado',
-            'ARMVA': 'Administração Regional do Médio Vale do Aço',
-            'ARSAE': 'Agência Reguladora de Serviços de Abastecimento de Água e de Esgotamento Sanitário do Estado de Minas Gerais',
-            'CBMMG': 'Corpo de Bombeiros Militar de Minas Gerais',
-            'CGE': 'Controladoria-Geral do Estado',
-            'CODEMGE': 'Companhia de Desenvolvimento de Minas Gerais',
-            'COHAB': 'Companhia de Habitação do Estado de Minas Gerais',            
-            'DEER': 'Departamento de Edificações e Estradas de Rodagem',
-            'DER': 'Departamento de Edificações e Estradas de Rodagem',
-            'DPMG': 'Defensoria Pública do Estado de Minas Gerais',
-            'EPAMIG': 'Empresa de Pesquisa Agropecuária de Minas Gerais',
-            'ESP': 'Escola de Saúde Pública do Estado de Minas Gerais', 
-            'FAPEMIG': 'Fundação de Amparo à Pesquisa do Estado de Minas Gerais',
-            'FAOP': 'Fundação de Arte de Ouro Preto',
-            'FCS': 'Fundação Clóvis Salgado',
-            'FEAM': 'Fundação Estadual do Meio Ambiente',        
-            'FHA': 'Fundação Helena Antipoff',
-            'FHEMIG': 'Fundação Hospitalar do Estado de Minas Gerais',
-            'FJP': 'Fundação João Pinheiro',
-            'FUCAM': 'Fundação Caio Martins',
-            'FUNED': 'Fundação Ezequiel Dias',
-            'GMG': 'Gabinete Militar do Governador',
-            'HEMOMINAS': 'Fundação Centro de Hematologia e Hemoterapia de Minas Gerais',
-            'HPM': 'Hospital da Polícia Militar',
-            'IDENE': 'Instituto de Desenvolvimento do Norte e Nordeste de Minas Gerais',
-            'IEF': 'Instituto Estadual de Florestas',
-            'IEPHA': 'Instituto Estadual do Patrimônio Histórico e Artístico de Minas Gerais',
-            'IGAM': 'Instituto Mineiro de Gestão das Águas',
-            'IMA': 'Instituto Mineiro de Agropecuária',
-            'IPSEMG': 'Instituto de Previdência dos Servidores',
-            'IPSM': 'Instituto de Previdência dos Servidores Militares',
-            'JUCEMG': 'Junta Comercial do Estado de Minas Gerais',
-            'LEMG': 'Loteria Mineira',
-            'OGE': 'Ouvidoria-Geral do Estado',            
-            'PCMG': 'Polícia Civil',
-            'PRODEMGE': 'Empresa de Tecnologia da Informação do Estado de Minas Gerais S.A.',
-            'SCC': 'Secretaria de Estado da Casa Civil',
-            'SEAPA': 'Secretaria de Estado de Agricultura, Pecuária e Abastecimento',
-            'SEC': 'Secretaria de Estado de Cultura',
-            'SECOM': 'Secretaria de Estado de Comunicação Social',
-            'SEDE': 'Secretaria de Estado de Desenvolvimento Econômico',
-            'SEDS': 'Secretaria de Estado de Defesa Social',
-            'SEDESE': 'Secretaria de Estado de Desenvolvimento Social',
-            'SEE': 'Secretaria de Estado de Educação',
-            'SEF': 'Secretaria de Estado de Fazenda',
-            'SEGOV': 'Secretaria de Estado de Governo',
-            'SEINFRA': 'Secretaria de Estado de Infraestrutura e Mobilidade',
-            'SEJUSP': 'Secretaria de Estado de Justiça e Segurança Pública',
-            'SEMAD': 'Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável',
-            'SEPLAG': 'Secretaria de Estado de Planejamento e Gestão',
-            'SES': 'Secretaria de Estado de Saúde',
-            'SG': 'Secretaria Geral do Estado',
-            'UEMG': 'Universidade do Estado de Minas Gerais',
-            'UNIMONTES': 'Universidade Estadual de Montes Claros',
-            'UTRAMIG': 'Fundação de Educação para o Trabalho de Minas Gerais',
-            'PM': 'Polícia Militar',
-            'CBM': 'CBM',
-            'EP': 'EP',
-            'MGI': 'Minas Gerais Industrial',
-            'DETRAN': 'Departamento de Trânsito',
-            'EMATER': 'Empresa de Assistência Técnica e Extensão Rural',
-            'FUNDEP': 'Fundação de Desenvolvimento da Pesquisa',
-            'MDC': 'Museu de Ciências',
-            'PMMG': 'Polícia Militar de Minas Gerais',
-            'SAAE': 'Serviço Autônomo de Água e Esgoto',
-            'SEBRAE': 'Serviço Brasileiro de Apoio às Micro e Pequenas Empresas',
-            'SEMEIA': 'SEMEIA',
-            'SINE': 'Sistema Nacional de Emprego',
-            'SSP': 'Secretaria de Segurança Pública',
-            'UFMG': 'Universidade Federal de Minas Gerais',
-            'UFSJ': 'Universidade Federal de São João del-Rei',
-            'UFV': 'Universidade Federal de Viçosa',
-            'UFU': 'Universidade Federal de Uberlândia',
-            'NAO INFORMADO': 'Órgão não informado',
-            '': 'Órgão não informado'
-        };
-
-        // ==================== FUNÇÃO PARA OBTER NOME COMPLETO DO ÓRGÃO ====================
-        function normalizarTexto(txt) {
-            if (!txt || typeof txt !== "string") return "";
-            
-            return txt
-                .toUpperCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "") // remove acentos
-                .replace(/[^A-Z0-9 ]/g, " ")     // remove pontuação
-                .replace(/\s+/g, " ")
-                .trim();
-        }
-
-        function getOrgaoExtenso(siglaOuNome) {
-            if (!siglaOuNome || typeof siglaOuNome !== "string") {
-                return siglaOuNome || "Órgão não informado";
-            }
-
-            if (typeof orgaosExtenso !== "object") {
-                console.warn("Mapa orgaosExtenso não encontrado");
-                return siglaOuNome;
-            }
-
-            const valorOriginal = siglaOuNome.trim();
-            if (!valorOriginal) return "Órgão não informado";
-            
-            const valorNormalizado = normalizarTexto(valorOriginal);
-
-            // 1️⃣ Se já for nome completo, retorna como está
-            for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
-                if (normalizarTexto(nomeExtenso) === valorNormalizado) {
-                    return nomeExtenso;
-                }
-            }
-
-            // 2️⃣ Se for exatamente a sigla
-            if (orgaosExtenso[valorOriginal]) {
-                return orgaosExtenso[valorOriginal];
-            }
-
-            // 3️⃣ Se a sigla estiver dentro do texto (ex: "(SES)")
-            for (const [sigla, nomeExtenso] of Object.entries(orgaosExtenso)) {
-                const siglaNorm = normalizarTexto(sigla);
-
-                if (
-                    valorNormalizado === siglaNorm ||
-                    valorNormalizado.includes(` ${siglaNorm} `) ||
-                    valorNormalizado.endsWith(` ${siglaNorm}`) ||
-                    valorNormalizado.startsWith(`${siglaNorm} `)
-                ) {
-                    return nomeExtenso;
-                }
-            }
-
-            // 4️⃣ Não encontrou → retorna original
-            return valorOriginal;
-        }
+        // Paleta de cores para gráficos - VALORES HEX DIRETOS
+        const chartColors = [
+            '#0d6efd', '#198754', '#ffc107', '#0dcaf0',
+            '#d63384', '#6610f2', '#20c997', '#fd7e14',
+            '#6f42c1', '#dc3545', '#0b5ed7', '#157347',
+            '#d9a406', '#0baccc', '#b62b70', '#570ece',
+            '#1bab80', '#d76b11', '#5e38a4', '#bb2d3b'
+        ];
 
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1939,7 +1791,7 @@
             showLoading(true);
             
             try {
-                // Tentar carregar dados do ano mais recente (2024 primeiro, pois 2025 pode não existir ainda)
+                // Tentar carregar dados do ano mais recente
                 const anosDisponiveis = Object.keys(CSV_FILES_BY_YEAR).sort().reverse();
                 let dadosCarregados = false;
                 
@@ -1974,7 +1826,6 @@
                 
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
-                // Removido showError para não mostrar pop-ups
             } finally {
                 showLoading(false);
             }
@@ -1985,254 +1836,220 @@
 
         // ==================== CARREGAR DADOS DO GITHUB ====================
         async function loadYearData(year) {
-    // Verificar se já temos os dados em cache
-    if (allData[year] && allData[year].length > 0) {
-        console.log(`Dados de ${year} já carregados do cache.`);
-        estagiariosData = allData[year];
-        return;
-    }
+            // Verificar se já temos os dados em cache
+            if (allData[year] && allData[year].length > 0) {
+                console.log(`Dados de ${year} já carregados do cache.`);
+                estagiariosData = allData[year];
+                return;
+            }
 
-    const filename = CSV_FILES_BY_YEAR[year];
-    if (!filename) {
-        console.error(`Arquivo para o ano ${year} não encontrado.`);
-        return;
-    }
+            const filename = CSV_FILES_BY_YEAR[year];
+            if (!filename) {
+                console.error(`Arquivo para o ano ${year} não encontrado.`);
+                return;
+            }
 
-    const url = `${GITHUB_BASE_URL}${filename}`;
-    console.log(`Carregando dados de ${year}: ${url}`);
+            const url = `${GITHUB_BASE_URL}${filename}`;
+            console.log(`Carregando dados de ${year}: ${url}`);
 
-    return new Promise((resolve, reject) => {
-        Papa.parse(url, {
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            encoding: 'UTF-8',
-            delimiter: ';', // ← CORRIGIDO: ponto-e-vírgula em vez de vírgula
-            complete: function (results) {
-                console.log(`Parse completo para ${year}: ${results.data.length} registros`);
-                
-                // Verificar estrutura
-                if (results.data.length > 0) {
-                    console.log('Colunas detectadas:', Object.keys(results.data[0]));
-                    console.log('Primeira linha de dados:', results.data[0]);
-                }
-
-                // Função para processar data no formato 2025/01
-                const processarDataReferencia = (ref) => {
-                    if (!ref || typeof ref !== 'string') {
-                        console.warn('Referência de data vazia ou inválida');
-                        return null;
-                    }
-                    
-                    const str = ref.trim();
-                    console.log(`Processando data: "${str}"`);
-                    
-                    // Formato 2025/01
-                    if (str.includes('/')) {
-                        const [anoStr, mesStr] = str.split('/');
-                        const ano = parseInt(anoStr, 10);
-                        const mes = parseInt(mesStr, 10);
+            return new Promise((resolve, reject) => {
+                Papa.parse(url, {
+                    download: true,
+                    header: true,
+                    skipEmptyLines: true,
+                    encoding: 'UTF-8',
+                    delimiter: ';',
+                    complete: function (results) {
+                        console.log(`Parse completo para ${year}: ${results.data.length} registros`);
                         
-                        if (isNaN(ano) || isNaN(mes) || mes < 1 || mes > 12) {
-                            console.warn(`Formato inválido: "${str}"`);
-                            return null;
-                        }
-                        
-                        return {
-                            ano,
-                            mes,
-                            ano_mesreferencia: `${ano}-${String(mes).padStart(2, '0')}`,
-                            ANO: ano.toString(),
-                            MES: String(mes).padStart(2, '0')
-                        };
-                    }
-                    
-                    console.warn(`Formato não suportado: "${str}"`);
-                    return null;
-                };
-
-                const data = results.data
-                    .map((row, index) => {
-                        try {
-                            // Normalizar nomes das colunas (mantendo original também)
-                            const rowNormalized = {};
-                            const originalRow = {};
-                            
-                            Object.keys(row).forEach(key => {
-                                const normalizedKey = key.toLowerCase().trim();
-                                rowNormalized[normalizedKey] = row[key];
-                                originalRow[key] = row[key]; // Manter original para debug
-                            });
-
-                            // Debug: mostrar primeira linha
-                            if (index === 0) {
-                                console.log('Primeira linha processada:', originalRow);
-                                console.log('Primeira linha normalizada:', rowNormalized);
-                            }
-
-                            // Obter ano_mesreferencia
-                            const ano_mesreferencia_raw = 
-                                rowNormalized['ano_mesreferencia'] || 
-                                rowNormalized['ano_mes_referencia'] ||
-                                '';
-                            
-                            const dataInfo = processarDataReferencia(ano_mesreferencia_raw);
-                            
-                            if (!dataInfo) {
-                                if (ano_mesreferencia_raw) {
-                                    console.warn(`Linha ${index}: Data inválida - "${ano_mesreferencia_raw}"`);
-                                }
+                        // Função para processar data no formato 2025/01
+                        const processarDataReferencia = (ref) => {
+                            if (!ref || typeof ref !== 'string') {
+                                console.warn('Referência de data vazia ou inválida');
                                 return null;
                             }
                             
-                            const { ano, mes, ano_mesreferencia, ANO, MES } = dataInfo;
-
-                            // Obter sigla e nome do órgão
-                            const sigla_orgao = (rowNormalized['sigla_orgao'] || '').trim();
-                            const orgao_nome = (rowNormalized['orgao'] || '').trim();
+                            const str = ref.trim();
                             
-                            // Se a função getOrgaoExtensi existir, use-a
-                            let orgao_completo = orgao_nome || sigla_orgao;
-                            if (typeof getOrgaoExtenso === 'function') {
-                                orgao_completo = getOrgaoExtenso(orgao_completo) || orgao_completo;
+                            // Formato 2025/01
+                            if (str.includes('/')) {
+                                const [anoStr, mesStr] = str.split('/');
+                                const ano = parseInt(anoStr, 10);
+                                const mes = parseInt(mesStr, 10);
+                                
+                                if (isNaN(ano) || isNaN(mes) || mes < 1 || mes > 12) {
+                                    console.warn(`Formato inválido: "${str}"`);
+                                    return null;
+                                }
+                                
+                                return {
+                                    ano,
+                                    mes,
+                                    ano_mesreferencia: `${ano}-${String(mes).padStart(2, '0')}`,
+                                    ANO: ano.toString(),
+                                    MES: String(mes).padStart(2, '0')
+                                };
                             }
-
-                            // Converter valor_remuneracao para número
-                            let valorRemuneracao = 0;
-                            const valorRaw = rowNormalized['valor_remuneracao'] || '0';
-                            if (valorRaw) {
-                                // Formato brasileiro: 1.311,51
-                                const valorStr = valorRaw.toString()
-                                    .replace(/R\$/g, '')
-                                    .replace(/\./g, '')  // Remove pontos dos milhares
-                                    .replace(',', '.')   // Substitui vírgula decimal por ponto
-                                    .trim();
-                                valorRemuneracao = parseFloat(valorStr) || 0;
-                            }
-
-                            // Obter nome do estagiário
-                            const nome_estagiario = (rowNormalized['nome_estagiario'] || '').trim();
-
-                            // Obter MASP
-                            const masp = (rowNormalized['masp'] || '').toString().trim();
-
-                            return {
-                                ano_mesreferencia,
-                                nome_estagiario,
-                                masp,
-                                codigo_situacao_funcional: rowNormalized['codigo_situacao_funcional'] || '',
-                                situacao_funcional: rowNormalized['situacao_funcional'] || '',
-                                data_inicio: (rowNormalized['data_inicio'] || '').trim(),
-                                data_fim: (rowNormalized['data_fim'] || '').trim(),
-                                codigo_orgao: rowNormalized['codigo_orgao'] || '',
-                                orgao: orgao_completo,
-                                orgao_sigla: sigla_orgao || orgao_completo.substring(0, 20),
-                                sigla_orgao: sigla_orgao || orgao_completo.substring(0, 10),
-                                valor_remuneracao: valorRemuneracao,
-                                ANO: ANO,
-                                MES: MES,
-                                // Manter dados originais para debug
-                                _raw: originalRow
-                            };
-                        } catch (error) {
-                            console.error(`Erro ao processar linha ${index}:`, error, row);
+                            
+                            console.warn(`Formato não suportado: "${str}"`);
                             return null;
+                        };
+
+                        const data = results.data
+                            .map((row, index) => {
+                                try {
+                                    // Normalizar nomes das colunas
+                                    const rowNormalized = {};
+                                    Object.keys(row).forEach(key => {
+                                        const normalizedKey = key.toLowerCase().trim();
+                                        rowNormalized[normalizedKey] = row[key];
+                                    });
+
+                                    // Obter ano_mesreferencia
+                                    const ano_mesreferencia_raw = 
+                                        rowNormalized['ano_mesreferencia'] || 
+                                        rowNormalized['ano_mes_referencia'] ||
+                                        '';
+                                    
+                                    const dataInfo = processarDataReferencia(ano_mesreferencia_raw);
+                                    
+                                    if (!dataInfo) {
+                                        if (ano_mesreferencia_raw) {
+                                            console.warn(`Linha ${index}: Data inválida - "${ano_mesreferencia_raw}"`);
+                                        }
+                                        return null;
+                                    }
+                                    
+                                    const { ano, mes, ano_mesreferencia, ANO, MES } = dataInfo;
+
+                                    // Obter sigla e nome do órgão (já completo na coluna orgao)
+                                    const sigla_orgao = (rowNormalized['sigla_orgao'] || '').trim();
+                                    let orgao = (rowNormalized['orgao'] || '').trim();
+
+                                    // CORREÇÃO: Se o órgão for um número (como 1110, 1170), usar um valor padrão
+                                    if (/^\d+$/.test(orgao)) {
+                                        console.warn(`Órgão é um número (${orgao}) na linha ${index}, usando valor padrão`);
+                                        orgao = 'Órgão não especificado';
+                                    }
+
+                                    // Converter valor_remuneracao para número
+                                    let valorRemuneracao = 0;
+                                    const valorRaw = rowNormalized['valor_remuneracao'] || '0';
+                                    if (valorRaw) {
+                                        // Formato brasileiro: 1.311,51
+                                        const valorStr = valorRaw.toString()
+                                            .replace(/R\$/g, '')
+                                            .replace(/\./g, '')  // Remove pontos dos milhares
+                                            .replace(',', '.')   // Substitui vírgula decimal por ponto
+                                            .trim();
+                                        valorRemuneracao = parseFloat(valorStr) || 0;
+                                    }
+
+                                    // Obter nome do estagiário
+                                    const nome_estagiario = (rowNormalized['nome_estagiario'] || '').trim();
+
+                                    // Obter MASP
+                                    const masp = (rowNormalized['masp'] || '').toString().trim();
+
+                                    return {
+                                        ano_mesreferencia,
+                                        nome_estagiario,
+                                        masp,
+                                        codigo_situacao_funcional: rowNormalized['codigo_situacao_funcional'] || '',
+                                        situacao_funcional: rowNormalized['situacao_funcional'] || '',
+                                        data_inicio: (rowNormalized['data_inicio'] || '').trim(),
+                                        data_fim: (rowNormalized['data_fim'] || '').trim(),
+                                        codigo_orgao: rowNormalized['codigo_orgao'] || '',
+                                        orgao: orgao,
+                                        sigla_orgao: sigla_orgao,
+                                        valor_remuneracao: valorRemuneracao,
+                                        ANO: ANO,
+                                        MES: MES
+                                    };
+                                } catch (error) {
+                                    console.error(`Erro ao processar linha ${index}:`, error, row);
+                                    return null;
+                                }
+                            })
+                            .filter(Boolean);
+
+                        allData[year] = data;
+                        estagiariosData = data;
+
+                        console.log(`=== RESULTADO ${year} ===`);
+                        console.log(`Registros originais: ${results.data.length}`);
+                        console.log(`Registros processados: ${data.length}`);
+                        
+                        if (data.length === 0) {
+                            console.error(`NENHUM registro processado para ${year}! Verifique o delimitador e formato.`);
                         }
-                    })
-                    .filter(Boolean);
-
-                allData[year] = data;
-                estagiariosData = data;
-
-                console.log(`=== RESULTADO ${year} ===`);
-                console.log(`Registros originais: ${results.data.length}`);
-                console.log(`Registros processados: ${data.length}`);
-                
-                if (data.length > 0) {
-                    console.log('Exemplo de registro processado:', data[0]);
-                    
-                    // Mostrar meses únicos encontrados
-                    const mesesUnicos = [...new Set(data.map(d => d.ano_mesreferencia))];
-                    console.log(`Meses encontrados: ${mesesUnicos.join(', ')}`);
-                    
-                    // Contar por mês
-                    const contagemPorMes = {};
-                    data.forEach(d => {
-                        contagemPorMes[d.ano_mesreferencia] = (contagemPorMes[d.ano_mesreferencia] || 0) + 1;
-                    });
-                    console.log('Contagem por mês:', contagemPorMes);
-                }
-                
-                if (data.length === 0) {
-                    console.error(`NENHUM registro processado para ${year}! Verifique o delimitador e formato.`);
-                }
-                
-                resolve();
-            },
-            error: function (err) {
-                console.error(`Erro ao carregar dados de ${year}:`, err);
-                reject(err);
-            }
-        });
-    });
-}
+                        
+                        resolve();
+                    },
+                    error: function (err) {
+                        console.error(`Erro ao carregar dados de ${year}:`, err);
+                        reject(err);
+                    }
+                });
+            });
+        }
 
         // ==================== DETERMINAR MÊS MAIS RECENTE ====================
         async function determineLatestMonth() {
-    if (!estagiariosData || estagiariosData.length === 0) {
-        console.warn('Dados ainda não carregados.');
-        filteredData = [];
-        return;
-    }
+            if (!estagiariosData || estagiariosData.length === 0) {
+                console.warn('Dados ainda não carregados.');
+                filteredData = [];
+                return;
+            }
 
-    console.log(`Total de registros: ${estagiariosData.length}`);
-    
-    // Obter todos os meses disponíveis
-    const mesesComData = [];
-    estagiariosData.forEach(e => {
-        if (e.ano_mesreferencia && e.ANO && e.MES) {
-            mesesComData.push({ 
-                ano: e.ANO, 
-                mes: e.MES,
-                data: e.ano_mesreferencia 
+            console.log(`Total de registros: ${estagiariosData.length}`);
+            
+            // Obter todos os meses disponíveis
+            const mesesComData = [];
+            estagiariosData.forEach(e => {
+                if (e.ano_mesreferencia && e.ANO && e.MES) {
+                    mesesComData.push({ 
+                        ano: e.ANO, 
+                        mes: e.MES,
+                        data: e.ano_mesreferencia 
+                    });
+                }
             });
+
+            console.log(`Meses com dados: ${mesesComData.length}`);
+
+            if (mesesComData.length === 0) {
+                console.warn('Nenhum mês encontrado nos dados.');
+                filteredData = estagiariosData;
+                return;
+            }
+
+            // Encontrar o mês mais recente
+            let ultimoMes = mesesComData[0];
+            mesesComData.forEach(mesData => {
+                const mesDataInt = parseInt(mesData.mes);
+                const ultimoMesInt = parseInt(ultimoMes.mes);
+                const mesDataAno = parseInt(mesData.ano);
+                const ultimoMesAno = parseInt(ultimoMes.ano);
+                
+                if (mesDataAno > ultimoMesAno || 
+                    (mesDataAno === ultimoMesAno && mesDataInt > ultimoMesInt)) {
+                    ultimoMes = mesData;
+                }
+            });
+
+            currentYear = ultimoMes.ano;
+            currentMonth = ultimoMes.mes;
+
+            // Filtrar dados do mês mais recente
+            filteredData = estagiariosData.filter(
+                e => e.ANO === currentYear && e.MES === currentMonth
+            );
+
+            console.log(
+                `Mês mais recente encontrado: ${currentMonth}/${currentYear} - ${filteredData.length} registros`
+            );
         }
-    });
-
-    console.log(`Meses com dados: ${mesesComData.length}`);
-
-    if (mesesComData.length === 0) {
-        console.warn('Nenhum mês encontrado nos dados.');
-        filteredData = estagiariosData;
-        return;
-    }
-
-    // Encontrar o mês mais recente
-    let ultimoMes = mesesComData[0];
-    mesesComData.forEach(mesData => {
-        const mesDataInt = parseInt(mesData.mes);
-        const ultimoMesInt = parseInt(ultimoMes.mes);
-        const mesDataAno = parseInt(mesData.ano);
-        const ultimoMesAno = parseInt(ultimoMes.ano);
-        
-        if (mesDataAno > ultimoMesAno || 
-            (mesDataAno === ultimoMesAno && mesDataInt > ultimoMesInt)) {
-            ultimoMes = mesData;
-        }
-    });
-
-    currentYear = ultimoMes.ano;
-    currentMonth = ultimoMes.mes;
-
-    // Filtrar dados do mês mais recente
-    filteredData = estagiariosData.filter(
-        e => e.ANO === currentYear && e.MES === currentMonth
-    );
-
-    console.log(
-        `Mês mais recente encontrado: ${currentMonth}/${currentYear} - ${filteredData.length} registros`
-    );
-}
 
         // ==================== CONFIGURAR EVENT LISTENERS ====================
         function setupEventListeners() {
@@ -2255,7 +2072,6 @@
             // Exportação
             document.getElementById('exportCSVDashboard1').addEventListener('click', () => exportToCSV('dashboard1'));
             document.getElementById('printDashboard1').addEventListener('click', () => printDashboard('dashboard1'));
-           
             document.getElementById('exportCSVDashboard2').addEventListener('click', () => exportToCSV('dashboard2'));
             document.getElementById('printDashboard2').addEventListener('click', () => printDashboard('dashboard2'));
             
@@ -2264,22 +2080,18 @@
             
             // Campo de busca
             document.getElementById('searchEstagiarios').addEventListener('input', function(e) {
-                currentSearchTerm = e.target.value.toLowerCase();
-                filterEstagiariosTable(currentSearchTerm);
+                filterEstagiariosTable(e.target.value.toLowerCase());
             });
             
             document.getElementById('searchResumo').addEventListener('input', function(e) {
                 filterResumoTable(e.target.value.toLowerCase());
             });
             
-            // Troca de abas - SEM rolagem automática
+            // Troca de abas
             const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function(e) {
-                    const tabId = this.getAttribute('data-bs-target').replace('#', '');
-                    dashboardAnterior = tabId;
-                    
-                    // Atualiza a altura do iframe sem scroll
+                    // Atualiza a altura do iframe
                     setTimeout(() => {
                         iframeUpdateHeight();
                     }, 100);
@@ -2321,18 +2133,14 @@
             overlay.style.display = show ? 'flex' : 'none';
         }
 
-        // Removida a função showError para não mostrar pop-ups
-        // Removida a função showSuccess para não mostrar pop-ups
-
         function updateDataAtualizacao() {
             const now = new Date();
             const dataFormatada = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
-            
-            const headerElement = document.getElementById('data-atualizacao-header');
-            const bodyElement = document.getElementById('data-atualizacao-body');
-            
-            if (headerElement) headerElement.textContent = `Atualizado em: ${dataFormatada}`;
-            if (bodyElement) bodyElement.textContent = `Última atualização: ${dataFormatada}`;
+            const elementoData = document.getElementById('data-atualizacao-header');
+            if (elementoData) {
+                elementoData.textContent = dataFormatada;
+            }
+            console.log('Data de atualização definida:', dataFormatada);
         }
 
         // Função para formatar valor monetário
@@ -2380,13 +2188,36 @@
                 }
                 
                 if (isNaN(date.getTime())) {
-                    return dateString; // Retorna original se não conseguir parse
+                    return dateString;
                 }
                 
                 return date.toLocaleDateString('pt-BR');
             } catch (error) {
                 console.warn(`Erro ao formatar data "${dateString}":`, error);
                 return dateString;
+            }
+        }
+
+        // Função para formatar mês de referência no formato MM/YYYY
+        function formatMonthReference(anoMes) {
+            if (!anoMes) return '-';
+            
+            try {
+                // Formato: 2025-01 -> 01/2025
+                if (anoMes.includes('-')) {
+                    const [ano, mes] = anoMes.split('-');
+                    return `${mes}/${ano}`;
+                }
+                // Formato: 2025/01 -> 01/2025
+                else if (anoMes.includes('/')) {
+                    const [ano, mes] = anoMes.split('/');
+                    return `${mes}/${ano}`;
+                }
+                
+                return anoMes;
+            } catch (error) {
+                console.warn(`Erro ao formatar mês referência "${anoMes}":`, error);
+                return anoMes;
             }
         }
 
@@ -2414,7 +2245,6 @@
             // Dashboard 1 - Ano
             const anoSelect1 = document.getElementById('anoDashboard1');
             if (anoSelect1) {
-                // Limpar opções existentes
                 anoSelect1.innerHTML = '';
                 
                 // Adicionar anos disponíveis
@@ -2428,7 +2258,7 @@
                 });
             }
             
-            // Dashboard 1 - Mês
+            // Dashboard 1 - Mês - MOSTRAR APENAS O NOME DO MÊS
             const mesSelect1 = document.getElementById('mesDashboard1');
             if (mesSelect1 && currentYear) {
                 // Obter meses disponíveis para o ano atual
@@ -2450,7 +2280,7 @@
                 mesesArray.forEach(mesNum => {
                     const option = document.createElement('option');
                     option.value = mesNum;
-                    option.textContent = `${monthNames[mesNum] || mesNum} (${mesNum})`;
+                    option.textContent = `${monthNames[mesNum] || mesNum}`; // APENAS NOME DO MÊS
                     if (mesNum === currentMonth) option.selected = true;
                     mesSelect1.appendChild(option);
                 });
@@ -2476,7 +2306,7 @@
                 });
             }
             
-            // Dashboard 2 - Mês
+            // Dashboard 2 - Mês - MOSTRAR APENAS O NOME DO MÊS
             const mesSelect2 = document.getElementById('mesDashboard2');
             if (mesSelect2 && currentYear) {
                 // Obter meses disponíveis para o ano atual
@@ -2497,19 +2327,25 @@
                 mesesArray.forEach(mesNum => {
                     const option = document.createElement('option');
                     option.value = mesNum;
-                    option.textContent = `${monthNames[mesNum] || mesNum} (${mesNum})`;
+                    option.textContent = `${monthNames[mesNum] || mesNum}`; // APENAS NOME DO MÊS
                     if (mesNum === currentMonth) option.selected = true;
                     mesSelect2.appendChild(option);
                 });
             }
             
-            // Obter todos os órgãos únicos do período atual
-            const orgaosUnicos = [...new Set(filteredData.map(e => e.orgao).filter(Boolean))].sort();
+            // Obter todos os órgãos únicos do período atual - APENAS DOS DADOS FILTRADOS
+            // FILTRAR APENAS ÓRGÃOS QUE NÃO SÃO NÚMEROS
+            const orgaosUnicos = [...new Set(filteredData
+                .map(e => e.orgao)
+                .filter(orgao => orgao && orgao.trim() !== '' && !/^\d+$/.test(orgao))
+            )].sort();
+            
+            console.log('Órgãos disponíveis para filtro:', orgaosUnicos);
             
             // Dashboard 1 - datalist de órgãos
             const orgaoDatalist1 = document.getElementById('orgaosListDashboard1');
             if (orgaoDatalist1) {
-                orgaoDatalist1.innerHTML = '<option value="all">Todos os Órgãos</option>';
+                orgaoDatalist1.innerHTML = '';
                 orgaosUnicos.forEach(orgao => {
                     const option = document.createElement('option');
                     option.value = orgao;
@@ -2520,7 +2356,7 @@
             // Dashboard 2 - datalist de órgãos
             const orgaoDatalist2 = document.getElementById('orgaosListDashboard2');
             if (orgaoDatalist2) {
-                orgaoDatalist2.innerHTML = '<option value="all">Todos os Órgãos</option>';
+                orgaoDatalist2.innerHTML = '';
                 orgaosUnicos.forEach(orgao => {
                     const option = document.createElement('option');
                     option.value = orgao;
@@ -2539,7 +2375,7 @@
                     const situacao = document.getElementById('situacaoDashboard1').value;
                     const orgaoInput = document.getElementById('orgaoDashboard1').value;
                     
-                    const orgao = orgaoInput === 'all' || orgaoInput === '' ? 'all' : orgaoInput;
+                    const orgao = orgaoInput === '' ? '' : orgaoInput;
                     
                     // Se o ano mudou, carregar os dados do ano
                     if (ano !== currentYear) {
@@ -2566,7 +2402,7 @@
                         }
                         
                         // Filtro por situação
-                        if (situacao !== 'all') {
+                        if (situacao !== '') {
                             // Determinar situação baseada na data_fim
                             const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
                             if (situacao === 'em_andamento' && temDataFim) return false;
@@ -2574,7 +2410,7 @@
                         }
                         
                         // Filtro por órgão
-                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                        if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
                         
@@ -2592,7 +2428,7 @@
                     const masp = document.getElementById('maspDashboard2').value;
                     const valorRemuneracao = parseFloat(document.getElementById('valorRemuneracao').value) || 0;
                     
-                    const orgao = orgaoInput === 'all' || orgaoInput === '' ? 'all' : orgaoInput;
+                    const orgao = orgaoInput === '' ? '' : orgaoInput;
                     
                     // Se o ano mudou, carregar os dados do ano
                     if (ano !== currentYear) {
@@ -2624,7 +2460,7 @@
                         }
                         
                         // Filtro por situação
-                        if (situacao !== 'all') {
+                        if (situacao !== '') {
                             // Determinar situação baseada na data_fim
                             const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
                             if (situacao === 'em_andamento' && temDataFim) return false;
@@ -2632,7 +2468,7 @@
                         }
                         
                         // Filtro por órgão
-                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                        if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
                         
@@ -2676,7 +2512,7 @@
                         }
                         
                         // Filtro por situação
-                        if (situacao !== 'all') {
+                        if (situacao !== '') {
                             // Determinar situação baseada na data_fim
                             const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
                             if (situacao === 'em_andamento' && temDataFim) return false;
@@ -2684,7 +2520,7 @@
                         }
                         
                         // Filtro por órgão
-                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                        if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
                         
@@ -2708,14 +2544,14 @@
                             return false;
                         }
                         
-                        if (situacao !== 'all') {
+                        if (situacao !== '') {
                             // Determinar situação baseada na data_fim
                             const temDataFim = estagiario.data_fim && estagiario.data_fim.trim() !== '';
                             if (situacao === 'em_andamento' && temDataFim) return false;
                             if (situacao === 'concluido' && !temDataFim) return false;
                         }
                         
-                        if (orgao !== 'all' && estagiario.orgao !== orgao) {
+                        if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
                         
@@ -2770,13 +2606,12 @@
                 return;
             }
             
-            // Esta função será implementada quando necessário
             console.log('Filtrando resumo por:', searchTerm);
         }
 
         function clearAllFilters() {
             // Resetar filtros do Dashboard 1
-            document.getElementById('situacaoDashboard1').value = 'all';
+            document.getElementById('situacaoDashboard1').value = '';
             document.getElementById('orgaoDashboard1').value = '';
             document.getElementById('searchResumo').value = '';
             
@@ -2812,12 +2647,11 @@
 
         function clearDashboard2Filters() {
             document.getElementById('nomeEstagiario').value = '';
-            document.getElementById('situacaoDashboard2').value = 'all';
+            document.getElementById('situacaoDashboard2').value = '';
             document.getElementById('orgaoDashboard2').value = '';
             document.getElementById('maspDashboard2').value = '';
             document.getElementById('valorRemuneracao').value = '';
             document.getElementById('searchEstagiarios').value = '';
-            currentSearchTerm = '';
             
             // Voltar para o mês mais recente do ano atual
             const mesesDisponiveis = [];
@@ -2904,7 +2738,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="metric-card purple">
+                    <div class="metric-card primary">
                         <div class="metric-label">Valor Médio</div>
                         <div class="metric-value">${formatCurrency(valorMedio)}</div>
                         <div class="update-info">
@@ -2943,11 +2777,16 @@
                 return;
             }
             
-            // Agrupar por órgão
+            // Agrupar por órgão - FILTRAR APENAS ÓRGÃOS QUE NÃO SÃO NÚMEROS
             const grupos = {};
             filteredData.forEach(estagiario => {
                 const orgao = estagiario.orgao || 'Órgão não informado';
-                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao.substring(0, 10);
+                const sigla = estagiario.sigla_orgao || orgao.substring(0, 10);
+                
+                // Pular se o órgão for apenas números
+                if (/^\d+$/.test(orgao)) {
+                    return;
+                }
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
@@ -3137,10 +2976,16 @@
             const ctx = document.getElementById('chartOrgao')?.getContext('2d');
             if (!ctx) return;
             
-            // Agrupar por órgão e pegar top 8
+            // Agrupar por órgão e pegar top 8 - FILTRAR APENAS ÓRGÃOS QUE NÃO SÃO NÚMEROS
             const grupos = {};
             filteredData.forEach(estagiario => {
-                const orgao = estagiario.orgao_sigla || estagiario.sigla_orgao || estagiario.orgao;
+                const orgao = estagiario.orgao;
+                
+                // Pular se o órgão for apenas números
+                if (/^\d+$/.test(orgao)) {
+                    return;
+                }
+                
                 if (!grupos[orgao]) {
                     grupos[orgao] = 0;
                 }
@@ -3151,24 +2996,6 @@
                 .map(([orgao, count]) => ({ orgao, count }))
                 .sort((a, b) => b.count - a.count)
                 .slice(0, 8);
-            
-            // Cores para o gráfico
-            const chartColors = {
-                primary: '#1A5276',
-                accent: '#3498DB',
-                success: '#27AE60',
-                warning: '#F39C12',
-                info: '#17A589',
-                purple: '#8E44AD',
-                orange: '#E67E22',
-                teal: '#16A085'
-            };
-            
-            const pieColors = [
-                chartColors.primary, chartColors.accent, chartColors.success,
-                chartColors.warning, chartColors.purple, chartColors.orange,
-                chartColors.info, chartColors.teal
-            ];
             
             if (charts.orgao) {
                 charts.orgao.destroy();
@@ -3182,7 +3009,7 @@
                     }),
                     datasets: [{
                         data: orgaosArray.map(item => item.count),
-                        backgroundColor: pieColors,
+                        backgroundColor: chartColors.slice(0, orgaosArray.length),
                         borderWidth: 2,
                         borderColor: '#fff'
                     }]
@@ -3241,8 +3068,8 @@
                     datasets: [{
                         data: [emAndamento, concluidos],
                         backgroundColor: [
-                            '#27AE60', // Verde
-                            '#3498DB'  // Azul
+                            '#198754', // Verde
+                            '#0d6efd'  // Azul
                         ],
                         borderWidth: 2,
                         borderColor: '#fff'
@@ -3317,8 +3144,8 @@
                     datasets: [{
                         label: 'Quantidade de Estagiários',
                         data: Object.values(faixas),
-                        backgroundColor: '#3498DB',
-                        borderColor: '#1A5276',
+                        backgroundColor: '#0d6efd', // Azul
+                        borderColor: '#0b5ed7',
                         borderWidth: 1
                     }]
                 },
@@ -3438,7 +3265,7 @@
                 <tr>
                     <td><strong>${estagiario.nome_estagiario || 'Nome não informado'}</strong></td>
                     <td>${estagiario.masp || '-'}</td>
-                    <td>${estagiario.sigla_orgao || estagiario.orgao_sigla || estagiario.orgao || '-'}</td>
+                    <td>${estagiario.sigla_orgao || estagiario.orgao || '-'}</td>
                     <td>${formatDate(estagiario.data_inicio)}</td>
                     <td>${formatDate(estagiario.data_fim)}</td>
                     <td><strong>${formatCurrency(estagiario.valor_remuneracao || 0)}</strong></td>
@@ -3626,12 +3453,12 @@
                     <i class="fas fa-history me-2"></i>${estagiario.nome_estagiario || nome || 'Estagiário'}
                 `;
                 
-                // Tabela de histórico
+                // Tabela de histórico - CORRIGIDO: FORMATO MÊS/ANO
                 const historicHTML = historico.map(registro => {
                     const situacao = (!registro.data_fim || registro.data_fim.trim() === '') ? 'Em Andamento' : 'Concluído';
                     return `
                     <tr>
-                        <td>${registro.ano_mesreferencia || '-'}</td>
+                        <td>${formatMonthReference(registro.ano_mesreferencia)}</td>
                         <td>${registro.orgao || '-'}<br><small>${registro.sigla_orgao || ''}</small></td>
                         <td>${situacao}</td>
                         <td>${formatDate(registro.data_inicio)}</td>
@@ -3742,7 +3569,7 @@
                         
                         // Limpar outros filtros
                         document.getElementById('nomeEstagiario').value = '';
-                        document.getElementById('situacaoDashboard2').value = 'all';
+                        document.getElementById('situacaoDashboard2').value = '';
                         document.getElementById('maspDashboard2').value = '';
                         document.getElementById('valorRemuneracao').value = '';
                         document.getElementById('searchEstagiarios').value = '';
@@ -3834,7 +3661,7 @@
             const grupos = {};
             filteredData.forEach(estagiario => {
                 const orgao = estagiario.orgao || 'Órgão não informado';
-                const sigla = estagiario.orgao_sigla || estagiario.sigla_orgao || orgao.substring(0, 10);
+                const sigla = estagiario.sigla_orgao || orgao.substring(0, 10);
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
@@ -3938,32 +3765,6 @@
             } catch (error) {
                 // Ignora erro se não estiver em iframe
             }
-        }
-
-        // ==================== OUTRAS FUNÇÕES DE INICIALIZAÇÃO ====================
-        function setupTooltips() {
-            // Inicializar tooltips do Bootstrap se necessário
-            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-                tooltipTriggerList.forEach(tooltipTriggerEl => {
-                    new bootstrap.Tooltip(tooltipTriggerEl);
-                });
-            }
-        }
-
-        function setupDescriptiveTooltips() {
-            // Esta função pode ser usada para adicionar tooltips descritivos
-            console.log('Tooltips descritivos configurados');
-        }
-
-        function setupAtualizacaoData() {
-            // Esta função pode ser usada para configurar dados de atualização
-            console.log('Configuração de dados de atualização');
-        }
-
-        function loadInitialData() {
-            // Esta função já é chamada no DOMContentLoaded
-            console.log('Dados iniciais carregados');
         }
     </script>
 </body>
