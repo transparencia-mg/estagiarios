@@ -1926,12 +1926,6 @@
                                     const sigla_orgao = (rowNormalized['sigla_orgao'] || '').trim();
                                     let orgao = (rowNormalized['orgao'] || '').trim();
 
-                                    // CORREÇÃO: Se o órgão for um número (como 1110, 1170), usar um valor padrão
-                                    if (/^\d+$/.test(orgao)) {
-                                        console.warn(`Órgão é um número (${orgao}) na linha ${index}, usando valor padrão`);
-                                        orgao = 'Órgão não especificado';
-                                    }
-
                                     // Converter valor_remuneracao para número
                                     let valorRemuneracao = 0;
                                     const valorRaw = rowNormalized['valor_remuneracao'] || '0';
