@@ -1202,6 +1202,7 @@
             <!-- ==================== DASHBOARD 1: VISÃO GERAL ==================== -->
             <div class="tab-pane fade show active" id="dashboard1" role="tabpanel">
 
+                <!-- Data de Atualização -->
                 <div class="data-atualizacao-container">
                     <div class="data-atualizacao-box">
                         <i class="material-icons">update</i>
@@ -1774,13 +1775,28 @@
             '10': 'Outubro', '11': 'Novembro', '12': 'Dezembro'
         };
 
-        // Paleta de cores para gráficos - VALORES HEX DIRETOS
-        const chartColors = [
-            '#0d6efd', '#198754', '#ffc107', '#0dcaf0',
-            '#d63384', '#6610f2', '#20c997', '#fd7e14',
-            '#6f42c1', '#dc3545', '#0b5ed7', '#157347',
-            '#d9a406', '#0baccc', '#b62b70', '#570ece',
-            '#1bab80', '#d76b11', '#5e38a4', '#bb2d3b'
+        // Paleta de cores para gráficos - CORES SOLICITADAS
+        const chartColors = {
+            primary: '#DB233F',      // Vermelho principal
+            secondaryBlue: '#0d6efd', // Azul
+            accent: '#198754',        // Verde
+            secondaryBrown: '#ffc107', // Amarelo
+            secondaryTeal: '#0dcaf0',  // Ciano
+            bright: '#d63384',        // Rosa
+            teal: '#4ECDC4',          // Verde-água
+            coral: '#FF6B6B'          // Coral
+        };
+
+        // Array de cores para gráficos com múltiplas categorias
+        const chartPalette = [
+            chartColors.primary,
+            chartColors.secondaryBlue,
+            chartColors.accent,
+            chartColors.secondaryBrown,
+            chartColors.secondaryTeal,
+            chartColors.bright,
+            chartColors.teal,
+            chartColors.coral
         ];
 
         // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
@@ -1924,7 +1940,7 @@
 
                                     // Obter sigla e nome do órgão (já completo na coluna orgao)
                                     const sigla_orgao = (rowNormalized['sigla_orgao'] || '').trim();
-                                    let orgao = (rowNormalized['orgao'] || '').trim();
+                                    const orgao = (rowNormalized['orgao'] || '').trim();
 
                                     // Converter valor_remuneracao para número
                                     let valorRemuneracao = 0;
@@ -2327,152 +2343,55 @@
                 });
             }
             
-function updateFilterOptions() {
-    // Dashboard 1 - Ano
-    const anoSelect1 = document.getElementById('anoDashboard1');
-    if (anoSelect1) {
-        anoSelect1.innerHTML = '';
-        
-        // Adicionar anos disponíveis
-        const anos = Object.keys(CSV_FILES_BY_YEAR).sort((a, b) => b - a);
-        anos.forEach(ano => {
-            const option = document.createElement('option');
-            option.value = ano;
-            option.textContent = ano;
-            if (ano === currentYear) option.selected = true;
-            anoSelect1.appendChild(option);
-        });
-    }
-    
-    // Dashboard 1 - Mês - MOSTRAR APENAS O NOME DO MÊS
-    const mesSelect1 = document.getElementById('mesDashboard1');
-    if (mesSelect1 && currentYear) {
-        // Obter meses disponíveis para o ano atual
-        const mesesDisponiveis = new Set();
-        if (allData[currentYear]) {
-            allData[currentYear].forEach(e => {
-                if (e.MES && e.ANO === currentYear) {
-                    mesesDisponiveis.add(e.MES);
-                }
-            });
-        }
-        
-        // Converter para array e ordenar do mais recente para o mais antigo
-        const mesesArray = Array.from(mesesDisponiveis)
-            .filter(mes => mes && mes.length === 2)
-            .sort((a, b) => parseInt(b) - parseInt(a));
-        
-        mesSelect1.innerHTML = '';
-        mesesArray.forEach(mesNum => {
-            const option = document.createElement('option');
-            option.value = mesNum;
-            option.textContent = `${monthNames[mesNum] || mesNum}`; // APENAS NOME DO MÊS
-            if (mesNum === currentMonth) option.selected = true;
-            mesSelect1.appendChild(option);
-        });
-        
-        // Se não encontrou o mês atual na lista, seleciona o primeiro
-        if (mesesArray.length > 0 && !mesesArray.includes(currentMonth)) {
-            currentMonth = mesesArray[0];
-            mesSelect1.value = currentMonth;
-        }
-    }
-    
-    // Dashboard 2 - Ano
-    const anoSelect2 = document.getElementById('anoDashboard2');
-    if (anoSelect2) {
-        anoSelect2.innerHTML = '';
-        const anos = Object.keys(CSV_FILES_BY_YEAR).sort((a, b) => b - a);
-        anos.forEach(ano => {
-            const option = document.createElement('option');
-            option.value = ano;
-            option.textContent = ano;
-            if (ano === currentYear) option.selected = true;
-            anoSelect2.appendChild(option);
-        });
-    }
-    
-    // Dashboard 2 - Mês - MOSTRAR APENAS O NOME DO MÊS
-    const mesSelect2 = document.getElementById('mesDashboard2');
-    if (mesSelect2 && currentYear) {
-        // Obter meses disponíveis para o ano atual
-        const mesesDisponiveis = new Set();
-        if (allData[currentYear]) {
-            allData[currentYear].forEach(e => {
-                if (e.MES && e.ANO === currentYear) {
-                    mesesDisponiveis.add(e.MES);
-                }
-            });
-        }
-        
-        const mesesArray = Array.from(mesesDisponiveis)
-            .filter(mes => mes && mes.length === 2)
-            .sort((a, b) => parseInt(b) - parseInt(a));
-        
-        mesSelect2.innerHTML = '';
-        mesesArray.forEach(mesNum => {
-            const option = document.createElement('option');
-            option.value = mesNum;
-            option.textContent = `${monthNames[mesNum] || mesNum}`; // APENAS NOME DO MÊS
-            if (mesNum === currentMonth) option.selected = true;
-            mesSelect2.appendChild(option);
-        });
-    }
-    
-    // CORREÇÃO: Obter todos os órgãos únicos dos DADOS COMPLETOS do ano atual, não apenas dos filtrados
-    const orgaosUnicos = [];
-    
-    if (allData[currentYear] && allData[currentYear].length > 0) {
-        // Criar um Set para órgãos únicos
-        const orgaosSet = new Set();
-        
-        allData[currentYear].forEach(estagiario => {
-            const orgao = estagiario.orgao;
+            // Obter todos os órgãos únicos dos DADOS COMPLETOS do ano atual
+            const orgaosUnicos = [];
             
-            // Filtrar apenas órgãos válidos (não vazios, não apenas números, não "Órgão não especificado")
-            if (orgao && 
-                orgao.trim() !== '' && 
-                !/^\d+$/.test(orgao) && 
-                orgao !== 'Órgão não especificado' &&
-                orgao !== 'Órgão não informado') {
+            if (allData[currentYear] && allData[currentYear].length > 0) {
+                // Criar um Set para órgãos únicos
+                const orgaosSet = new Set();
                 
-                orgaosSet.add(orgao.trim());
+                allData[currentYear].forEach(estagiario => {
+                    const orgao = estagiario.orgao;
+                    
+                    // Incluir todos os órgãos, sem filtros extras
+                    if (orgao && orgao.trim() !== '') {
+                        orgaosSet.add(orgao.trim());
+                    }
+                });
+                
+                // Converter Set para array e ordenar
+                orgaosUnicos.push(...Array.from(orgaosSet).sort());
+                
+                console.log('Órgãos disponíveis no datalist:', orgaosUnicos.length, 'órgãos');
+                if (orgaosUnicos.length > 0) {
+                    console.log('Primeiros 5 órgãos:', orgaosUnicos.slice(0, 5));
+                }
             }
-        });
-        
-        // Converter Set para array e ordenar
-        orgaosUnicos.push(...Array.from(orgaosSet).sort());
-        
-        console.log('Órgãos disponíveis no datalist:', orgaosUnicos.length, 'órgãos');
-        if (orgaosUnicos.length > 0) {
-            console.log('Primeiros 5 órgãos:', orgaosUnicos.slice(0, 5));
+            
+            // Dashboard 1 - datalist de órgãos
+            const orgaoDatalist1 = document.getElementById('orgaosListDashboard1');
+            if (orgaoDatalist1) {
+                orgaoDatalist1.innerHTML = '';
+                orgaosUnicos.forEach(orgao => {
+                    const option = document.createElement('option');
+                    option.value = orgao;
+                    orgaoDatalist1.appendChild(option);
+                });
+                console.log('Datalist 1 preenchido com', orgaosUnicos.length, 'órgãos');
+            }
+            
+            // Dashboard 2 - datalist de órgãos
+            const orgaoDatalist2 = document.getElementById('orgaosListDashboard2');
+            if (orgaoDatalist2) {
+                orgaoDatalist2.innerHTML = '';
+                orgaosUnicos.forEach(orgao => {
+                    const option = document.createElement('option');
+                    option.value = orgao;
+                    orgaoDatalist2.appendChild(option);
+                });
+                console.log('Datalist 2 preenchido com', orgaosUnicos.length, 'órgãos');
+            }
         }
-    }
-    
-    // Dashboard 1 - datalist de órgãos
-    const orgaoDatalist1 = document.getElementById('orgaosListDashboard1');
-    if (orgaoDatalist1) {
-        orgaoDatalist1.innerHTML = '';
-        orgaosUnicos.forEach(orgao => {
-            const option = document.createElement('option');
-            option.value = orgao;
-            orgaoDatalist1.appendChild(option);
-        });
-        console.log('Datalist 1 preenchido com', orgaosUnicos.length, 'órgãos');
-    }
-    
-    // Dashboard 2 - datalist de órgãos
-    const orgaoDatalist2 = document.getElementById('orgaosListDashboard2');
-    if (orgaoDatalist2) {
-        orgaoDatalist2.innerHTML = '';
-        orgaosUnicos.forEach(orgao => {
-            const option = document.createElement('option');
-            option.value = orgao;
-            orgaoDatalist2.appendChild(option);
-        });
-        console.log('Datalist 2 preenchido com', orgaosUnicos.length, 'órgãos');
-    }
-}
 
         function applyFilters(dashboard) {
             showLoading(true);
@@ -2518,7 +2437,7 @@ function updateFilterOptions() {
                             if (situacao === 'concluido' && !temDataFim) return false;
                         }
                         
-                        // Filtro por órgão
+                        // Filtro por órgão - SIMPLES, sem regras extras
                         if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
@@ -2576,7 +2495,7 @@ function updateFilterOptions() {
                             if (situacao === 'concluido' && !temDataFim) return false;
                         }
                         
-                        // Filtro por órgão
+                        // Filtro por órgão - SIMPLES, sem regras extras
                         if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
@@ -2628,7 +2547,7 @@ function updateFilterOptions() {
                             if (situacao === 'concluido' && !temDataFim) return false;
                         }
                         
-                        // Filtro por órgão
+                        // Filtro por órgão - SIMPLES
                         if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
@@ -2660,6 +2579,7 @@ function updateFilterOptions() {
                             if (situacao === 'concluido' && !temDataFim) return false;
                         }
                         
+                        // Filtro por órgão - SIMPLES
                         if (orgao !== '' && estagiario.orgao !== orgao) {
                             return false;
                         }
@@ -2886,16 +2806,11 @@ function updateFilterOptions() {
                 return;
             }
             
-            // Agrupar por órgão - FILTRAR APENAS ÓRGÃOS QUE NÃO SÃO NÚMEROS
+            // Agrupar por órgão - SEM FILTROS EXTRAS
             const grupos = {};
             filteredData.forEach(estagiario => {
                 const orgao = estagiario.orgao || 'Órgão não informado';
                 const sigla = estagiario.sigla_orgao || orgao.substring(0, 10);
-                
-                // Pular se o órgão for apenas números
-                if (/^\d+$/.test(orgao)) {
-                    return;
-                }
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = {
@@ -3085,15 +3000,10 @@ function updateFilterOptions() {
             const ctx = document.getElementById('chartOrgao')?.getContext('2d');
             if (!ctx) return;
             
-            // Agrupar por órgão e pegar top 8 - FILTRAR APENAS ÓRGÃOS QUE NÃO SÃO NÚMEROS
+            // Agrupar por órgão e pegar top 8 - SEM FILTROS EXTRAS
             const grupos = {};
             filteredData.forEach(estagiario => {
                 const orgao = estagiario.orgao;
-                
-                // Pular se o órgão for apenas números
-                if (/^\d+$/.test(orgao)) {
-                    return;
-                }
                 
                 if (!grupos[orgao]) {
                     grupos[orgao] = 0;
@@ -3118,7 +3028,7 @@ function updateFilterOptions() {
                     }),
                     datasets: [{
                         data: orgaosArray.map(item => item.count),
-                        backgroundColor: chartColors.slice(0, orgaosArray.length),
+                        backgroundColor: chartPalette.slice(0, orgaosArray.length),
                         borderWidth: 2,
                         borderColor: '#fff'
                     }]
@@ -3177,8 +3087,8 @@ function updateFilterOptions() {
                     datasets: [{
                         data: [emAndamento, concluidos],
                         backgroundColor: [
-                            '#198754', // Verde
-                            '#0d6efd'  // Azul
+                            chartColors.accent, // Verde
+                            chartColors.secondaryBlue  // Azul
                         ],
                         borderWidth: 2,
                         borderColor: '#fff'
@@ -3253,8 +3163,8 @@ function updateFilterOptions() {
                     datasets: [{
                         label: 'Quantidade de Estagiários',
                         data: Object.values(faixas),
-                        backgroundColor: '#0d6efd', // Azul
-                        borderColor: '#0b5ed7',
+                        backgroundColor: chartColors.primary, // Vermelho principal
+                        borderColor: '#B93C42',
                         borderWidth: 1
                     }]
                 },
