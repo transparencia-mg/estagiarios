@@ -1,6 +1,6 @@
 {
   "version": "4.16.6",
-  "time": 1.44,
+  "time": 1.475,
   "errors": [],
   "tasks": [
     {
@@ -66,13 +66,13 @@
         "scheme": "file",
         "title": "Estagiarios 2022",
         "stats": {
-          "hash": "63a97d7091a50d532d88cd7037ec546b",
-          "bytes": 48110,
+          "hash": "595a5155c528072c6120c05bd8ef6fdd",
+          "bytes": 71712,
           "fields": 11,
           "rows": 517
         }
       },
-      "time": 0.035,
+      "time": 0.036,
       "scope": [
         "hash-count-error",
         "byte-count-error",
@@ -163,13 +163,13 @@
         "scheme": "file",
         "title": "Estagiarios 2023",
         "stats": {
-          "hash": "deb1c9c687b0f8efba24f8d25f16cade",
-          "bytes": 738512,
+          "hash": "46f7aaf2ec7823c04d2198738e053638",
+          "bytes": 1028421,
           "fields": 11,
           "rows": 7970
         }
       },
-      "time": 0.28,
+      "time": 0.285,
       "scope": [
         "hash-count-error",
         "byte-count-error",
@@ -260,13 +260,13 @@
         "scheme": "file",
         "title": "Estagiarios 2024",
         "stats": {
-          "hash": "f70d66bfc6046891642bfa94c6417372",
-          "bytes": 1537200,
+          "hash": "d5acea05bd4c05fde092a5fd01b1fe3d",
+          "bytes": 2139180,
           "fields": 11,
           "rows": 16763
         }
       },
-      "time": 0.567,
+      "time": 0.581,
       "scope": [
         "hash-count-error",
         "byte-count-error",
@@ -357,13 +357,13 @@
         "scheme": "file",
         "title": "Estagiarios 2025",
         "stats": {
-          "hash": "2143a425916437206c3aea9008939a74",
-          "bytes": 1369359,
+          "hash": "840f9e88bf23f3159dd44a17bd7a3787",
+          "bytes": 1918477,
           "fields": 11,
           "rows": 14859
         }
       },
-      "time": 0.514,
+      "time": 0.528,
       "scope": [
         "hash-count-error",
         "byte-count-error",
